@@ -3,16 +3,16 @@
 
 	<groupId>com.slv</groupId>
 	<artifactId>slv-api</artifactId>
-	<version>0.0.1</version>
+	<version>0.0.3</version>
 	<packaging>jar</packaging>
 
 	<name>slv-api</name>
 	<url>http://maven.apache.org</url>
 
 	<scm>
-		<connection>scm:git:ssh:172.20.2.38:~/GIT/</connection>
-		<developerConnection>scm:git:ssh:172.20.2.38:~/GIT/</developerConnection>
-		<tag>slv-api-0.0.1</tag>
+		<connection>scm:git:ssh://slvgit@172.20.2.38:~/GIT/</connection>
+		<developerConnection>scm:git:ssh://slvgit@172.20.2.38:~/GIT/</developerConnection>
+		<tag>slv-api-0.0.3</tag>
 	</scm>
 
 	<properties>
