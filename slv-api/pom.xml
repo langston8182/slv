@@ -47,7 +47,7 @@
 
 				<configuration>
 					<suiteXmlFiles>
-						<suiteXmlFile>C:\Users\cmarchive\Documents\SLV\Workspace\slv-api\src\test\resources\testng.xml</suiteXmlFile>
+						<suiteXmlFile>src/test/resources/testng.xml</suiteXmlFile>
 					</suiteXmlFiles>
 				</configuration>
 			</plugin>
