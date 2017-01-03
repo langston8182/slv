@@ -11,8 +11,8 @@
 	<url>http://maven.apache.org</url>
 
 	<scm>
-		<connection>scm:git:ssh:slvgit@172.20.2.38:~/GIT/</connection>
-		<developerConnection>scm:git:ssh:slvgit@172.20.2.38:~/GIT/</developerConnection>
+		<connection>scm:git:ssh:172.20.2.38:~/GIT/</connection>
+		<developerConnection>scm:git:ssh:172.20.2.38:~/GIT/</developerConnection>
 		<tag>slv-api-0.0.1</tag>
 	</scm>
 
