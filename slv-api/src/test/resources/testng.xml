@@ -1,0 +1,22 @@
+<!DOCTYPE suite SYSTEM "http://testng.org/testng-1.0.dtd" >
+
+<suite name="TestAll" verbose="1">
+
+	<parameter name="url" value="http://5.196.91.118:8080/celad/api/" />
+	<parameter name="login" value="celad" />
+	<parameter name="password" value="Celad20!6" />
+	<test name="rest">
+		<groups>
+			<define name="include-group">
+				<include name="user"></include>
+			</define>
+			<run>
+				<include name="include-group"></include>
+			</run>
+		</groups>
+		<classes>
+			<class name="com.slv.slv_api.tests.TestRest" />
+		</classes>
+	</test>
+
+</suite>
