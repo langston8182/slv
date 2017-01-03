@@ -2,9 +2,9 @@
 
 <suite name="TestAll" verbose="1">
 
-	<parameter name="url" value="http://5.196.91.118:8080/celad/api/" />
-	<parameter name="login" value="celad" />
-	<parameter name="password" value="Celad20!6" />
+	<parameter name="url" value="${slv.url}" />
+	<parameter name="login" value="${slv.user}" />
+	<parameter name="password" value="${slv.password}" />
 	<test name="rest">
 		<groups>
 			<define name="include-group">
@@ -15,7 +15,7 @@
 			</run>
 		</groups>
 		<classes>
-			<class name="com.slv.slv_api.tests.TestRest" />
+			<class name="com.slv.slv_api.TestRest" />
 		</classes>
 	</test>
 
