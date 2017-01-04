@@ -35,6 +35,7 @@
 		<maven.scm.plugin.version>1.9.5</maven.scm.plugin.version>
 		<maven.release.plugin.version>2.5.3</maven.release.plugin.version>
 		<maven.extension.wagon-ssh>2.4</maven.extension.wagon-ssh>
+		<maven.assembly.plugin.version>3.0.0</maven.assembly.plugin.version>
 		<testOutputDirectory>${project.build.directory}/test-classes</testOutputDirectory>
 	</properties>
 
@@ -92,12 +93,32 @@
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-surefire-plugin</artifactId>
 				<version>${maven.surefire.plugin.version}</version>
-
 				<configuration>
+    			 	<testFailureIgnore>true</testFailureIgnore>
 					<suiteXmlFiles>
 						<suiteXmlFile>${testOutputDirectory}/testng.xml</suiteXmlFile>
 					</suiteXmlFiles>
 				</configuration>
+			</plugin>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-assembly-plugin</artifactId>
+				<version>${maven.assembly.plugin.version}</version>
+				<configuration>
+					<descriptors>
+						<descriptor>src/assembly/package-tests-report.xml</descriptor>
+					</descriptors>
+					<appendAssemblyId>false</appendAssemblyId>
+					<finalName>blackbox-tests-${pom.version}</finalName>
+				</configuration>
+				<executions>
+					<execution>
+						<phase>test</phase>
+						<goals>
+							<goal>single</goal>
+						</goals>
+					</execution>
+				</executions>
 			</plugin>
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
