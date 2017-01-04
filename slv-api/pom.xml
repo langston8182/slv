@@ -3,7 +3,7 @@
 
 	<groupId>com.slv</groupId>
 	<artifactId>slv-api</artifactId>
-	<version>0.0.31</version>
+	<version>0.0.32-SNAPSHOT</version>
 	<packaging>jar</packaging>
 
 	<name>slv-api</name>
@@ -12,7 +12,7 @@
 	<scm>
 		<connection>scm:git:ssh://slvgit@172.20.2.38:/home/slvgit/GIT/</connection>
 		<developerConnection>scm:git:ssh://slvgit@172.20.2.38:/home/slvgit/GIT/</developerConnection>
-    <tag>slv-api-0.0.31</tag>
+    <tag>HEAD</tag>
   </scm>
 	
 	<distributionManagement>
