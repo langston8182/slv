@@ -3,7 +3,7 @@
 
 	<groupId>com.slv</groupId>
 	<artifactId>slv-api</artifactId>
-	<version>0.0.42-SNAPSHOT</version>
+	<version>0.0.42</version>
 	<packaging>jar</packaging>
 
 	<name>slv-api</name>
@@ -12,7 +12,7 @@
 	<scm>
 		<connection>scm:git:ssh://slvgit@172.20.2.38:/home/slvgit/GIT/</connection>
 		<developerConnection>scm:git:ssh://slvgit@172.20.2.38:/home/slvgit/GIT/</developerConnection>
-    <tag>HEAD</tag>
+    <tag>slv-api-0.0.42</tag>
   </scm>
 	
 	<distributionManagement>
@@ -84,8 +84,8 @@
 				<artifactId>maven-compiler-plugin</artifactId>
 				<version>${maven.compiler.plugin.version}</version>
 				<configuration>
-					<source>1.6</source>
-					<target>1.6</target>
+					<source>1.7</source>
+					<target>1.7</target>
 				</configuration>
 			</plugin>
 			<plugin>
