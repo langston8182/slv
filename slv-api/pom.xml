@@ -3,7 +3,7 @@
 
 	<groupId>com.slv</groupId>
 	<artifactId>slv-api</artifactId>
-	<version>0.0.50</version>
+	<version>0.0.51-SNAPSHOT</version>
 	<packaging>jar</packaging>
 
 	<name>slv-api</name>
@@ -15,7 +15,7 @@
 		
 		<connection>scm:git:https://github.com/langston8182/slv.git</connection>
 		<url>scm:git:https://github.com/langston8182/slv.git</url>
-    <tag>slv-api-0.0.50</tag>
+    <tag>HEAD</tag>
   </scm>
 	
 	<distributionManagement>
