@@ -3,7 +3,7 @@
 
 	<groupId>com.slv</groupId>
 	<artifactId>slv-api</artifactId>
-	<version>0.0.19-SNAPSHOT</version>
+	<version>0.0.19</version>
 	<packaging>jar</packaging>
 
 	<name>slv-api</name>
@@ -12,7 +12,7 @@
 	<scm>
 		<connection>scm:git:ssh://slvgit@172.20.2.38:/home/slvgit/GIT/</connection>
 		<developerConnection>scm:git:ssh://slvgit@172.20.2.38:/home/slvgit/GIT/</developerConnection>
-    <tag>HEAD</tag>
+    <tag>slv-api-0.0.19</tag>
   </scm>
 
 	<properties>
@@ -108,6 +108,9 @@
 					<checkModificationExcludes>
 						<checkModificationExclude>slv-api/pom.xml</checkModificationExclude>
 					</checkModificationExcludes>
+					<!-- <tagBase>
+						file:///C:/Users/cmarchive/Documents/SLV/GIT/tag/
+					</tagBase>-->
 				</configuration>
 			</plugin>
 		</plugins>
