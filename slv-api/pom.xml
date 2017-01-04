@@ -3,7 +3,7 @@
 
 	<groupId>com.slv</groupId>
 	<artifactId>slv-api</artifactId>
-	<version>0.0.47-SNAPSHOT</version>
+	<version>0.0.48</version>
 	<packaging>jar</packaging>
 
 	<name>slv-api</name>
@@ -15,7 +15,7 @@
 		
 		<connection>scm:git:https://github.com/langston8182/slv.git</connection>
 		<url>scm:git:https://github.com/langston8182/slv.git</url>
-    <tag>HEAD</tag>
+    <tag>slv-api-0.0.48</tag>
   </scm>
 	
 	<distributionManagement>
@@ -147,14 +147,6 @@
 					<checkModificationExcludes>
 						<checkModificationExclude>slv-api/pom.xml</checkModificationExclude>
 					</checkModificationExcludes>
-				</configuration>
-			</plugin>
-			<plugin>
-				<groupId>org.apache.maven.plugins</groupId>
-				<artifactId>maven-deploy-plugin</artifactId>
-				<version>${maven.deploy.plugin.version}</version>
-				<configuration>
-					<altDeploymentRepository>internal.repo::default::file://${project.build.directory}/mvn-repo</altDeploymentRepository>
 				</configuration>
 			</plugin>
 		</plugins>
