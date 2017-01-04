@@ -3,7 +3,7 @@
 
 	<groupId>com.slv</groupId>
 	<artifactId>slv-api</artifactId>
-	<version>0.0.23-SNAPSHOT</version>
+	<version>0.0.23</version>
 	<packaging>jar</packaging>
 
 	<name>slv-api</name>
@@ -12,7 +12,7 @@
 	<scm>
 		<connection>scm:git:ssh://slvgit@172.20.2.38:/home/slvgit/GIT/</connection>
 		<developerConnection>scm:git:ssh://slvgit@172.20.2.38:/home/slvgit/GIT/</developerConnection>
-		<tag>HEAD</tag>
+		<tag>slv-api-0.0.23</tag>
 	</scm>
 	
 	<distributionManagement>
@@ -34,6 +34,7 @@
 		<maven.surefire.plugin.version>2.14.1</maven.surefire.plugin.version>
 		<maven.scm.plugin.version>1.9.5</maven.scm.plugin.version>
 		<maven.release.plugin.version>2.5.3</maven.release.plugin.version>
+		<maven.extension.wagon-ssh>2.4</maven.extension.wagon-ssh>
 		<testOutputDirectory>${project.build.directory}/test-classes</testOutputDirectory>
 	</properties>
 
@@ -120,5 +121,13 @@
 				</configuration>
 			</plugin>
 		</plugins>
+		
+		<extensions>
+			<extension>
+				<groupId>org.apache.maven.wagon</groupId>
+				<artifactId>wagon-ssh</artifactId>
+				<version>${maven.extension.wagon-ssh}</version>
+			</extension>
+		</extensions>
 	</build>
 </project>
