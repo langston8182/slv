@@ -3,7 +3,7 @@
 
 	<groupId>com.slv</groupId>
 	<artifactId>slv-api</artifactId>
-	<version>0.0.25-SNAPSHOT</version>
+	<version>0.0.24</version>
 	<packaging>jar</packaging>
 
 	<name>slv-api</name>
@@ -12,15 +12,15 @@
 	<scm>
 		<connection>scm:git:ssh://slvgit@172.20.2.38:/home/slvgit/GIT/</connection>
 		<developerConnection>scm:git:ssh://slvgit@172.20.2.38:/home/slvgit/GIT/</developerConnection>
-		<tag>HEAD</tag>
+		<tag>slv-api-0.0.24</tag>
 	</scm>
 	
 	<distributionManagement>
-		<site>
+		<repository>
 			<id>SLV_TAG</id>
 			<name>SLV</name>
-			<url>scm:git:ssh://slvgit@172.20.2.38:/home/slvgit/GIT/</url>
-		</site>
+			<url>scp://slvgit@172.20.2.38:/home/slvgit/tag/</url>
+		</repository>
 	</distributionManagement>
 	
 	<properties>
@@ -121,6 +121,13 @@
 				</configuration>
 			</plugin>
 		</plugins>
-
+		
+		<extensions>
+			<extension>
+				<groupId>org.apache.maven.wagon</groupId>
+				<artifactId>wagon-ssh</artifactId>
+				<version>${maven.extension.wagon-ssh}</version>
+			</extension>
+		</extensions>
 	</build>
 </project>
