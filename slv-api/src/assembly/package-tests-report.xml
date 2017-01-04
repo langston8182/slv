@@ -5,13 +5,15 @@
 	<formats>
 		<format>tar.gz</format>
 	</formats>
+	<includeBaseDirectory>false</includeBaseDirectory>
 	<fileSets>
 		<fileSet>
 			<directory>target/surefire-reports</directory>
-			<outputDirectory>target</outputDirectory>
+			<outputDirectory>/</outputDirectory>
 			<includes>
 				<include>*.html</include>
 				<include>*.png</include>
+				<include>*.gif</include>
 				<include>*.css</include>
 				<include>*.js</include>
 			</includes>

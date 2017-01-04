@@ -118,7 +118,7 @@
 						<descriptor>src/assembly/package-tests-report.xml</descriptor>
 					</descriptors>
 					<appendAssemblyId>false</appendAssemblyId>
-					<finalName>blackbox-tests-${pom.version}</finalName>
+					<finalName>blackbox-tests</finalName>
 				</configuration>
 				<executions>
 					<execution>
