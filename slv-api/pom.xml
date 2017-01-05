@@ -3,7 +3,7 @@
 
 	<groupId>com.slv</groupId>
 	<artifactId>slv-api</artifactId>
-	<version>0.0.43-SNAPSHOT</version>
+	<version>0.0.51-SNAPSHOT</version>
 	<packaging>jar</packaging>
 
 	<name>slv-api</name>
@@ -12,8 +12,8 @@
 	<scm>
 		<connection>scm:git:ssh://slvgit@172.20.2.38:/home/slvgit/GIT/</connection>
 		<developerConnection>scm:git:ssh://slvgit@172.20.2.38:/home/slvgit/GIT/</developerConnection>
-    <tag>HEAD</tag>
-  </scm>
+    	<tag>slv-api-0.0.50</tag>
+  	</scm>
 	
 	<distributionManagement>
 		<repository>
@@ -94,31 +94,10 @@
 				<artifactId>maven-surefire-plugin</artifactId>
 				<version>${maven.surefire.plugin.version}</version>
 				<configuration>
-    			 	<testFailureIgnore>true</testFailureIgnore>
 					<suiteXmlFiles>
 						<suiteXmlFile>${testOutputDirectory}/testng.xml</suiteXmlFile>
 					</suiteXmlFiles>
 				</configuration>
-			</plugin>
-			<plugin>
-				<groupId>org.apache.maven.plugins</groupId>
-				<artifactId>maven-assembly-plugin</artifactId>
-				<version>${maven.assembly.plugin.version}</version>
-				<configuration>
-					<descriptors>
-						<descriptor>src/assembly/package-tests-report.xml</descriptor>
-					</descriptors>
-					<appendAssemblyId>false</appendAssemblyId>
-					<finalName>blackbox-tests</finalName>
-				</configuration>
-				<executions>
-					<execution>
-						<phase>test</phase>
-						<goals>
-							<goal>single</goal>
-						</goals>
-					</execution>
-				</executions>
 			</plugin>
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
