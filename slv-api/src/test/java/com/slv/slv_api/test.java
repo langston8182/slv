@@ -35,29 +35,17 @@ public class test {
             }else if(opNode.get("op").asText()=="add"){
             	adds.add(new Add(opNode.get("op").asText(),  opNode.get("path").asText(), opNode.get("value").asText()));
             }
-    
-            
-       /*     System.out.println(opNode.get("op"));
-            System.out.println(opNode.get("path"));
-            System.out.println(opNode.get("from"));
-            System.out.println(opNode.get("value"));*/
+   
         }
         
         for(Add add : adds) {
         	System.out.println("la valeur "+add.getValue() +" a été ajouté à "+add.getPath());
         }
-        for(Move move : moves){
-        	
+        for(Move move : moves){       	
         	System.out.println("la valeur "+move.getPath()+ " a été ajouté.");
         	System.out.println("la valeur "+move.getFrom()+ " a été supprimé.");
         }
-       
-        
-        
-        
-
       System.out.println("Differences : " + patch);
-
 	}
 
 }
