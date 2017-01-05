@@ -3,7 +3,7 @@
 
 	<groupId>com.slv</groupId>
 	<artifactId>slv-api</artifactId>
-	<version>0.0.52-SNAPSHOT</version>
+	<version>0.0.52</version>
 	<packaging>jar</packaging>
 
 	<name>slv-api</name>
@@ -12,16 +12,8 @@
 	<scm>
 		<connection>scm:git:ssh://slvgit@172.20.2.38:/home/slvgit/GIT/</connection>
 		<developerConnection>scm:git:ssh://slvgit@172.20.2.38:/home/slvgit/GIT/</developerConnection>
-    	<tag>slv-api-0.0.50</tag>
+    	<tag>slv-api-0.0.52</tag>
   	</scm>
-	
-	<distributionManagement>
-		<repository>
-			<id>SLV_TAG</id>
-			<name>SLV</name>
-			<url>sftp://slvgit@172.20.2.38:/home/slvgit/tag/</url>
-		</repository>
-	</distributionManagement>
 	
 	<properties>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
