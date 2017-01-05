@@ -3,7 +3,7 @@
 
 	<groupId>com.slv</groupId>
 	<artifactId>slv-api</artifactId>
-	<version>0.0.56-SNAPSHOT</version>
+	<version>0.0.56</version>
 	<packaging>jar</packaging>
 
 	<name>slv-api</name>
