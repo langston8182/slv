@@ -39,13 +39,13 @@ public class RestService {
 		WebResource webResource = client.resource(url + method);
 
 		ClientResponse response = webResource.accept(JSON_SCHEMA).get(ClientResponse.class);
+		
 
 		if (response.getStatus() != 200) {
 			throw new RuntimeException("Failed : Http error code : " + response.getStatus());
 		}
 
 		String output = response.getEntity(String.class);
-
 		return output;
 	}
 
