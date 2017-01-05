@@ -4,7 +4,7 @@
 	<groupId>com.slv</groupId>
 	<artifactId>slv-api</artifactId>
 
-	<version>0.0.57</version>
+	<version>0.0.58-SNAPSHOT</version>
 	<packaging>jar</packaging>
 
 	<name>slv-api</name>
@@ -15,7 +15,7 @@
 		<developerConnection>scm:git:ssh://slvgit@172.20.2.38:/home/slvgit/GIT/</developerConnection>	
 <!-- 		<connection>scm:git:https://github.com/langston8182/slv.git</connection> -->
 <!-- 		<url>scm:git:https://github.com/langston8182/slv.git</url> -->
-    <tag>slv-api-0.0.57</tag>
+    <tag>slv-api-0.0.56</tag>
   </scm>
 	
 	<distributionManagement>
