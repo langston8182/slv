@@ -1,5 +1,10 @@
 package com.slv.slv_api;
 
+/**
+ * Enumerate all the methods to be testes
+ * 
+ * @author cmarchive
+ */
 public enum Methods {
 
 	RETRIEVE_CURRENT_PROFILE("userprofile/getCurrentProfil"),

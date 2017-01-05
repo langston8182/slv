@@ -6,8 +6,7 @@ import org.testng.annotations.BeforeTest;
 import org.testng.annotations.Parameters;
 import org.testng.annotations.Test;
 
-import com.slv.slv_api.Methods;
-import com.slv.slv_api.RestService;
+import com.slv.slv_api.services.RestService;
 
 public class TestRest {
 

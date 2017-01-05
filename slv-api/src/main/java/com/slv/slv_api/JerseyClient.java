@@ -5,6 +5,11 @@ import com.sun.jersey.api.client.ClientResponse;
 import com.sun.jersey.api.client.WebResource;
 import com.sun.jersey.api.client.filter.HTTPBasicAuthFilter;
 
+/**
+ * Test class to implement a simple rest client
+ * 
+ * @author cmarchive
+ */
 public class JerseyClient {
 
 	private static final String URL = "http://5.196.91.118:8080/celad/api/";
