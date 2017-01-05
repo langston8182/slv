@@ -40,7 +40,6 @@ public class RestService {
 
 		ClientResponse response = webResource.accept(JSON_SCHEMA).get(ClientResponse.class);
 		
-
 		if (response.getStatus() != 200) {
 			throw new RuntimeException("Failed : Http error code : " + response.getStatus());
 		}
