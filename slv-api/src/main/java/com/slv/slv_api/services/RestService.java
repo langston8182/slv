@@ -1,5 +1,5 @@
-package com.slv.slv_api;
-
+package com.slv.slv_api.services;
+import com.slv.slv_api.Methods;
 import com.sun.jersey.api.client.Client;
 import com.sun.jersey.api.client.ClientResponse;
 import com.sun.jersey.api.client.WebResource;
