@@ -1,15 +1,28 @@
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
 	<modelVersion>4.0.0</modelVersion>
 
 	<groupId>com.slv</groupId>
 	<artifactId>slv-api</artifactId>
-	<version>0.0.1-SNAPSHOT</version>
+	<version>0.0.43-SNAPSHOT</version>
 	<packaging>jar</packaging>
 
 	<name>slv-api</name>
 	<url>http://maven.apache.org</url>
 
+	<scm>
+		<connection>scm:git:ssh://slvgit@172.20.2.38:/home/slvgit/GIT/</connection>
+		<developerConnection>scm:git:ssh://slvgit@172.20.2.38:/home/slvgit/GIT/</developerConnection>
+    <tag>HEAD</tag>
+  </scm>
+	
+	<distributionManagement>
+		<repository>
+			<id>SLV_TAG</id>
+			<name>SLV</name>
+			<url>sftp://slvgit@172.20.2.38:/home/slvgit/tag/</url>
+		</repository>
+	</distributionManagement>
+	
 	<properties>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 		<jersey-client.version>1.19.3</jersey-client.version>
@@ -18,6 +31,11 @@
 		<zjsonpatch.version>0.2.4</zjsonpatch.version>
 		<junit.version>4.12</junit.version>
 		<maven.compiler.plugin.version>3.6.0</maven.compiler.plugin.version>
+		<maven.surefire.plugin.version>2.14.1</maven.surefire.plugin.version>
+		<maven.scm.plugin.version>1.9.5</maven.scm.plugin.version>
+		<maven.release.plugin.version>2.5.3</maven.release.plugin.version>
+		<maven.extension.wagon-ssh>2.4</maven.extension.wagon-ssh>
+		<maven.assembly.plugin.version>3.0.0</maven.assembly.plugin.version>
 		<testOutputDirectory>${project.build.directory}/test-classes</testOutputDirectory>
 	</properties>
 
@@ -67,21 +85,70 @@
 				<artifactId>maven-compiler-plugin</artifactId>
 				<version>${maven.compiler.plugin.version}</version>
 				<configuration>
-					<source>1.8</source>
-					<target>1.8</target>
+					<source>1.7</source>
+					<target>1.7</target>
 				</configuration>
 			</plugin>
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-surefire-plugin</artifactId>
-				<version>2.14.1</version>
-
+				<version>${maven.surefire.plugin.version}</version>
 				<configuration>
+    			 	<testFailureIgnore>true</testFailureIgnore>
 					<suiteXmlFiles>
 						<suiteXmlFile>${testOutputDirectory}/testng.xml</suiteXmlFile>
 					</suiteXmlFiles>
 				</configuration>
 			</plugin>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-assembly-plugin</artifactId>
+				<version>${maven.assembly.plugin.version}</version>
+				<configuration>
+					<descriptors>
+						<descriptor>src/assembly/package-tests-report.xml</descriptor>
+					</descriptors>
+					<appendAssemblyId>false</appendAssemblyId>
+					<finalName>blackbox-tests</finalName>
+				</configuration>
+				<executions>
+					<execution>
+						<phase>test</phase>
+						<goals>
+							<goal>single</goal>
+						</goals>
+					</execution>
+				</executions>
+			</plugin>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-scm-plugin</artifactId>
+				<version>${maven.scm.plugin.version}</version>
+				<configuration>
+					<connectionType>connection</connectionType>
+					<basedir>C:\Users\cmarchive\Documents\SLV\GIT\GIT\slv-api</basedir>
+					<exportDirectory>${project.build.directory}/export</exportDirectory>
+				</configuration>
+			</plugin>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-release-plugin</artifactId>
+				<version>${maven.release.plugin.version}</version>
+				<configuration>
+					<checkModificationExcludes>
+						<checkModificationExclude>slv-api/pom.xml</checkModificationExclude>
+					</checkModificationExcludes>
+					<!-- <tagBase> file:///C:/Users/cmarchive/Documents/SLV/GIT/tag/ </tagBase> -->
+				</configuration>
+			</plugin>
 		</plugins>
+		
+		<extensions>
+			<extension>
+				<groupId>org.apache.maven.wagon</groupId>
+				<artifactId>wagon-ssh</artifactId>
+				<version>${maven.extension.wagon-ssh}</version>
+			</extension>
+		</extensions>
 	</build>
 </project>
