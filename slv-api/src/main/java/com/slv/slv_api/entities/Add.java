@@ -1,4 +1,5 @@
-package com.slv.pojos;
+package com.slv.slv_api.entities;
+
 
 public class Add extends Operation {
 	String path;
