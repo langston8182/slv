@@ -2,14 +2,6 @@
 	"userprofile/getGeoZoneProfils" : {
 		"geoZoneId": 1,
 	  	"recurse": "true",
-	  	"ser": "json",
-	  	"pays" : [
-		  	{
-		  		"code" : "FR"
-		  	},
-		  	{
-		  		"code" : "EN"
-		  	}
-	  	]
+	  	"ser": "json"
 	}
 }
