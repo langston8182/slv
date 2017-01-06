@@ -8,7 +8,6 @@ import org.testng.annotations.Test;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.slv.slv_api.core.AbstractTest;
 
-@RunWith(BlockJUnit4ClassRunner.class)
 public class UserProfileTest extends AbstractTest {
 
 	/**
