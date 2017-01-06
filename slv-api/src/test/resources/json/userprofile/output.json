@@ -17,7 +17,7 @@
 	    	}
 		]
 	},
-	"userprofile/updateProfil" : "OK",
+	"userprofile/updateProfilProperties" : "OK",
 	"userprofile/deleteProfil" : {
 	   "errorCode" : "0",
 	   "errorCodeLabel" : null,

@@ -1,12 +1,16 @@
 package com.slv.slv_api.userprofile;
 
-import org.junit.runner.RunWith;
-import org.junit.runners.BlockJUnit4ClassRunner;
+import java.io.IOException;
+
 import org.testng.Assert;
 import org.testng.annotations.Test;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.JsonNode;
+import com.slv.pojos.SlvJsonComparator;
 import com.slv.slv_api.core.AbstractTest;
+import com.slv.slv_api.exceptions.SLVTestsException;
+import com.slv.slv_api.services.JsonDiffResult;
 
 public class UserProfileTest extends AbstractTest {
 
@@ -22,9 +26,14 @@ public class UserProfileTest extends AbstractTest {
 	
 	@Test
 	public void getGeoZoneProfils() {
+		// INIT
 		JsonNode parameters = getInputs().get(UserProfileMethods.GET_GEOZONE_PROFILS.getUrl());
 		JsonNode awaitedResponse = getOutputs().get(UserProfileMethods.GET_GEOZONE_PROFILS.getUrl());
-		System.out.println(getRestService().get(UserProfileMethods.GET_GEOZONE_PROFILS.getUrl(), convert(parameters)));
+		
+		// CALL
+		String realResponse = getRestService().get(UserProfileMethods.GET_GEOZONE_PROFILS.getUrl(), convert(parameters));
+		
+		// VERIFY
 		Assert.assertTrue(true);
 	}
 
@@ -50,6 +59,21 @@ public class UserProfileTest extends AbstractTest {
 		JsonNode awaitedResponse = getOutputs().get(UserProfileMethods.GET_PROFIL_PROPERTY_DESCRIPTORS.getUrl());
 		System.out.println(getRestService().get(UserProfileMethods.GET_PROFIL_PROPERTY_DESCRIPTORS.getUrl(), convert(parameters)));
 		Assert.assertTrue(true);
+	}
+	
+	public static void main(String... args) throws JsonProcessingException, IOException, SLVTestsException {
+		UserProfileTest runner = new UserProfileTest();
+
+		runner.beforeTest("http://5.196.91.118:8080/celad/api/", "celad", "Celad20!6");
+		JsonNode parameters = runner.getInputs().get(UserProfileMethods.UPDATE_PROFIL.getUrl());
+		JsonNode awaitedResponse = runner.getOutputs().get(UserProfileMethods.UPDATE_PROFIL.getUrl());
+		String realResponse = runner.getRestService().get(UserProfileMethods.UPDATE_PROFIL.getUrl(), runner.convert(parameters));
+		
+		SlvJsonComparator comparator = new SlvJsonComparator();
+		JsonDiffResult result = comparator.compare(realResponse, awaitedResponse.toString());
+		
+		System.out.println(result.isEquals());
+		System.out.println(result.getErrorMessage());
 	}
 
 	@Override
