@@ -9,7 +9,7 @@ public enum UserProfileMethods {
 
 	GET_GEOZONE_PROFILS("userprofile/getGeoZoneProfils"),
 	CREATE_PROFIL("userprofile/createProfil"),
-	UPDATE_PROFIL("userprofile/updateProfil"),
+	UPDATE_PROFIL("userprofile/updateProfilProperties"),
 	DELETE_PROFIL("userprofile/deleteProfil"),
 	GET_CURRENT_PROFIL("userprofile/getCurrentProfil"),
 	GET_PROFIL_PROPERTIES("asset/getProfilProperties"),

@@ -9,7 +9,7 @@
 		"geoZoneId": 1,
 	  	"ser": "json"
 	},
-	"userprofile/updateProfil" : {
+	"userprofile/updateProfilProperties" : {
 		"profilName": "createProfil_profilNameTest",
 	  	"ser": "json",
 	  	"property.locale" : "fr_FR",
@@ -28,6 +28,6 @@
 	  	"ser": "json"
 	},
     "userprofile/getProfilPropertyDescriptors" : {
-    	"ser": "json"
+    	"ser": ""
     }
 }

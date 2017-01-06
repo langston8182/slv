@@ -2,6 +2,7 @@ package com.slv.slv_api.core;
 
 import java.io.File;
 import java.io.IOException;
+import java.net.URL;
 import java.util.Map;
 
 import org.testng.annotations.BeforeTest;
@@ -10,6 +11,7 @@ import org.testng.annotations.Parameters;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.slv.slv_api.common.MessageHelper;
 import com.slv.slv_api.exceptions.ExceptionCode;
 import com.slv.slv_api.exceptions.SLVTestsException;
 import com.slv.slv_api.services.RestService;
@@ -57,12 +59,16 @@ public abstract class AbstractTest {
 	protected Map<String, JsonNode> extractJsonStreams(String inputFile) throws SLVTestsException {
 		ObjectMapper mapper = new ObjectMapper();
 		try {
-			return mapper.readValue(new File(this.getClass().getClassLoader().getResource(inputFile).getPath()),
+			URL fileURL = this.getClass().getClassLoader().getResource(inputFile);
+			if(fileURL == null) {
+				throw new SLVTestsException(ExceptionCode.USER_PROFILE.toString(), MessageHelper.getMessage("core.abstract.test.json.files.load.error"));
+			}
+			return mapper.readValue(new File(fileURL.getPath()),
 					new TypeReference<Map<String, JsonNode>>() {
 					});
 		} catch (IOException e) {
 			// TODO - messages in properties file
-			throw new SLVTestsException(ExceptionCode.USER_PROFILE.toString(), "Cannot init input and ouput json files",
+			throw new SLVTestsException(ExceptionCode.USER_PROFILE.toString(), MessageHelper.getMessage("core.abstract.test.json.files.load.error"),
 					e);
 		}
 	}
