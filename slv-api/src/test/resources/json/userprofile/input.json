@@ -3,5 +3,31 @@
 		"geoZoneId": 1,
 	  	"recurse": "true",
 	  	"ser": "json"
-	}
+	},
+	"userprofile/createProfil" : {
+		"profilName": "createProfil_profilNameTest",
+		"geoZoneId": 1,
+	  	"ser": "json"
+	},
+	"userprofile/updateProfil" : {
+		"profilName": "createProfil_profilNameTest",
+	  	"ser": "json",
+	  	"property.locale" : "fr_FR",
+	  	"property.skin" : "miami",
+	  	"property.geoZoneRootId" : "1",
+	  	"property.blockedActions" : "SLVDimmingAPI!setDimmingLevels"
+	},
+	"userprofile/deleteProfil" : {
+		"profilName": "createProfil_profilNameTest",
+	  	"ser": "json"
+	},
+	"userprofile/getCurrentProfil" : {
+	  	"ser": "json"
+	},
+	"asset/getProfilProperties" : {
+	  	"ser": "json"
+	},
+    "userprofile/getProfilPropertyDescriptors" : {
+    	"ser": "json"
+    }
 }
