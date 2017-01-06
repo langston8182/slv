@@ -1,30 +1,14 @@
 package com.slv.pojos;
 
 public class Add extends Operation {
-	
-	private String value ;
-	
-	public Add(String op,String path,String value){
-		super.Op=op;
-		super.Path = path;
-		this.value = value;
+	String path;
+
+	public Add(String path) {
+		this.path = path;
 	}
 
-	public String getValue() {
-		return value;
+	public String getPath() {
+		return path;
 	}
-
-	public void setValue(String value) {
-		this.value = value;
-	}
-	
-
-
-	
-	
-	
-	
-	
-	
 
 }
