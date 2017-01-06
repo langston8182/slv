@@ -20,13 +20,13 @@ public class TestRest {
 	
 	@Test(groups = {"user"})
 	public void testRetrieveCurrentProfil() throws Exception {
-		Reporter.log(restService.get(Methods.RETRIEVE_CURRENT_PROFILE));
+		Reporter.log(restService.get(Methods.RETRIEVE_CURRENT_PROFILE.toString()));
 		Assert.assertTrue(true);
 	}
 	
 	@Test(groups = {"user"})
 	public void testRetrieveCurrentUser() throws Exception {
-		Reporter.log(restService.get(Methods.RETRIEVE_CURRENT_USER));
+		Reporter.log(restService.get(Methods.RETRIEVE_CURRENT_USER.toString()));
 		Assert.assertTrue(true);
 	}
 

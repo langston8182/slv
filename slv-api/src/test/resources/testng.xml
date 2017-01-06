@@ -9,6 +9,7 @@
 		<groups>
 			<define name="include-group">
 				<include name="user"></include>
+				<include name="userProfile"></include>
 			</define>
 			<run>
 				<include name="include-group"></include>
@@ -16,6 +17,7 @@
 		</groups>
 		<classes>
 			<class name="com.slv.slv_api.TestRest" />
+			<class name="com.slv.slv_api.userprofile.UserProfileTest" />
 		</classes>
 	</test>
 

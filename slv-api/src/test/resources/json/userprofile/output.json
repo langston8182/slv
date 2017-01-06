@@ -1,0 +1,32 @@
+{
+	"userprofile/getGeoZoneProfils": [
+		{
+			"name": "user",
+			"properties": {
+				"key": "img.toprightbanner",
+				"value": "/resources/img/topbanner_right.gif"
+			}
+		},
+		{
+			"name": "admin",
+			"properties": {
+				"key": "img.toprightbanner",
+				"value": "/resources/img/topbanner_right.gif"
+			}
+		},
+		{
+			"name": "root",
+			"properties": {
+				"key": "img.toprightbanner",
+				"value": "/resources/img/topbanner_right.gif"
+			}
+		},
+		{
+			"name": "Celad",
+			"properties": {
+				"key": "img.toprightbanner",
+				"value": "/resources/img/topbanner_right.gif"
+			}
+		}
+	]
+}

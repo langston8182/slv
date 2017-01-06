@@ -37,6 +37,7 @@
 		<testng.version>6.8.8</testng.version>
 		<jsonassert.version>1.4.0</jsonassert.version>
 		<zjsonpatch.version>0.2.4</zjsonpatch.version>
+		<common.io.version>2.5</common.io.version>
 		<junit.version>4.12</junit.version>
 		<maven.compiler.plugin.version>3.6.0</maven.compiler.plugin.version>
 		<maven.surefire.plugin.version>2.14.1</maven.surefire.plugin.version>
@@ -58,16 +59,16 @@
 			<artifactId>testng</artifactId>
 			<version>${testng.version}</version>
 		</dependency>
-		<dependency>
-			<groupId>org.skyscreamer</groupId>
-			<artifactId>jsonassert</artifactId>
-			<version>${jsonassert.version}</version>
-		</dependency>
 		<!-- Comparaison de flux JSON (diff) -->
 		<dependency>
 			<groupId>com.flipkart.zjsonpatch</groupId>
 			<artifactId>zjsonpatch</artifactId>
 			<version>${zjsonpatch.version}</version>
+		</dependency>
+		<dependency>
+		    <groupId>commons-io</groupId>
+		    <artifactId>commons-io</artifactId>
+		    <version>${common.io.version}</version>
 		</dependency>
 		<dependency>
 			<groupId>junit</groupId>
