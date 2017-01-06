@@ -1,7 +1,7 @@
 package com.slv.slv_api;
 
 /**
- * Enumerate all the methods to be testes
+ * Enumerate all the methods to be tested
  * 
  * @author cmarchive
  */
