@@ -8,7 +8,7 @@ import org.testng.annotations.Test;
 
 import com.slv.slv_api.services.RestService;
 
-public class TestRest {
+public class RestTest {
 
 	private RestService restService;
 	

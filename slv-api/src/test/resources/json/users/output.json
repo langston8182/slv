@@ -81,5 +81,16 @@
 		"value": null
 	},
 	"userprofile/changePassword": {
+	},
+	"publicconfig/sendResetPasswordRequestByMail": {
+	},
+	"userprofile/checkPassword": {
+		"errorCode": "0",
+		"errorCodeLabel": null,
+		"message": null,
+		"status": "OK",
+		"statusError": false,
+		"statusOk": true,
+		"value": true
 	}
 }
