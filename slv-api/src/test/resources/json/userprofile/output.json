@@ -1,32 +1,62 @@
 {
 	"userprofile/getGeoZoneProfils": [
 		{
-			"name": "user",
+			"name": null,
 			"properties": {
-				"key": "img.toprightbanner",
-				"value": "/resources/img/topbanner_right.gif"
-			}
-		},
-		{
-			"name": "admin",
-			"properties": {
-				"key": "img.toprightbanner",
-				"value": "/resources/img/topbanner_right.gif"
-			}
-		},
-		{
-			"name": "root",
-			"properties": {
-				"key": "img.toprightbanner",
-				"value": "/resources/img/topbanner_right.gif"
-			}
-		},
-		{
-			"name": "Celad",
-			"properties": {
-				"key": "img.toprightbanner",
-				"value": "/resources/img/topbanner_right.gif"
+				"key": null,
+				"value": null
 			}
 		}
-	]
+	],
+	"userprofile/createProfil" : {
+	   "name" : null,
+	   "properties" : [
+	        {
+	            "key" : null,
+	            "value" : null
+	    	}
+		]
+	},
+	"userprofile/updateProfil" : "OK",
+	"userprofile/deleteProfil" : {
+	   "errorCode" : "0",
+	   "errorCodeLabel" : null,
+	   "message" : null,
+	   "status" : "OK",
+	   "statusError" : false,
+	   "statusOk" : true,
+	   "value" : null
+	},
+	"userprofile/getCurrentProfil" : {
+		"name" : null,
+		"properties" : [
+			{
+	        	"key" : null,
+	        	"value" : null
+	        }
+	    ]
+	},
+	"asset/getProfilProperties" : [
+		{
+        	"key" : null,
+        	"value" : null
+        }
+    ],
+    "userprofile/getProfilPropertyDescriptors" : [
+		{
+			"dataFormat" : null,
+      		"enumValues" : [
+            	{
+               		"label" : null,
+               		"properties" : null,
+               		"value" : null
+            	}
+        	],
+		  	"format" : null,
+		  	"label" : null,
+		  	"labelKey" : null,
+		  	"name" : null,
+		  	"type" : null
+		}
+	]  
 }

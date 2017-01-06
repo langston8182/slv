@@ -46,7 +46,6 @@ public class RestService {
 	}
 	
 	public String get(String methoUrl, Map<String, Object> params) {
-		System.out.println(params);
 		Client client = Client.create();
 		client.addFilter(new HTTPBasicAuthFilter(login, password));
 

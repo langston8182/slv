@@ -2,12 +2,12 @@ package com.slv.slv_api.userprofile;
 
 import org.junit.runner.RunWith;
 import org.junit.runners.BlockJUnit4ClassRunner;
+import org.testng.Assert;
 import org.testng.annotations.Test;
 
 import com.fasterxml.jackson.databind.JsonNode;
 import com.slv.slv_api.core.AbstractTest;
 
-@RunWith(BlockJUnit4ClassRunner.class)
 public class UserProfileTest extends AbstractTest {
 
 	/**
@@ -25,6 +25,31 @@ public class UserProfileTest extends AbstractTest {
 		JsonNode parameters = getInputs().get(UserProfileMethods.GET_GEOZONE_PROFILS.getUrl());
 		JsonNode awaitedResponse = getOutputs().get(UserProfileMethods.GET_GEOZONE_PROFILS.getUrl());
 		System.out.println(getRestService().get(UserProfileMethods.GET_GEOZONE_PROFILS.getUrl(), convert(parameters)));
+		Assert.assertTrue(true);
+	}
+
+	@Test
+	public void getCurrentProfil() {
+		JsonNode parameters = getInputs().get(UserProfileMethods.GET_CURRENT_PROFIL.getUrl());
+		JsonNode awaitedResponse = getOutputs().get(UserProfileMethods.GET_CURRENT_PROFIL.getUrl());
+		System.out.println(getRestService().get(UserProfileMethods.GET_CURRENT_PROFIL.getUrl(), convert(parameters)));
+		Assert.assertTrue(true);
+	}
+
+	@Test
+	public void getProfilProperties() {
+		JsonNode parameters = getInputs().get(UserProfileMethods.GET_PROFIL_PROPERTIES.getUrl());
+		JsonNode awaitedResponse = getOutputs().get(UserProfileMethods.GET_PROFIL_PROPERTIES.getUrl());
+		System.out.println(getRestService().get(UserProfileMethods.GET_PROFIL_PROPERTIES.getUrl(), convert(parameters)));
+		Assert.assertTrue(true);
+	}
+
+	@Test
+	public void getProfilPropertyDescriptors() {
+		JsonNode parameters = getInputs().get(UserProfileMethods.GET_PROFIL_PROPERTY_DESCRIPTORS.getUrl());
+		JsonNode awaitedResponse = getOutputs().get(UserProfileMethods.GET_PROFIL_PROPERTY_DESCRIPTORS.getUrl());
+		System.out.println(getRestService().get(UserProfileMethods.GET_PROFIL_PROPERTY_DESCRIPTORS.getUrl(), convert(parameters)));
+		Assert.assertTrue(true);
 	}
 
 	@Override
