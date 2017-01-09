@@ -9,7 +9,9 @@ import org.apache.log4j.Logger;
 import org.testng.annotations.BeforeTest;
 import org.testng.annotations.Parameters;
 
+import com.fasterxml.jackson.core.JsonParseException;
 import com.fasterxml.jackson.core.type.TypeReference;
+import com.fasterxml.jackson.databind.JsonMappingException;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.slv.slv_api.common.MessageHelper;
@@ -66,14 +68,14 @@ public abstract class AbstractTest {
 		try {
 			URL fileURL = this.getClass().getClassLoader().getResource(inputFile);
 			if(fileURL == null) {
-				logger.error(MessageHelper.getMessage("core.abstract.test.json.files.load.error"));
+				logger.error(MessageHelper.getMessage("core.abstract.test.json.files.load.not.exists"));
 				throw new SLVTestsException(ExceptionCode.READ_JSON_FILES.toString(), MessageHelper.getMessage("core.abstract.test.json.files.load.error"));
 			}
 			return mapper.readValue(new File(fileURL.getPath()),
 					new TypeReference<Map<String, JsonNode>>() {
 					});
 		} catch (IOException e) {
-			logger.error(MessageHelper.getMessage("core.abstract.test.json.files.load.error"));
+			logger.error(MessageHelper.getMessage("core.abstract.test.json.files.load.error"), e);
 			throw new SLVTestsException(ExceptionCode.READ_JSON_FILES.toString(), MessageHelper.getMessage("core.abstract.test.json.files.load.error"),
 					e);
 		}
@@ -127,7 +129,7 @@ public abstract class AbstractTest {
 			jsonDiffResult.setResponse(realResponse);
 			return jsonDiffResult;
 		} catch(IOException e) {
-			logger.error(MessageHelper.getMessage("core.abstract.test.diff.error"));
+			logger.error(MessageHelper.getMessage("core.abstract.test.diff.error"), e);
 			throw new SLVTestsException(ExceptionCode.DIFF_METHOD_CALL.toString(), MessageHelper.getMessage("core.abstract.test.diff.error"), e);
 		}
 	}
@@ -163,6 +165,25 @@ public abstract class AbstractTest {
 		ObjectMapper mapper = new ObjectMapper();
 		return mapper.convertValue(value, new TypeReference<Map<String, Object>>() {
 		});
+	}
+
+	/**
+	 * Convert a {@link String} to {@link Map}
+	 * 
+	 * @param value
+	 *            the Json formatted String
+	 * @return the {@link Map}
+	 * @throws SLVTestsException 
+	 */
+	protected Map<String, Object> convert(String value) throws SLVTestsException {
+		ObjectMapper mapper = new ObjectMapper();
+		try {
+			return mapper.readValue(value, new TypeReference<Map<String, Object>>() {
+			});
+		} catch (IOException e) {
+			logger.error(MessageHelper.getMessage("core.abstract.test.convert.string.to.jsonnode", value), e);
+			throw new SLVTestsException(ExceptionCode.DIFF_METHOD_CALL.toString(), MessageHelper.getMessage("core.abstract.test.diff.error"), e);
+		}
 	}
 
 	public Map<String, JsonNode> getInputs() {
