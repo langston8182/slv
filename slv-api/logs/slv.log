@@ -1,1 +1,10 @@
 2017-01-09 14:56:03 INFO  AbstractTest:90 - Exécution du test userprofile/getCurrentUser
+2017-01-09 15:03:18 INFO  AbstractTest:90 - Exécution du test userprofile/getCurrentUser
+2017-01-09 15:26:27 INFO  AbstractTest:90 - Exécution du test userprofile/deleteUser
+2017-01-09 15:27:04 INFO  AbstractTest:90 - Exécution du test userprofile/createUser
+2017-01-09 15:28:37 INFO  AbstractTest:90 - Exécution du test userprofile/deleteUser
+2017-01-09 15:28:43 INFO  AbstractTest:90 - Exécution du test userprofile/createUser
+2017-01-09 15:34:10 INFO  AbstractTest:90 - Exécution du test userprofile/deleteUser
+2017-01-09 15:34:16 INFO  AbstractTest:90 - Exécution du test userprofile/deleteUser
+2017-01-09 15:34:25 INFO  AbstractTest:90 - Exécution du test userprofile/createUser
+2017-01-09 15:41:13 INFO  AbstractTest:90 - Exécution du test userprofile/createUser

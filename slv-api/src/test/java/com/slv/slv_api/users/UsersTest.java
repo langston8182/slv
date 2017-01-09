@@ -119,7 +119,7 @@ public class UsersTest extends AbstractTest {
 		UsersTest test = new UsersTest();
 		try {
 			test.beforeTest("http://5.196.91.118:8080/celad/api/", "celad", "Celad20!6");
-			test.retrieveCurrentUser();
+			test.createUser();
 		} catch (SLVTestsException e) {
 			e.printStackTrace();
 		}

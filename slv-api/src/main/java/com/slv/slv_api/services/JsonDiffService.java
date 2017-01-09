@@ -27,7 +27,9 @@ public class JsonDiffService  {
 	private static final String ADD = "add";
 	private static final String REMOVE = "remove";
 	private static final String ADD_MESSAGE = "The key %s has been added.\n";
-	private static final  String REMOVE_MESSAGE = "The key %s has been removed.\n";
+	private static final String REMOVE_MESSAGE = "The key %s has been removed.\n";
+	
+	private static final String EMPTY_TAB_SUFFIX = "/0";
 
 	/**
 	 * Instance of {@link JsonDiffService}
@@ -79,7 +81,10 @@ public class JsonDiffService  {
 				adds.add(new Add(path));
 				break;
 			case REMOVE:
-				removes.add(new Remove(path));
+				// Don't remove empty tabs
+				if (!path.endsWith(EMPTY_TAB_SUFFIX)) {
+					removes.add(new Remove(path));
+				}
 				break;
 			}
 		}

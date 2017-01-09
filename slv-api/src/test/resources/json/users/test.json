@@ -2,37 +2,21 @@
 	"admin": true,
 	"contact": {
 		"address": null,
-		"id": 1,
-		"mail": "cyril.marchive@gmail.com",
+		"id": null,
+		"mail": null,
 		"name": null,
 		"pager": null,
 		"phone": null
 	},
-	"firstName": "",
-	"lastName": "",
-	"login": "celad",
-	"password": "",
-	"profilName": "Celad",
+	"firstName": null,
+	"lastName": null,
+	"login": null,
+	"password": null,
+	"profilName": null,
 	"properties": [
 		{
-			"key": "feedNewsAccount",
-			"value": ""
-		},
-		{
-			"key": "equipment.configuration",
-			"value": "{\"treeView\":{\"opened\":true}}"
-		},
-		{
-			"key": "desktop.configuration",
-			"value": "{\"content\":[{\"type\":\"app\",\"id\":\"User\"},{\"type\":\"app\",\"id\":\"Equipment\",\"settings\":{\"deviceTypes\":\"audioPlayer,building,cameraip,occupancySensor,controllerdevice,electricalCounter,input,envSensor,cityObject,networkComponent,transportSignage,parkingPlace,output,weatherStation,streetlight,switch,tank,vehicleChargingStation,vehicle,wasteContainer\"}},{\"type\":\"app\",\"id\":\"Presweep\"},{\"type\":\"app\",\"id\":\"Installation\"},{\"type\":\"app\",\"id\":\"SchedulerManager\"},{\"type\":\"app\",\"id\":\"CustomReport\"},{\"type\":\"app\",\"id\":\"ReportManager\"},{\"type\":\"app\",\"id\":\"AlarmManager\"},{\"type\":\"app\",\"id\":\"RealTime\"},{\"type\":\"app\",\"id\":\"RealTimeBatch\"},{\"type\":\"app\",\"id\":\"DataHistory\"},{\"type\":\"app\",\"id\":\"ControlCenter\",\"settings\":{\"refreshRate\":10000,\"simultaneousGeozones\":5,\"failureAlertSound\":false,\"commands\":{\"controllerConnection\":true,\"controllerClock\":true,\"criticalFailures\":true,\"warningFailures\":true}}},{\"type\":\"app\",\"id\":\"Failure\"},{\"type\":\"app\",\"id\":\"FailureTracking\"},{\"type\":\"app\",\"id\":\"Energy\"},{\"type\":\"app\",\"id\":\"EnergySaving\"},{\"type\":\"app\",\"id\":\"LampLifetime\"},{\"type\":\"app\",\"id\":\"Alarms\"},{\"type\":\"app\",\"id\":\"Dashboard\"},{\"type\":\"widget\",\"id\":\"Weather\",\"settings\":{\"address\":\"paris\",\"woeid\":615702,\"unit\":\"c\"}}],\"feedNewsAccount\":{\"twitterAppId\":\"612578219561250816\",\"twitterScreenName\":\"StreetlightV\"}}"
-		},
-		{
-			"key": "installation.configuration",
-			"value": "{\"treeView\":{\"opened\":true}}"
-		},
-		{
-			"key": "presweep.configuration",
-			"value": "{\"treeView\":{\"opened\":true}}"
+			"key": null,
+			"value": null
 		}
 	]
 }
