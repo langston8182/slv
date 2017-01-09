@@ -8,6 +8,7 @@
 	<test name="rest">
 		<classes>
 			<class name="com.slv.slv_api.userprofile.UserProfileTest" />
+			<class name="com.slv.slv_api.providers.ProvidersTest" />
 		</classes>
 	</test>
 

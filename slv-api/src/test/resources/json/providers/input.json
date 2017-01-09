@@ -1,0 +1,20 @@
+{
+	"asset/getAllProviders" : {
+	  	"ser": "json"
+	},
+	"assetmanagement/createProvider" : {
+	  "name": "My new provider 10", 
+	  "pollutionRate": 0.42,
+	  "ser": "json"
+	},
+	"assetmanagement/updateProvider" : {
+	  "providerId": 3826,
+	  "newName": "My new provider",
+	  "pollutionRate": 0.11,
+	  "ser": "json"
+	},
+	"assetmanagement/deleteProvider" : {
+	  "id": 3826,
+	  "ser": "json"
+	}
+}

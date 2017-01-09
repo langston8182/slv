@@ -91,8 +91,35 @@ public abstract class AbstractTest {
 		
 		// INIT
 		JsonNode parameters = getInputs().get(url);
+		
+		return callAndCompare(url, parameters);
+	}
+	
+	/**
+	 * get result of the test
+	 * 
+	 * @param method
+	 *            The method to apply
+	 * @throws SLVTestsException 
+	 */
+	protected JsonDiffResult retrieveResult(String url, JsonNode parameters) throws SLVTestsException {
+		logger.info("Exécution du test " + url);				
+		return callAndCompare(url, parameters);
+	}
+	
+	/**
+	 * Call a service and compare its result to a response example
+	 * 
+	 * @param url
+	 * @param parameters
+	 * 
+	 * @return {@link JsonDiffResult}
+	 * 
+	 * @throws SLVTestsException 
+	 */
+	protected JsonDiffResult callAndCompare(String url, JsonNode parameters) throws SLVTestsException {
+		// INIT
 		JsonNode expectedResponse = getOutputs().get(url);
-
 		// CALL
 		String realResponse = call(url, parameters);
 		try {

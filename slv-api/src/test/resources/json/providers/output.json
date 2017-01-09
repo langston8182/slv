@@ -1,0 +1,31 @@
+{
+	"assetmanagement/createProvider" : {
+		  "id" : null,
+		  "name" : null,
+		  "pollution" : null,
+		  "type" : null
+	},
+	"asset/getAllProviders" : [
+		 {
+			  "id" : null,
+			  "name" : null,
+			  "pollution" : null,
+			  "type" : null
+		 }
+	],
+	"assetmanagement/updateProvider" : {
+		 "id" : null,
+		 "name" : null,
+		 "pollution" : null,
+		 "type" : null
+	},
+	"assetmanagement/deleteProvider" : {
+		 "errorCode" : null,
+		 "errorCodeLabel" : null,
+		 "message" : null,
+		 "status" : null,
+		 "statusError" : null,
+		 "statusOk" : null,
+		 "value" : null
+	}
+}
