@@ -1,0 +1,56 @@
+{
+	"userprofile/createUser": {
+		"ser": "json",
+		"login": "cmarchive",
+		"password": "Abcd123<",
+		"firstName": "Cyril",
+		"lastName": "Marchive",
+		"profilName": "celad",
+		"email": "cyril.marchive@celad.com",
+		"address": "48 route de Lavaur 31130 Balma",
+		"pager": "0613131313",
+		"phone": "0513131313"
+	},
+	"userprofile/updateUser": {
+		"ser": "json",
+		"login": "cmarchive",
+		"firstName": "Cyril update",
+		"lastName": "Marchive update",
+		"profilName": "celad",
+		"email": "cyrilupdate.marchiveupdate@celad.com",
+		"adress": "48 route de Lavaur 31130 update",
+		"pager": "0679797979",
+		"phone": "0579797979"
+	},
+	"userprofile/updateUserProperty": {
+		"ser": "json"
+	},
+	"userprofile/getCurrentUser": {
+		"ser": "json"
+	},
+	"userprofile/getAllUsers": {
+		"ser": "json"
+	},
+	"userprofile/getGeoZoneUsers": {
+		"ser": "json",
+		"geoZoneId": 1,
+		"recurse": "true"
+	},
+	"userprofile/deleteUser": {
+		"ser": "json",
+		"login": "cmarchive"
+	},
+	"userprofile/changePassword": {
+		"ser": "json",
+		"previousPassword": "Abcd123<",
+		"newPassword": "Abcd456<"
+	},
+	"publicconfig/sendResetPasswordRequestByMail": {
+		"ser": "json",
+		"login": "cmarchive"
+	},
+	"userprofile/checkPassword": {
+		"ser": "json",
+		"password": "Abcd456<"
+	}
+}
