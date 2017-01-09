@@ -5,12 +5,9 @@ import java.io.IOException;
 import org.testng.Assert;
 import org.testng.annotations.Test;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.JsonNode;
 import com.slv.slv_api.core.AbstractTest;
 import com.slv.slv_api.exceptions.SLVTestsException;
 import com.slv.slv_api.services.JsonDiffResult;
-import com.slv.slv_api.services.JsonDiffService;
 
 /**
  * @author cmarchive
@@ -30,7 +27,7 @@ public class UsersTest extends AbstractTest {
 	private final static String OUTPUT_FILE = "json/users/output.json";
 
 	@Test
-	public void createUser() throws JsonProcessingException, IOException {
+	public void createUser() throws SLVTestsException {
 		JsonDiffResult result = retrieveResult(UsersMethods.CREATE_USER.getUrl());
 
 		// VERIFY
@@ -38,7 +35,7 @@ public class UsersTest extends AbstractTest {
 	}
 
 	@Test
-	public void retrieveCurrentUser() throws JsonProcessingException, IOException {
+	public void retrieveCurrentUser() throws SLVTestsException {
 		JsonDiffResult result = retrieveResult(UsersMethods.GET_CURRENT_USER.getUrl());
 
 		// VERIFY
@@ -62,8 +59,6 @@ public class UsersTest extends AbstractTest {
 			test.retrieveCurrentUser();
 		} catch (SLVTestsException e) {
 			e.printStackTrace();
-		} catch (IOException ex) {
-			ex.printStackTrace();
 		}
 	}
 
