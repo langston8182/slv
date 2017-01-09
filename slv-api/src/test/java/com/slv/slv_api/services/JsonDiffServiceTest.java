@@ -1,15 +1,15 @@
 package com.slv.slv_api.services;
 
-import java.io.IOException;
 import java.util.Iterator;
 
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.InjectMocks;
-import org.mockito.runners.MockitoJUnitRunner;
+import org.powermock.core.classloader.annotations.PrepareForTest;
+import org.powermock.modules.junit4.PowerMockRunner;
+import org.powermock.reflect.Whitebox;
 import org.testng.Assert;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
@@ -18,14 +18,15 @@ import com.fasterxml.jackson.databind.ObjectMapper;
  * @author atran
  *
  */
-@RunWith(MockitoJUnitRunner.class)
+@RunWith(PowerMockRunner.class)
+@PrepareForTest(JsonDiffService.class)
 public class JsonDiffServiceTest {
 	
 	@InjectMocks
 	private JsonDiffService jsonDiffService;
 
 	@Test
-	public void prepareForCompare() throws JsonProcessingException, IOException {
+	public void prepareForCompare() throws Exception {
 		// INIT
 		ObjectMapper jacksonMapper = new ObjectMapper();
 		JsonNode json = jacksonMapper.readTree("{ "
@@ -37,8 +38,9 @@ public class JsonDiffServiceTest {
 				+ "		{\"subKey4\": \"subValue4\"}"
 				+ "	]"
 				+ "}");
+		
 		// CALL
-		JsonNode preparedJson = jsonDiffService.prepareForCompare(json);
+		JsonNode preparedJson = Whitebox.invokeMethod(jsonDiffService, "prepareForCompare", json);
 		
 		// VERIFY
 		Assert.assertNotNull(preparedJson);

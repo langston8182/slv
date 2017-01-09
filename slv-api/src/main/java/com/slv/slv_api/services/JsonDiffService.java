@@ -103,7 +103,7 @@ public class JsonDiffService  {
 	 * @param value the {@link JsonNode} to prepare
 	 * @return the {@link JsonNode} modified if needed
 	 */
-	public JsonNode prepareForCompare(JsonNode value) {
+	private JsonNode prepareForCompare(JsonNode value) {
 		return value;
 	}
 
