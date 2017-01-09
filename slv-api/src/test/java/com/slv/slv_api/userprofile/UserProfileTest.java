@@ -1,6 +1,7 @@
 package com.slv.slv_api.userprofile;
 
 import java.io.IOException;
+import java.util.Iterator;
 import java.util.Map;
 
 import org.apache.log4j.Logger;
@@ -101,7 +102,26 @@ public class UserProfileTest extends AbstractTest {
 		Assert.assertNotNull(realProfilName);
 		Assert.assertEquals(realProfilName, expectedProfilName);
 
-		// TODO - Vérifier existence avec appel getGeoZoneProfil?
+		// Verify existence by calling "getGeoZoneProfils"
+		response = call(UserProfileMethods.GET_GEOZONE_PROFILS.getUrl(), getInputs().get(UserProfileMethods.GET_GEOZONE_PROFILS.getUrl()));
+		Assert.assertNotNull(response);
+		
+		JsonNode jsonNode = convertToJsonNode(response);
+		Assert.assertTrue(jsonNode.isArray());
+		
+		boolean profilFound = false;
+		for (Iterator<JsonNode> iterator = jsonNode.elements(); iterator.hasNext();) {
+			JsonNode node = (JsonNode) iterator.next();
+			
+			// Get the name and compare with expectedName
+			JsonNode profilName = node.get("name");
+			profilFound = expectedProfilName.equals(profilName.asText());
+			if(profilFound) {
+				break;
+			}
+		}
+		
+		Assert.assertTrue(profilFound);
 	}
 
 	/**
@@ -123,7 +143,49 @@ public class UserProfileTest extends AbstractTest {
 		// Response must be "\"OK\""
 		Assert.assertEquals(response, "\"OK\"");
 
-		// TODO - Mettre à jour plus de données et tester que ces données ont été MAJ
+		// Verify properties by calling "getGeoZoneProfils"
+		response = call(UserProfileMethods.GET_GEOZONE_PROFILS.getUrl(), getInputs().get(UserProfileMethods.GET_GEOZONE_PROFILS.getUrl()));
+		Assert.assertNotNull(response);
+		
+		JsonNode jsonNode = convertToJsonNode(response);
+		Assert.assertTrue(jsonNode.isArray());
+
+		// Get the profile properties
+		Map<String, Object> inputs = convert(getInputs().get(UserProfileMethods.UPDATE_PROFIL.getUrl()));
+		String expectedProfilName = (String)inputs.get("profilName");
+		JsonNode properties = null;
+		for (Iterator<JsonNode> iterator = jsonNode.elements(); iterator.hasNext();) {
+			JsonNode node = (JsonNode) iterator.next();
+			
+			// Get the name and compare with expectedName
+			JsonNode profilName = node.get("name");
+			if(expectedProfilName.equals(profilName.asText())) {
+				properties = node.get("properties");
+				break;
+			}
+		}
+		
+		Assert.assertNotNull(properties);
+		Assert.assertTrue(properties.isArray());
+		
+		// Verify that updated properties are equals to what have been sent to the service
+		boolean localeCheck = false;
+		boolean skinCheck = false;
+		boolean blockedActionChecked = false;
+		
+		for (Iterator<JsonNode> iterator = properties.iterator(); iterator.hasNext();) {
+			JsonNode property = (JsonNode) iterator.next();
+			
+			if("locale".equals(property.get("key").asText()) && inputs.get("property.locale").equals(property.get("value").asText())) {
+				localeCheck = true;
+			} else if("skin".equals(property.get("key").asText()) && inputs.get("property.skin").equals(property.get("value").asText())) {
+				skinCheck = true;
+			} else if("blockedActions".equals(property.get("key").asText()) && inputs.get("property.blockedActions").equals(property.get("value").asText())) {
+				blockedActionChecked = true;
+			}
+		}
+		
+		Assert.assertTrue(localeCheck && skinCheck && blockedActionChecked);
 	}
 
 	/**
@@ -152,22 +214,6 @@ public class UserProfileTest extends AbstractTest {
 		Assert.assertEquals(responseJsonNode.get("status"), "OK");
 	}
 	
-	public static void main(String... args) throws JsonProcessingException, IOException, SLVTestsException {
-		UserProfileTest runner = new UserProfileTest();
-
-		runner.beforeTest("http://5.196.91.118:8080/celad/api/", "celad", "Celad20!6");
-
-		// CALL
-		JsonDiffResult result = runner.retrieveResult(UserProfileMethods.UPDATE_PROFIL.getUrl());
-		System.out.println(result.isEquals());
-		System.out.println(result.getErrorMessage());
-		System.out.println(result.getResponse());
-
-		Map<String, Object> responseJsonNode = runner.convert(result.getResponse());
-		
-		System.out.println(responseJsonNode);
-	}
-
 	@Override
 	protected String getInputFile() {
 		return INPUT_FILE;
