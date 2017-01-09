@@ -8,13 +8,17 @@ import java.util.Map;
 import org.testng.annotations.BeforeTest;
 import org.testng.annotations.Parameters;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.slv.slv_api.common.MessageHelper;
 import com.slv.slv_api.exceptions.ExceptionCode;
 import com.slv.slv_api.exceptions.SLVTestsException;
+import com.slv.slv_api.services.JsonDiffResult;
+import com.slv.slv_api.services.JsonDiffService;
 import com.slv.slv_api.services.RestService;
+import com.slv.slv_api.users.UsersMethods;
 
 public abstract class AbstractTest {
 
@@ -71,6 +75,24 @@ public abstract class AbstractTest {
 			throw new SLVTestsException(ExceptionCode.USER_PROFILE.toString(), MessageHelper.getMessage("core.abstract.test.json.files.load.error"),
 					e);
 		}
+	}
+	
+	/**
+	 * get result of the test
+	 * 
+	 * @param method
+	 *            The method to apply
+	 */
+	protected JsonDiffResult retrieveResult(String url) throws JsonProcessingException, IOException {
+		// INIT
+		JsonNode parameters = getInputs().get(url);
+		JsonNode awaitedResponse = getOutputs().get(url);
+
+		// CALL
+		String realResponse = getRestService().get(url, convert(parameters));
+		JsonDiffResult result = JsonDiffService.getInstance().diff(realResponse, awaitedResponse.toString());
+		
+		return result;
 	}
 
 	/**

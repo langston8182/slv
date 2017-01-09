@@ -30,15 +30,16 @@ public class UsersTest extends AbstractTest {
 	private final static String OUTPUT_FILE = "json/users/output.json";
 
 	@Test
-	public void retrieveCurrentUser() throws JsonProcessingException, IOException {
-		// INIT
-		JsonNode parameters = getInputs().get(UsersMethods.GET_CURRENT_USER.getUrl());
-		JsonNode awaitedResponse = getOutputs().get(UsersMethods.GET_CURRENT_USER.getUrl());
+	public void createUser() throws JsonProcessingException, IOException {
+		JsonDiffResult result = retrieveResult(UsersMethods.CREATE_USER.getUrl());
 
-		// CALL
-		String realResponse = getRestService().get(UsersMethods.GET_CURRENT_USER.getUrl(),
-				convert(parameters));
-		JsonDiffResult result = JsonDiffService.getInstance().diff(realResponse, awaitedResponse.toString());
+		// VERIFY
+		Assert.assertTrue(result.isEquals(), result.getErrorMessage());
+	}
+
+	@Test
+	public void retrieveCurrentUser() throws JsonProcessingException, IOException {
+		JsonDiffResult result = retrieveResult(UsersMethods.GET_CURRENT_USER.getUrl());
 
 		// VERIFY
 		Assert.assertTrue(result.isEquals(), result.getErrorMessage());
@@ -65,5 +66,5 @@ public class UsersTest extends AbstractTest {
 			ex.printStackTrace();
 		}
 	}
-	
+
 }
