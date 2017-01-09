@@ -8,7 +8,6 @@ import java.util.List;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.databind.node.ObjectNode;
 import com.flipkart.zjsonpatch.JsonDiff;
 import com.slv.slv_api.entities.Add;
 import com.slv.slv_api.entities.Remove;
@@ -73,8 +72,10 @@ public class JsonDiffService  {
 				break;
 			case ADD:
 				adds.add(new Add(path));
+				break;
 			case REMOVE:
 				removes.add(new Remove(path));
+				break;
 			}
 
 		}
@@ -108,45 +109,30 @@ public class JsonDiffService  {
 	 */
 	public JsonNode prepareForCompare(JsonNode value) throws JsonProcessingException, IOException {
 		if(value != null) {
-			convertArrayToOneElement(value);
+			JsonNode result = convertArrayToOneElement(value);
+			return result;
 		}
+		
 		return value;
-/*
-		ObjectNode node = (ObjectNode) new ObjectMapper().readTree(value.toString());
-		
-		
-		
-		ObjectNode objectNode = (ObjectNode) value ;
-		
-		Iterator<JsonNode> opIterator = value.elements();*/
-	/*	while(opIterator.hasNext()){
-			
-			JsonNode opNode = opIterator.next();
-			if(opNode.isArray()){
-				ObjectNode node = (ObjectNode) new ObjectMapper().readTree(opNode.toString());
-				node.
-				
-			}
-		
-	//	System.out.println(opNode.toString());	
-		}*/
-//		System.out.println(value.toString());
+
 	}
-	
+
 	private JsonNode convertArrayToOneElement(JsonNode value){
 		Iterator<JsonNode> opIterator = value.elements();
 		while(opIterator.hasNext()){
 			JsonNode opNode = opIterator.next();
 			if(opNode.isArray()){
 				Iterator<JsonNode> it = opNode.elements();
-				it.next();
+				JsonNode node = it.next();
+				if(node.isObject()) convertArrayToOneElement(node);
 				while(it.hasNext()){
 					it.next();
 					it.remove();
 					
 				}
+				
 			} else if(opNode.isObject()) {
-				convertArrayToOneElement(opNode);
+				 convertArrayToOneElement(opNode);
 			}
 		}
 		return value;

@@ -14,6 +14,8 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.slv.slv_api.common.MessageHelper;
 import com.slv.slv_api.exceptions.ExceptionCode;
 import com.slv.slv_api.exceptions.SLVTestsException;
+import com.slv.slv_api.services.JsonDiffResult;
+import com.slv.slv_api.services.JsonDiffService;
 import com.slv.slv_api.services.RestService;
 
 public abstract class AbstractTest {
@@ -61,16 +63,56 @@ public abstract class AbstractTest {
 		try {
 			URL fileURL = this.getClass().getClassLoader().getResource(inputFile);
 			if(fileURL == null) {
-				throw new SLVTestsException(ExceptionCode.USER_PROFILE.toString(), MessageHelper.getMessage("core.abstract.test.json.files.load.error"));
+				throw new SLVTestsException(ExceptionCode.READ_JSON_FILES.toString(), MessageHelper.getMessage("core.abstract.test.json.files.load.error"));
 			}
 			return mapper.readValue(new File(fileURL.getPath()),
 					new TypeReference<Map<String, JsonNode>>() {
 					});
 		} catch (IOException e) {
-			// TODO - messages in properties file
-			throw new SLVTestsException(ExceptionCode.USER_PROFILE.toString(), MessageHelper.getMessage("core.abstract.test.json.files.load.error"),
+			throw new SLVTestsException(ExceptionCode.READ_JSON_FILES.toString(), MessageHelper.getMessage("core.abstract.test.json.files.load.error"),
 					e);
 		}
+	}
+	
+	/**
+	 * get result of the test
+	 * 
+	 * @param method
+	 *            The method to apply
+	 * @throws SLVTestsException 
+	 */
+	protected JsonDiffResult retrieveResult(String url) throws SLVTestsException {
+		// INIT
+		JsonNode parameters = getInputs().get(url);
+		JsonNode expectedResponse = getOutputs().get(url);
+
+		// CALL
+		String realResponse = call(url, parameters);
+		try {
+			return JsonDiffService.getInstance().diff(realResponse, expectedResponse.toString());
+		} catch(IOException e) {
+			throw new SLVTestsException(ExceptionCode.DIFF_METHOD_CALL.toString(), MessageHelper.getMessage("core.abstract.test.diff.error"), e);
+		}
+	}
+	
+	/**
+	 * Call a Rest Service by its HTTP URL with optional parameters
+	 * @param url the HTTP url to call
+	 * @param parameters the parameters to send (optionnal)
+	 * @return a {@link String} containing the response
+	 */
+	protected String call(String url, Map<String, Object> parameters) {
+		return getRestService().get(url, parameters);
+	}
+
+	/**
+	 * Call a Rest Service by its HTTP URL with optional parameters
+	 * @param url the HTTP url to call
+	 * @param parameters the parameters to send (optionnal)
+	 * @return a {@link String} containing the response
+	 */
+	protected String call(String url, JsonNode parameters) {
+		return call(url, convert(parameters));
 	}
 
 	/**
