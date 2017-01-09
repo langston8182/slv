@@ -5,6 +5,7 @@ import java.io.IOException;
 import java.net.URL;
 import java.util.Map;
 
+import org.apache.log4j.Logger;
 import org.testng.annotations.BeforeTest;
 import org.testng.annotations.Parameters;
 
@@ -20,6 +21,8 @@ import com.slv.slv_api.services.RestService;
 
 public abstract class AbstractTest {
 
+	private static final Logger logger = Logger.getLogger(AbstractTest.class);
+	
 	/**
 	 * Rest Client service
 	 */
@@ -63,12 +66,14 @@ public abstract class AbstractTest {
 		try {
 			URL fileURL = this.getClass().getClassLoader().getResource(inputFile);
 			if(fileURL == null) {
+				logger.error(MessageHelper.getMessage("core.abstract.test.json.files.load.error"));
 				throw new SLVTestsException(ExceptionCode.READ_JSON_FILES.toString(), MessageHelper.getMessage("core.abstract.test.json.files.load.error"));
 			}
 			return mapper.readValue(new File(fileURL.getPath()),
 					new TypeReference<Map<String, JsonNode>>() {
 					});
 		} catch (IOException e) {
+			logger.error(MessageHelper.getMessage("core.abstract.test.json.files.load.error"));
 			throw new SLVTestsException(ExceptionCode.READ_JSON_FILES.toString(), MessageHelper.getMessage("core.abstract.test.json.files.load.error"),
 					e);
 		}
@@ -82,6 +87,8 @@ public abstract class AbstractTest {
 	 * @throws SLVTestsException 
 	 */
 	protected JsonDiffResult retrieveResult(String url) throws SLVTestsException {
+		logger.info("Exécution du test " + url);
+		
 		// INIT
 		JsonNode parameters = getInputs().get(url);
 		JsonNode expectedResponse = getOutputs().get(url);
@@ -89,8 +96,11 @@ public abstract class AbstractTest {
 		// CALL
 		String realResponse = call(url, parameters);
 		try {
-			return JsonDiffService.getInstance().diff(realResponse, expectedResponse.toString());
+			JsonDiffResult jsonDiffResult = JsonDiffService.getInstance().diff(realResponse, expectedResponse.toString());
+			jsonDiffResult.setResponse(realResponse);
+			return jsonDiffResult;
 		} catch(IOException e) {
+			logger.error(MessageHelper.getMessage("core.abstract.test.diff.error"));
 			throw new SLVTestsException(ExceptionCode.DIFF_METHOD_CALL.toString(), MessageHelper.getMessage("core.abstract.test.diff.error"), e);
 		}
 	}

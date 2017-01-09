@@ -1,5 +1,6 @@
 package com.slv.slv_api.users;
 
+import org.apache.log4j.Logger;
 import org.testng.Assert;
 import org.testng.annotations.Test;
 
