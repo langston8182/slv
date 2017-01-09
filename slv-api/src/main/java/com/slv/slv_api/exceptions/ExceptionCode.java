@@ -6,5 +6,6 @@ package com.slv.slv_api.exceptions;
  *
  */
 public enum ExceptionCode {
-	USER_PROFILE;
+	READ_JSON_FILES,
+	DIFF_METHOD_CALL;
 }

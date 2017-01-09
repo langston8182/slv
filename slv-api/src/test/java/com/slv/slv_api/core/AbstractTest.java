@@ -8,7 +8,6 @@ import java.util.Map;
 import org.testng.annotations.BeforeTest;
 import org.testng.annotations.Parameters;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -18,7 +17,6 @@ import com.slv.slv_api.exceptions.SLVTestsException;
 import com.slv.slv_api.services.JsonDiffResult;
 import com.slv.slv_api.services.JsonDiffService;
 import com.slv.slv_api.services.RestService;
-import com.slv.slv_api.users.UsersMethods;
 
 public abstract class AbstractTest {
 
@@ -65,14 +63,13 @@ public abstract class AbstractTest {
 		try {
 			URL fileURL = this.getClass().getClassLoader().getResource(inputFile);
 			if(fileURL == null) {
-				throw new SLVTestsException(ExceptionCode.USER_PROFILE.toString(), MessageHelper.getMessage("core.abstract.test.json.files.load.error"));
+				throw new SLVTestsException(ExceptionCode.READ_JSON_FILES.toString(), MessageHelper.getMessage("core.abstract.test.json.files.load.error"));
 			}
 			return mapper.readValue(new File(fileURL.getPath()),
 					new TypeReference<Map<String, JsonNode>>() {
 					});
 		} catch (IOException e) {
-			// TODO - messages in properties file
-			throw new SLVTestsException(ExceptionCode.USER_PROFILE.toString(), MessageHelper.getMessage("core.abstract.test.json.files.load.error"),
+			throw new SLVTestsException(ExceptionCode.READ_JSON_FILES.toString(), MessageHelper.getMessage("core.abstract.test.json.files.load.error"),
 					e);
 		}
 	}
@@ -82,17 +79,21 @@ public abstract class AbstractTest {
 	 * 
 	 * @param method
 	 *            The method to apply
+	 * @throws SLVTestsException 
 	 */
-	protected JsonDiffResult retrieveResult(String url) throws JsonProcessingException, IOException {
+	protected JsonDiffResult retrieveResult(String url) throws SLVTestsException {
 		// INIT
 		JsonNode parameters = getInputs().get(url);
-		JsonNode awaitedResponse = getOutputs().get(url);
+		JsonNode expectedResponse = getOutputs().get(url);
 
 		// CALL
 		String realResponse = getRestService().get(url, convert(parameters));
-		JsonDiffResult result = JsonDiffService.getInstance().diff(realResponse, awaitedResponse.toString());
+		try {
+			return JsonDiffService.getInstance().diff(realResponse, expectedResponse.toString());
+		} catch(IOException e) {
+			throw new SLVTestsException(ExceptionCode.DIFF_METHOD_CALL.toString(), MessageHelper.getMessage("core.abstract.test.diff.error"), e);
+		}
 		
-		return result;
 	}
 
 	/**
