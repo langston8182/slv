@@ -35,6 +35,7 @@ public class UsersTest extends AbstractTest {
 	}
 
 	@Test
+
 	public void retrieveCurrentUser() throws SLVTestsException {
 		JsonDiffResult result = retrieveResult(UsersMethods.GET_CURRENT_USER.getUrl());
 

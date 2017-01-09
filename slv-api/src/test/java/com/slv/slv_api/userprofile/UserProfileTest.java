@@ -15,50 +15,93 @@ import com.slv.slv_api.services.JsonDiffService;
 public class UserProfileTest extends AbstractTest {
 
 	/**
-	 * File name of UserProfil API Inputs
+	 * File name of UserProfile API Inputs
 	 */
 	private final static String INPUT_FILE = "json/userprofile/input.json";
 	
 	/**
-	 * File name of UserProfil API Outputs
+	 * File name of UserProfile API Outputs
 	 */
 	private final static String OUTPUT_FILE = "json/userprofile/output.json";
 	
-	@Test
-	public void getGeoZoneProfils() throws JsonProcessingException, IOException {
-		// INIT
-		JsonNode parameters = getInputs().get(UserProfileMethods.GET_GEOZONE_PROFILS.getUrl());
-		JsonNode awaitedResponse = getOutputs().get(UserProfileMethods.GET_GEOZONE_PROFILS.getUrl());
-		
+	/**
+	 * Json format test of API Service "userProfile/getGeoZoneProfils"
+	 * @throws SLVTestsException
+	 */
+	@Test(groups={"userProfile-format"})
+	public void getGeoZoneProfils() throws SLVTestsException {
 		// CALL
-		String realResponse = getRestService().get(UserProfileMethods.GET_GEOZONE_PROFILS.getUrl(), convert(parameters));
-		JsonDiffResult result = JsonDiffService.getInstance().diff(realResponse, awaitedResponse.toString());
+		JsonDiffResult result = retrieveResult(UserProfileMethods.GET_GEOZONE_PROFILS.getUrl());
 		
 		// VERIFY
 		Assert.assertTrue(result.isEquals(), result.getErrorMessage());
 	}
 
-	@Test
-	public void getCurrentProfil() {
-		JsonNode parameters = getInputs().get(UserProfileMethods.GET_CURRENT_PROFIL.getUrl());
-		JsonNode awaitedResponse = getOutputs().get(UserProfileMethods.GET_CURRENT_PROFIL.getUrl());
-		System.out.println(getRestService().get(UserProfileMethods.GET_CURRENT_PROFIL.getUrl(), convert(parameters)));
+	/**
+	 * Json format test of API Service "userProfile/getCurrentProfil"
+	 * @throws SLVTestsException
+	 */
+	@Test(groups={"userProfile-format"})
+	public void getCurrentProfil() throws SLVTestsException {
+		// CALL
+		JsonDiffResult result = retrieveResult(UserProfileMethods.GET_CURRENT_PROFIL.getUrl());
+		
+		// VERIFY
+		Assert.assertTrue(result.isEquals(), result.getErrorMessage());
+	}
+
+	/**
+	 * Json format test of API Service "asset/getProfilProperties"
+	 * @throws SLVTestsException
+	 */
+	@Test(groups={"userProfile-format"})
+	public void getProfilProperties() throws SLVTestsException {
+		// CALL
+		JsonDiffResult result = retrieveResult(UserProfileMethods.GET_PROFIL_PROPERTIES.getUrl());
+		
+		// VERIFY
+		Assert.assertTrue(result.isEquals(), result.getErrorMessage());
+	}
+
+	/**
+	 * Json format test of API Service "userprofile/getProfilPropertyDescriptors"
+	 * @throws SLVTestsException
+	 */
+	@Test(groups={"userProfile-format"})
+	public void getProfilPropertyDescriptors() throws SLVTestsException {
+		// CALL
+		JsonDiffResult result = retrieveResult(UserProfileMethods.GET_PROFIL_PROPERTY_DESCRIPTORS.getUrl());
+		
+		// VERIFY
+		Assert.assertTrue(result.isEquals(), result.getErrorMessage());
+	}
+	
+	/**
+	 * Creates a UserProfile and assert its existence and equality.
+	 */
+	@Test(groups={"userProfile-createUpdateDeleteUser"}) 
+	public void createUserProfile() {
+		String result = call(UserProfileMethods.CREATE_PROFIL.getUrl(), getInputs().get(UserProfileMethods.CREATE_PROFIL.getUrl()));
 		Assert.assertTrue(true);
 	}
 
-	@Test
-	public void getProfilProperties() {
-		JsonNode parameters = getInputs().get(UserProfileMethods.GET_PROFIL_PROPERTIES.getUrl());
-		JsonNode awaitedResponse = getOutputs().get(UserProfileMethods.GET_PROFIL_PROPERTIES.getUrl());
-		System.out.println(getRestService().get(UserProfileMethods.GET_PROFIL_PROPERTIES.getUrl(), convert(parameters)));
+	/**
+	 * Updates a UserProfile and assert that the modification has been done.<br/> 
+	 * Depends on {@link #createUserProfile()}
+	 */
+	@Test(groups={"userProfile-createUpdateDeleteUser"}, dependsOnMethods={"createUserProfile"}) 
+	public void updateUserProfile() {
+		String result = call(UserProfileMethods.UPDATE_PROFIL.getUrl(), getInputs().get(UserProfileMethods.UPDATE_PROFIL.getUrl()));
 		Assert.assertTrue(true);
 	}
 
-	@Test
-	public void getProfilPropertyDescriptors() {
-		JsonNode parameters = getInputs().get(UserProfileMethods.GET_PROFIL_PROPERTY_DESCRIPTORS.getUrl());
-		JsonNode awaitedResponse = getOutputs().get(UserProfileMethods.GET_PROFIL_PROPERTY_DESCRIPTORS.getUrl());
-		System.out.println(getRestService().get(UserProfileMethods.GET_PROFIL_PROPERTY_DESCRIPTORS.getUrl(), convert(parameters)));
+	/**
+	 * Deletes a UserProfile and assert that it does not exist anymore.<br/> 
+	 * Depends on {@link #updateUserProfile()}
+	 */
+	@Test(groups={"userProfile-createUpdateDeleteUser"}, dependsOnMethods={"updateUserProfile"}) 
+	public void deleteUserProfile() {
+		String result = call(UserProfileMethods.DELETE_PROFIL.getUrl(), getInputs().get(UserProfileMethods.DELETE_PROFIL.getUrl()));
 		Assert.assertTrue(true);
 	}
 	

@@ -28,6 +28,6 @@
 	  	"ser": "json"
 	},
     "userprofile/getProfilPropertyDescriptors" : {
-    	"ser": ""
+    	"ser": "json"
     }
 }

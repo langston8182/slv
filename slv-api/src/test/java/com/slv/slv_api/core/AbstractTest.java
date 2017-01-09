@@ -87,13 +87,32 @@ public abstract class AbstractTest {
 		JsonNode expectedResponse = getOutputs().get(url);
 
 		// CALL
-		String realResponse = getRestService().get(url, convert(parameters));
+		String realResponse = call(url, parameters);
 		try {
 			return JsonDiffService.getInstance().diff(realResponse, expectedResponse.toString());
 		} catch(IOException e) {
 			throw new SLVTestsException(ExceptionCode.DIFF_METHOD_CALL.toString(), MessageHelper.getMessage("core.abstract.test.diff.error"), e);
 		}
-		
+	}
+	
+	/**
+	 * Call a Rest Service by its HTTP URL with optional parameters
+	 * @param url the HTTP url to call
+	 * @param parameters the parameters to send (optionnal)
+	 * @return a {@link String} containing the response
+	 */
+	protected String call(String url, Map<String, Object> parameters) {
+		return getRestService().get(url, parameters);
+	}
+
+	/**
+	 * Call a Rest Service by its HTTP URL with optional parameters
+	 * @param url the HTTP url to call
+	 * @param parameters the parameters to send (optionnal)
+	 * @return a {@link String} containing the response
+	 */
+	protected String call(String url, JsonNode parameters) {
+		return call(url, convert(parameters));
 	}
 
 	/**
