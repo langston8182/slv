@@ -3,7 +3,7 @@
 	  	"ser": "json"
 	},
 	"assetmanagement/createProvider" : {
-	  "name": "My new provider 11", 
+	  "name": "My provider", 
 	  "pollutionRate": 0.42,
 	  "ser": "json"
 	},

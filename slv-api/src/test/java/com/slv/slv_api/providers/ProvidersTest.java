@@ -1,23 +1,20 @@
 package com.slv.slv_api.providers;
 
 import java.io.IOException;
-import java.util.HashMap;
 import java.util.Map;
 
-import org.apache.commons.lang3.StringUtils;
 import org.testng.Assert;
 import org.testng.annotations.Test;
 
 import com.fasterxml.jackson.core.JsonParseException;
 import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.JsonMappingException;
 import com.fasterxml.jackson.databind.JsonNode;
-import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.ObjectNode;
 import com.slv.slv_api.core.AbstractTest;
 import com.slv.slv_api.exceptions.SLVTestsException;
 import com.slv.slv_api.services.JsonDiffResult;
+import com.slv.slv_api.utils.Constantes;
 
 public class ProvidersTest extends AbstractTest {
 
@@ -34,22 +31,53 @@ public class ProvidersTest extends AbstractTest {
 	/**
 	 * Shared string to store the id of the created provider for functional tests
 	 */
-	private String providerId = null;
+	private Integer providerId = null;
 
 
-//	/**
-//	 * Json format test of API Service "asset/getAllProviders"
-//	 * 
-//	 * @throws SLVTestsException
-//	 */
-//	@Test(groups={"providers-format"})
-//	public void getAllProviders() throws SLVTestsException {
-//		// CALL
-//		JsonDiffResult result = retrieveResult(ProvidersMethods.GET_ALL_PROVIDERS.getUrl());
-//
-//		// VERIFY
-//		Assert.assertTrue(result.isEquals(), result.getErrorMessage());		
-//	}
+	/**
+	 * Json format test of API Service "asset/getAllProviders"
+	 * 
+	 * @throws SLVTestsException
+	 */
+	@Test(groups={"providers-format"})
+	public void getAllProviders() throws SLVTestsException {
+		// CALL
+		JsonDiffResult result = retrieveResult(ProvidersMethods.GET_ALL_PROVIDERS.getUrl());
+
+		// VERIFY
+		Assert.assertTrue(result.isEquals(), result.getErrorMessage());		
+	}
+	
+	/**
+	 * Creates a Provider and assert its existence and equality.
+	 * 
+	 * @throws SLVTestsException 
+	 * @throws IOException 
+	 * @throws JsonMappingException 
+	 * @throws JsonParseException 
+	 */
+	@Test
+	public void createProviderKo() throws SLVTestsException, JsonParseException, JsonMappingException, IOException  {
+		// INIT
+		JsonNode parameters = getInputs().get(ProvidersMethods.CREATE_PROVIDER.getUrl());
+		((ObjectNode)parameters).remove(Constantes.CREATE_PROVIDER_INPUT_NAME_KEY);
+		
+		// CALL
+		JsonDiffResult result = retrieveResult(ProvidersMethods.CREATE_PROVIDER.getUrl());		
+
+		// VERIFY
+		Assert.assertFalse(result.isEquals(), result.getErrorMessage());
+
+		// Extract the id of the created Provider
+		Map<String, Object> map = convert(result.getResponse());
+		String errorCode = (String)map.get(Constantes.RESPONSE_ERROR_CODE_KEY);
+		String errorMessage = (String)map.get(Constantes.RESPONSE_MESSAGE_KEY);
+		
+		Assert.assertTrue(Constantes.INTERNAL_ERROR_CODE.equals(errorCode), result.getErrorMessage());
+		Assert.assertTrue(errorMessage.contains("streetlight.data.Provider.name"), result.getErrorMessage());
+		
+		
+	}
 
 	/**
 	 * Creates a Provider and assert its existence and equality.
@@ -68,10 +96,8 @@ public class ProvidersTest extends AbstractTest {
 		Assert.assertTrue(result.isEquals(), result.getErrorMessage());
 
 		// Extract the id of the created Provider
-		ObjectMapper mapper = new ObjectMapper();
-		Map<String, Object> map = new HashMap<String, Object>();
-		map = mapper.readValue(result.getResponse(), new TypeReference<Map<String, String>>(){});
-		providerId = (String)map.get("id");
+		Map<String, Object> map = convert(result.getResponse());
+		providerId = (Integer)map.get(Constantes.CREATE_PROVIDER_OUTPUT_ID_KEY);
 	}
 
 	/**
@@ -82,10 +108,10 @@ public class ProvidersTest extends AbstractTest {
 	 */
 	@Test(groups={"providers-createUpdateDeleteProvider"}, dependsOnMethods={"createProvider"}) 
 	public void updateProvider() throws SLVTestsException {
-		if (StringUtils.isNotBlank(providerId)) {
+		if (providerId != null) {
 			// INIT
 			JsonNode parameters = getInputs().get(ProvidersMethods.UPDATE_PROVIDER.getUrl());
-			((ObjectNode)parameters).put("providerId", providerId);
+			((ObjectNode)parameters).put(Constantes.UPDATE_PROVIDER_INPUT_ID_KEY, providerId);
 			
 			// CALL
 			JsonDiffResult result = retrieveResult(ProvidersMethods.UPDATE_PROVIDER.getUrl(), parameters);
@@ -103,10 +129,10 @@ public class ProvidersTest extends AbstractTest {
 	 */
 	@Test(groups={"providers-createUpdateDeleteProvider"}, dependsOnMethods={"updateProvider"}) 
 	public void deleteProvider() throws SLVTestsException {
-		if (StringUtils.isNotBlank(providerId)) {
+		if (providerId != null) {
 			// INIT
 			JsonNode parameters = getInputs().get(ProvidersMethods.DELETE_PROVIDER.getUrl());
-			((ObjectNode)parameters).put("id", providerId);
+			((ObjectNode)parameters).put(Constantes.DELETE_PROVIDER_INPUT_ID_KEY, providerId);
 			
 			// CALL
 			JsonDiffResult result = retrieveResult(ProvidersMethods.DELETE_PROVIDER.getUrl(), parameters);
