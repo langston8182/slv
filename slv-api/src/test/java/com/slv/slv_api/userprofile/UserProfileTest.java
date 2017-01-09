@@ -1,7 +1,9 @@
 package com.slv.slv_api.userprofile;
 
 import java.io.IOException;
+import java.util.Map;
 
+import org.apache.log4j.Logger;
 import org.testng.Assert;
 import org.testng.annotations.Test;
 
@@ -78,11 +80,26 @@ public class UserProfileTest extends AbstractTest {
 	
 	/**
 	 * Creates a UserProfile and assert its existence and equality.
+	 * @throws SLVTestsException 
 	 */
 	@Test(groups={"userProfile-createUpdateDeleteUser"}) 
-	public void createUserProfile() {
-		String result = call(UserProfileMethods.CREATE_PROFIL.getUrl(), getInputs().get(UserProfileMethods.CREATE_PROFIL.getUrl()));
-		Assert.assertTrue(true);
+	public void createUserProfile() throws SLVTestsException {
+		// CALL
+		JsonDiffResult result = retrieveResult(UserProfileMethods.CREATE_PROFIL.getUrl());
+		
+		// VERIFY FORMAT
+		Assert.assertTrue(result.isEquals(), result.getErrorMessage());
+
+		// VERIFY RESPONSE
+		String response = result.getResponse();
+		Map<String, JsonNode> responseJsonNode = extractJsonStreams(response);
+		Map<String, Object> inputs = convert(getInputs().get(UserProfileMethods.CREATE_PROFIL.getUrl()));
+		
+		// Profil names must be equals
+		String expectedProfilName = (String)inputs.get("profilName");
+		JsonNode realProfilName = responseJsonNode.get("name");
+		Assert.assertTrue(realProfilName.isTextual());
+		Assert.assertEquals(realProfilName, expectedProfilName);
 	}
 
 	/**
@@ -104,6 +121,9 @@ public class UserProfileTest extends AbstractTest {
 		String result = call(UserProfileMethods.DELETE_PROFIL.getUrl(), getInputs().get(UserProfileMethods.DELETE_PROFIL.getUrl()));
 		Assert.assertTrue(true);
 	}
+
+
+	private static final Logger logger = Logger.getLogger(AbstractTest.class);
 	
 	public static void main(String... args) throws JsonProcessingException, IOException, SLVTestsException {
 		UserProfileTest runner = new UserProfileTest();
@@ -112,7 +132,8 @@ public class UserProfileTest extends AbstractTest {
 		JsonNode parameters = runner.getInputs().get(UserProfileMethods.GET_GEOZONE_PROFILS.getUrl());
 		JsonNode awaitedResponse = runner.getOutputs().get(UserProfileMethods.GET_GEOZONE_PROFILS.getUrl());
 		String realResponse = runner.getRestService().get(UserProfileMethods.GET_GEOZONE_PROFILS.getUrl(), runner.convert(parameters));
-		
+
+		System.out.println(realResponse.toString());
 		JsonDiffService comparator = JsonDiffService.getInstance();
 		JsonDiffResult result = comparator.diff(realResponse, awaitedResponse.toString());
 		

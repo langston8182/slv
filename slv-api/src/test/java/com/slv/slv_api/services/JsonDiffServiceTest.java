@@ -11,7 +11,6 @@ import org.powermock.modules.junit4.PowerMockRunner;
 import org.powermock.reflect.Whitebox;
 import org.testng.Assert;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
@@ -50,7 +49,7 @@ public class JsonDiffServiceTest {
 	}
 
 	@Test
-	public void prepareForCompare() throws Exception {
+	public void prepareForCompareWithRootAsObject() throws Exception {
 		// INIT
 		ObjectMapper jacksonMapper = new ObjectMapper();
 		JsonNode json = jacksonMapper.readTree("{ "
@@ -92,6 +91,121 @@ public class JsonDiffServiceTest {
 		allArraySizeEqualsOne = checkArraySize(preparedJson);
 		Assert.assertTrue(allArraySizeEqualsOne);
 	}
+
+	@Test
+	public void prepareForCompareWithRootAsArray() throws Exception {
+		// INIT
+		ObjectMapper jacksonMapper = new ObjectMapper();
+		JsonNode json = jacksonMapper.readTree("["
+				+ "		{"
+				+ "			\"key1\": \"value1.1\","
+				+ "			\"key2\": \"value2.2\","
+				+ "			\"key3\": ["
+				+ "				{"
+				+ "					\"key1\": \"value1\""
+				+ "				},"
+				+ "				{"
+				+ "					\"key2\": \"value2\""
+				+ "				}"
+				+ "			]"
+				+ "		},"
+				+ "		{"
+				+ "			\"key1\": \"value1.2\","
+				+ "			\"key2\": \"value2.2\","
+				+ "			\"key3\": ["
+				+ "				{"
+				+ "					\"key1\": \"value1\""
+				+ "				},"
+				+ "				{"
+				+ "					\"key2\": \"value2\""
+				+ "				}"
+				+ "			]"
+				+ "		},"
+				+ "		{"
+				+ "			\"key1\": \"value1.3\","
+				+ "			\"key2\": \"value2.3\","
+				+ "			\"key3\": ["
+				+ "				{"
+				+ "					\"key1\": \"value1\""
+				+ "				},"
+				+ "				{"
+				+ "					\"key2\": \"value2\""
+				+ "				},"
+				+ "				{"
+				+ "					\"key3\": \"value3\""
+				+ "				},"
+				+ "				{"
+				+ "					\"key4\": \"value4\""
+				+ "				}"
+				+ "			]"
+				+ "		}"
+				+ "]");
+		
+		// CALL
+		JsonNode preparedJson = Whitebox.invokeMethod(jsonDiffService, "prepareForCompare", json);
+		
+		// VERIFY
+		Assert.assertNotNull(preparedJson);
+		Iterator<JsonNode> elements = preparedJson.elements();
+		Assert.assertTrue(elements.hasNext());
+		boolean allArraySizeEqualsOne = true;
+		allArraySizeEqualsOne = checkArraySize(preparedJson);
+		Assert.assertTrue(allArraySizeEqualsOne);
+	}
+
+	@Test
+	public void prepareForCompareWithRootAsArrayAndFirstArrayEmpty() throws Exception {
+		// INIT
+		ObjectMapper jacksonMapper = new ObjectMapper();
+		JsonNode json = jacksonMapper.readTree("["
+				+ "		{"
+				+ "			\"key1\": \"value1.1\","
+				+ "			\"key2\": \"value2.2\","
+				+ "			\"key3\": []"
+				+ "		},"
+				+ "		{"
+				+ "			\"key1\": \"value1.2\","
+				+ "			\"key2\": \"value2.2\","
+				+ "			\"key3\": ["
+				+ "				{"
+				+ "					\"key1\": \"value1\""
+				+ "				},"
+				+ "				{"
+				+ "					\"key2\": \"value2\""
+				+ "				}"
+				+ "			]"
+				+ "		},"
+				+ "		{"
+				+ "			\"key1\": \"value1.3\","
+				+ "			\"key2\": \"value2.3\","
+				+ "			\"key3\": ["
+				+ "				{"
+				+ "					\"key1\": \"value1\""
+				+ "				},"
+				+ "				{"
+				+ "					\"key2\": \"value2\""
+				+ "				},"
+				+ "				{"
+				+ "					\"key3\": \"value3\""
+				+ "				},"
+				+ "				{"
+				+ "					\"key4\": \"value4\""
+				+ "				}"
+				+ "			]"
+				+ "		}"
+				+ "]");
+		
+		// CALL
+		JsonNode preparedJson = Whitebox.invokeMethod(jsonDiffService, "prepareForCompare", json);
+		
+		// VERIFY
+		Assert.assertNotNull(preparedJson);
+		Iterator<JsonNode> elements = preparedJson.elements();
+		Assert.assertTrue(elements.hasNext());
+		boolean allArraySizeEqualsOne = true;
+		allArraySizeEqualsOne = checkArraySize(preparedJson);
+		Assert.assertTrue(allArraySizeEqualsOne);
+	}
 	
 	/**
 	 * Check a {@link JsonNode} value and verify for each of the arrays that its length is at most 1 element
@@ -101,12 +215,21 @@ public class JsonDiffServiceTest {
 	private boolean checkArraySize(JsonNode value) {
 		boolean correctSize = true;
 		if(value != null) {
-			for (Iterator<JsonNode> iterator = value.elements(); iterator.hasNext();) {
-				JsonNode node = (JsonNode) iterator.next();
-				if(node.isObject()) {
+			// If the node is an array, verify size
+			if(value.isArray()) {
+				correctSize = correctSize && hasAtMostOneElement(value.elements());
+				// Read the rest
+				if(correctSize) {
+					for (Iterator<JsonNode> iterator = value.elements(); iterator.hasNext();) {
+						JsonNode node = (JsonNode) iterator.next();
+						correctSize = checkArraySize(node);
+					}
+				}
+			} else if(value.isObject()) {
+				// If it's an object, recursive call on each attributes
+				for (Iterator<JsonNode> iterator = value.elements(); iterator.hasNext();) {
+					JsonNode node = (JsonNode) iterator.next();
 					correctSize = checkArraySize(node);
-				} else if(node.isArray())  {
-					correctSize = correctSize && hasAtMostOneElement(node.elements()); 
 				}
 			}
 		}

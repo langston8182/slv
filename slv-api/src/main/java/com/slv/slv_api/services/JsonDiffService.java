@@ -8,6 +8,7 @@ import java.util.List;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.node.JsonNodeType;
 import com.flipkart.zjsonpatch.JsonDiff;
 import com.slv.slv_api.entities.Add;
 import com.slv.slv_api.entities.Remove;
@@ -137,23 +138,29 @@ public class JsonDiffService {
 
 	}
 
+	/**
+	 * Read the {@link JsonNode} and for each {@link JsonNodeType#ARRAY}, keeps only one value
+	 * @param value the {@link JsonNode} to read
+	 * @return the {@link JsonNode} modified
+	 */
 	private JsonNode convertArrayToOneElement(JsonNode value) {
-		Iterator<JsonNode> opIterator = value.elements();
-		while (opIterator.hasNext()) {
-			JsonNode opNode = opIterator.next();
-			if (opNode.isArray()) {
-				Iterator<JsonNode> it = opNode.elements();
-				JsonNode node = it.next();
-				if (node.isObject())
-					convertArrayToOneElement(node);
-				while (it.hasNext()) {
-					it.next();
-					it.remove();
-
+		if(value != null) {
+			// If it's an array, keep only one element et read the kept element recursively
+			if(value.isArray()) {
+				Iterator<JsonNode> elements = value.elements();
+				if(elements.hasNext()) {
+					convertArrayToOneElement(elements.next());
+					while (elements.hasNext()) {
+						elements.next();
+						elements.remove();
+					}
 				}
-
-			} else if (opNode.isObject()) {
-				convertArrayToOneElement(opNode);
+			} else if(value.isObject()) {
+				// If it's an object, read it recursively
+				Iterator<JsonNode> elements = value.elements();
+				while (elements.hasNext()) {
+					convertArrayToOneElement(elements.next());
+				}
 			}
 		}
 		return value;
