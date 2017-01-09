@@ -5,4 +5,4 @@
 release.properties
 /bin/
 /test-output/
-/logs/
+logs/**/*
