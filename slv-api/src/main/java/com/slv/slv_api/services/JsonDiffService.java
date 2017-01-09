@@ -25,18 +25,19 @@ public class JsonDiffService  {
 
 	private static final String MOVE = "move";
 	private static final String ADD = "add";
+	private static final String REMOVE = "remove";
 	private static final String ADD_MESSAGE = "The key %s has been added.\n";
 	private static final  String REMOVE_MESSAGE = "The key %s has been removed.\n";
 
 	/**
 	 * Instance of {@link JsonDiffService}
 	 */
-	private JsonDiffService service = null;
+	private static JsonDiffService service = null;
 	
 	/**
 	 * @return instance of {@link JsonDiffService} as a Singleton
 	 */
-	public JsonDiffService getInstance() {
+	public static JsonDiffService getInstance() {
 		if(service == null) {
 			service = new JsonDiffService();
 		}
@@ -71,7 +72,8 @@ public class JsonDiffService  {
 				break;
 			case ADD:
 				adds.add(new Add(path));
-
+			case REMOVE:
+				removes.add(new Remove(path));
 			}
 
 		}
@@ -91,6 +93,18 @@ public class JsonDiffService  {
 
 		return errorMessage.toString();
 
+	}
+
+	/**
+	 * If needed, modify the {@link JsonNode} value to be compliant with the comparison method :
+	 * <ul>
+	 * <li>Keep only one item in each list</li>
+	 * </ul>
+	 * @param value the {@link JsonNode} to prepare
+	 * @return the {@link JsonNode} modified if needed
+	 */
+	public JsonNode prepareForCompare(JsonNode value) {
+		return value;
 	}
 
 }
