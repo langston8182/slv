@@ -8,6 +8,7 @@ import java.util.List;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.node.ObjectNode;
 import com.flipkart.zjsonpatch.JsonDiff;
 import com.slv.slv_api.entities.Add;
 import com.slv.slv_api.entities.Remove;
@@ -102,9 +103,52 @@ public class JsonDiffService  {
 	 * </ul>
 	 * @param value the {@link JsonNode} to prepare
 	 * @return the {@link JsonNode} modified if needed
+	 * @throws IOException 
+	 * @throws JsonProcessingException 
 	 */
-	public JsonNode prepareForCompare(JsonNode value) {
+	public JsonNode prepareForCompare(JsonNode value) throws JsonProcessingException, IOException {
+		if(value != null) {
+			convertArrayToOneElement(value);
+		}
+		return value;
+/*
+		ObjectNode node = (ObjectNode) new ObjectMapper().readTree(value.toString());
+		
+		
+		
+		ObjectNode objectNode = (ObjectNode) value ;
+		
+		Iterator<JsonNode> opIterator = value.elements();*/
+	/*	while(opIterator.hasNext()){
+			
+			JsonNode opNode = opIterator.next();
+			if(opNode.isArray()){
+				ObjectNode node = (ObjectNode) new ObjectMapper().readTree(opNode.toString());
+				node.
+				
+			}
+		
+	//	System.out.println(opNode.toString());	
+		}*/
+//		System.out.println(value.toString());
+	}
+	
+	private JsonNode convertArrayToOneElement(JsonNode value){
+		Iterator<JsonNode> opIterator = value.elements();
+		while(opIterator.hasNext()){
+			JsonNode opNode = opIterator.next();
+			if(opNode.isArray()){
+				Iterator<JsonNode> it = opNode.elements();
+				it.next();
+				while(it.hasNext()){
+					it.next();
+					it.remove();
+					
+				}
+			} else if(opNode.isObject()) {
+				convertArrayToOneElement(opNode);
+			}
+		}
 		return value;
 	}
-
 }
