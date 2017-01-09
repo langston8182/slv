@@ -6,12 +6,10 @@ import java.net.URL;
 import java.util.Map;
 
 import org.apache.log4j.Logger;
-import org.testng.annotations.BeforeTest;
+import org.testng.annotations.BeforeClass;
 import org.testng.annotations.Parameters;
 
-import com.fasterxml.jackson.core.JsonParseException;
 import com.fasterxml.jackson.core.type.TypeReference;
-import com.fasterxml.jackson.databind.JsonMappingException;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.slv.slv_api.common.MessageHelper;
@@ -40,7 +38,7 @@ public abstract class AbstractTest {
 	 */
 	private Map<String, JsonNode> outputs;
 	
-	@BeforeTest
+	@BeforeClass
 	@Parameters({ "url", "login", "password" })
 	protected void beforeTest(String url, String login, String password) throws SLVTestsException {
 		restService = RestService.getInstance(url, login, password);

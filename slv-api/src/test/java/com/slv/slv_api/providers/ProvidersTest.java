@@ -72,7 +72,6 @@ public class ProvidersTest extends AbstractTest {
 		Map<String, Object> map = new HashMap<String, Object>();
 		map = mapper.readValue(result.getResponse(), new TypeReference<Map<String, String>>(){});
 		providerId = (String)map.get("id");
-		System.out.println("providerId1 :: " + providerId);
 	}
 
 	/**
@@ -83,7 +82,6 @@ public class ProvidersTest extends AbstractTest {
 	 */
 	@Test(groups={"providers-createUpdateDeleteProvider"}, dependsOnMethods={"createProvider"}) 
 	public void updateProvider() throws SLVTestsException {
-		System.out.println("providerId2 :: " + providerId);
 		if (StringUtils.isNotBlank(providerId)) {
 			// INIT
 			JsonNode parameters = getInputs().get(ProvidersMethods.UPDATE_PROVIDER.getUrl());
@@ -105,7 +103,6 @@ public class ProvidersTest extends AbstractTest {
 	 */
 	@Test(groups={"providers-createUpdateDeleteProvider"}, dependsOnMethods={"updateProvider"}) 
 	public void deleteProvider() throws SLVTestsException {
-		System.out.println("providerId3 :: " + providerId);
 		if (StringUtils.isNotBlank(providerId)) {
 			// INIT
 			JsonNode parameters = getInputs().get(ProvidersMethods.DELETE_PROVIDER.getUrl());
@@ -185,6 +182,7 @@ public class ProvidersTest extends AbstractTest {
 		// VERIFY
 		Assert.assertTrue(result.isEquals(), result.getErrorMessage());
 	}
+
 
 	@Override
 	protected String getInputFile() {
