@@ -56,11 +56,16 @@ public class JsonDiffService  {
 				mapper.readTree(toVerify));
 
 		Iterator<JsonNode> opIterator = patch.elements();
+
+		boolean jsonEquals = true;
+		
+		// If there's no difference, return true
 		if (!opIterator.hasNext())
-			return new JsonDiffResult(true, "no changes");
+			return new JsonDiffResult(jsonEquals, "no changes");
+		
+		// Otherwise, compute add and remove list
 		List<Add> adds = new ArrayList<>();
 		List<Remove> removes = new ArrayList<>();
-
 		while (opIterator.hasNext()) {
 			JsonNode opNode = opIterator.next();
 			String operationType = opNode.get("op").asText();
@@ -75,10 +80,11 @@ public class JsonDiffService  {
 			case REMOVE:
 				removes.add(new Remove(path));
 			}
-
 		}
-		return new JsonDiffResult(false, generateErrorMessage(removes, adds));
-
+		
+		// If no adds and no removes, then there's no difference in format
+		jsonEquals = adds.isEmpty() && removes.isEmpty();
+		return new JsonDiffResult(jsonEquals, generateErrorMessage(removes, adds));
 	}
 	
 	/**

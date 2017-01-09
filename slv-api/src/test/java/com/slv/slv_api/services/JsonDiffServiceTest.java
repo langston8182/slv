@@ -1,5 +1,6 @@
 package com.slv.slv_api.services;
 
+import java.io.IOException;
 import java.util.Iterator;
 
 import org.junit.Test;
@@ -10,6 +11,7 @@ import org.powermock.modules.junit4.PowerMockRunner;
 import org.powermock.reflect.Whitebox;
 import org.testng.Assert;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
@@ -24,6 +26,28 @@ public class JsonDiffServiceTest {
 	
 	@InjectMocks
 	private JsonDiffService jsonDiffService;
+	
+	@Test
+	public void diffWithOnlyReplacements() throws IOException {
+		// INIT
+		String toVerify = "{"
+				+ "	\"key1\": null,"
+				+ "	\"key2\": \"value2\","
+				+ "	\"key3\": \"value4\""
+				+ "}";
+		String expected = "{"
+				+ "	\"key1\": \"value1\","
+				+ "	\"key2\": null,"
+				+ "	\"key3\": \"value3\""
+				+ "}";
+		
+		// CALL
+		JsonDiffResult result = jsonDiffService.diff(toVerify, expected);
+		
+		// VERIFY
+		Assert.assertNotNull(result);
+		Assert.assertTrue(result.isEquals());
+	}
 
 	@Test
 	public void prepareForCompare() throws Exception {
