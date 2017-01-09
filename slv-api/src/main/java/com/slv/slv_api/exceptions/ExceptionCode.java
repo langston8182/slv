@@ -7,5 +7,6 @@ package com.slv.slv_api.exceptions;
  */
 public enum ExceptionCode {
 	READ_JSON_FILES,
-	DIFF_METHOD_CALL;
+	DIFF_METHOD_CALL,
+	CONVERT_STRING_TO_JSON;
 }

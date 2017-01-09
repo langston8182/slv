@@ -80,7 +80,7 @@ public abstract class AbstractTest {
 	}
 	
 	/**
-	 * get result of the test
+	 * get result of the test with default parameters (defined in input.json)
 	 * 
 	 * @param method
 	 *            The method to apply
@@ -96,7 +96,7 @@ public abstract class AbstractTest {
 	}
 	
 	/**
-	 * get result of the test
+	 * get result of the test with custom parameters
 	 * 
 	 * @param method
 	 *            The method to apply
@@ -176,13 +176,27 @@ public abstract class AbstractTest {
 	protected Map<String, Object> convert(String value) throws SLVTestsException {
 		ObjectMapper mapper = new ObjectMapper();
 		try {
-			return mapper.readValue(value, new TypeReference<Map<String, Object>>() {
-			});
+			JsonNode jsonNode = mapper.readTree(value);
+			if(!jsonNode.isObject()) {
+				throw new SLVTestsException(ExceptionCode.CONVERT_STRING_TO_JSON.toString(), MessageHelper.getMessage("core.abstract.test.convert.string.to.map.not.object", value));
+			}
+			
+			return mapper.readValue(value, new TypeReference<Map<String, Object>>() {});
 		} catch (IOException e) {
 			logger.error(MessageHelper.getMessage("core.abstract.test.convert.string.to.jsonnode", value), e);
-			throw new SLVTestsException(ExceptionCode.DIFF_METHOD_CALL.toString(), MessageHelper.getMessage("core.abstract.test.diff.error"), e);
+			throw new SLVTestsException(ExceptionCode.CONVERT_STRING_TO_JSON.toString(), MessageHelper.getMessage("core.abstract.test.convert.string.to.map", value), e);
 		}
 	}
+	
+	protected JsonNode convertToJsonNode(String value) throws SLVTestsException {
+		ObjectMapper mapper = new ObjectMapper();
+		try {
+			return mapper.readTree(value);
+		} catch (IOException e) {
+			logger.error(MessageHelper.getMessage("core.abstract.test.convert.string.to.jsonnode", value), e);
+			throw new SLVTestsException(ExceptionCode.CONVERT_STRING_TO_JSON.toString(), MessageHelper.getMessage("core.abstract.test.convert.string.to.jsonnode", value), e);
+		}
+	} 
 
 	public Map<String, JsonNode> getInputs() {
 		return inputs;
