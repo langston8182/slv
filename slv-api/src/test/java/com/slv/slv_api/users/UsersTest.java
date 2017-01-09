@@ -1,7 +1,5 @@
 package com.slv.slv_api.users;
 
-import java.io.IOException;
-
 import org.testng.Assert;
 import org.testng.annotations.Test;
 
@@ -35,9 +33,72 @@ public class UsersTest extends AbstractTest {
 	}
 
 	@Test
-
 	public void retrieveCurrentUser() throws SLVTestsException {
 		JsonDiffResult result = retrieveResult(UsersMethods.GET_CURRENT_USER.getUrl());
+
+		// VERIFY
+		Assert.assertTrue(result.isEquals(), result.getErrorMessage());
+	}
+	
+	@Test
+	public void updateUser() throws SLVTestsException {
+		JsonDiffResult result = retrieveResult(UsersMethods.UPDATE_USER.getUrl());
+
+		// VERIFY
+		Assert.assertTrue(result.isEquals(), result.getErrorMessage());
+	}
+	
+	@Test
+	public void getAllUsers() throws SLVTestsException {
+		JsonDiffResult result = retrieveResult(UsersMethods.GET_ALL_USERS.getUrl());
+
+		// VERIFY
+		Assert.assertTrue(result.isEquals(), result.getErrorMessage());
+	}
+	
+	@Test
+	public void getUsersGeozone() throws SLVTestsException {
+		JsonDiffResult result = retrieveResult(UsersMethods.GET_USERS_GEOZONE.getUrl());
+
+		// VERIFY
+		Assert.assertTrue(result.isEquals(), result.getErrorMessage());
+	}
+	
+	@Test
+	public void deleteUser() throws SLVTestsException {
+		JsonDiffResult result = retrieveResult(UsersMethods.DELETE_USER.getUrl());
+
+		// VERIFY
+		Assert.assertTrue(result.isEquals(), result.getErrorMessage());
+	}
+	
+	@Test
+	public void updatePassword() throws SLVTestsException {
+		JsonDiffResult result = retrieveResult(UsersMethods.UPDATE_PASSWORD.getUrl());
+
+		// VERIFY
+		Assert.assertTrue(result.isEquals(), result.getErrorMessage());
+	}
+	
+	@Test
+	public void updateUserProperties() throws SLVTestsException {
+		JsonDiffResult result = retrieveResult(UsersMethods.UPDATE_USER_PROPERTIES.getUrl());
+
+		// VERIFY
+		Assert.assertTrue(result.isEquals(), result.getErrorMessage());
+	}
+	
+	@Test
+	public void recoverPassword() throws SLVTestsException {
+		JsonDiffResult result = retrieveResult(UsersMethods.RECOVER_PASSWORD.getUrl());
+
+		// VERIFY
+		Assert.assertTrue(result.isEquals(), result.getErrorMessage());
+	}
+	
+	@Test
+	public void verifyPassword() throws SLVTestsException {
+		JsonDiffResult result = retrieveResult(UsersMethods.VERIFY_PASSWORD.getUrl());
 
 		// VERIFY
 		Assert.assertTrue(result.isEquals(), result.getErrorMessage());
