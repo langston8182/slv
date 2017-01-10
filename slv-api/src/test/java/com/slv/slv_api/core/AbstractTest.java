@@ -7,6 +7,7 @@ import java.util.Map;
 
 import org.apache.log4j.Logger;
 import org.testng.annotations.BeforeClass;
+import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Parameters;
 
 import com.fasterxml.jackson.core.type.TypeReference;
@@ -19,6 +20,13 @@ import com.slv.slv_api.services.JsonDiffResult;
 import com.slv.slv_api.services.JsonDiffService;
 import com.slv.slv_api.services.RestService;
 
+/**
+ * <p>Base class for every test class<br/>
+ * Contains common methods and attributes.</p>
+ * 
+ * @author atran
+ *
+ */
 public abstract class AbstractTest {
 
 	private static final Logger logger = Logger.getLogger(AbstractTest.class);
@@ -87,12 +95,7 @@ public abstract class AbstractTest {
 	 * @throws SLVTestsException 
 	 */
 	protected JsonDiffResult retrieveResult(String url) throws SLVTestsException {
-		logger.info("Exécution du test " + url);
-		
-		// INIT
-		JsonNode parameters = getInputs().get(url);
-		
-		return callAndCompare(url, parameters);
+		return callAndCompare(url, getInputs().get(url));
 	}
 	
 	/**
@@ -139,6 +142,7 @@ public abstract class AbstractTest {
 	 * @return a {@link String} containing the response
 	 */
 	protected String call(String url, Map<String, Object> parameters) {
+		logger.info(MessageHelper.getMessage("core.abstract.test.run.test", url));
 		return getRestService().get(url, parameters);
 	}
 
@@ -188,6 +192,12 @@ public abstract class AbstractTest {
 		}
 	}
 	
+	/**
+	 * Convert a {@link String} to a {@link JsonNode}
+	 * @param value the value to convert. Must be a Json formatted {@link String}
+	 * @return the {@link JsonNode}
+	 * @throws SLVTestsException if the value cannot be converted (probably for a format error)
+	 */
 	protected JsonNode convertToJsonNode(String value) throws SLVTestsException {
 		ObjectMapper mapper = new ObjectMapper();
 		try {
@@ -198,14 +208,23 @@ public abstract class AbstractTest {
 		}
 	} 
 
+	/**
+	 * @return {@link AbstractTest#inputs}
+	 */
 	public Map<String, JsonNode> getInputs() {
 		return inputs;
 	}
 
+	/**
+	 * @return {@link AbstractTest#outputs}
+	 */
 	public Map<String, JsonNode> getOutputs() {
 		return outputs;
 	}
 
+	/**
+	 * @return {@link AbstractTest#restService}
+	 */
 	public RestService getRestService() {
 		return restService;
 	}
@@ -215,7 +234,13 @@ public abstract class AbstractTest {
 		return inputs;
 	}
 
+	/**
+	 * @return the path to the input file (input.json) corresponding to the test class 
+	 */
 	protected abstract String getInputFile();
-	
+
+	/**
+	 * @return the path to the output file (output.json) corresponding to the test class 
+	 */
 	protected abstract String getOutputFile();
 }
