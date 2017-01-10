@@ -8,9 +8,9 @@ import com.slv.slv_api.exceptions.SLVTestsException;
 import com.slv.slv_api.services.JsonDiffResult;
 
 /**
- * @author cmarchive
- * 
  * Test cases for users part
+ * 
+ * @author cmarchive
  */
 public class UsersTest extends AbstractTest {
 
@@ -24,6 +24,12 @@ public class UsersTest extends AbstractTest {
 	 */
 	private final static String OUTPUT_FILE = "json/users/output.json";
 
+
+	/**
+	 * Json format test of API Service "userprofile/createUser"
+	 * 
+	 * @throws SLVTestsException
+	 */
 	@Test
 	public void createUser() throws SLVTestsException {
 		JsonDiffResult result = retrieveResult(UsersMethods.CREATE_USER.getUrl());
@@ -32,6 +38,11 @@ public class UsersTest extends AbstractTest {
 		Assert.assertTrue(result.isEquals(), result.getErrorMessage());
 	}
 
+	/**
+	 * Json format test of API Service "userprofile/getCurrentUser"
+	 * 
+	 * @throws SLVTestsException
+	 */
 	@Test
 	public void retrieveCurrentUser() throws SLVTestsException {
 		JsonDiffResult result = retrieveResult(UsersMethods.GET_CURRENT_USER.getUrl());
@@ -40,6 +51,11 @@ public class UsersTest extends AbstractTest {
 		Assert.assertTrue(result.isEquals(), result.getErrorMessage());
 	}
 
+	/**
+	 * Json format test of API Service "userprofile/updateUser"
+	 * 
+	 * @throws SLVTestsException
+	 */
 	@Test
 	public void updateUser() throws SLVTestsException {
 		JsonDiffResult result = retrieveResult(UsersMethods.UPDATE_USER.getUrl());
@@ -48,6 +64,11 @@ public class UsersTest extends AbstractTest {
 		Assert.assertTrue(result.isEquals(), result.getErrorMessage());
 	}
 
+	/**
+	 * Json format test of API Service "userprofile/getAllUsers"
+	 * 
+	 * @throws SLVTestsException
+	 */
 	@Test
 	public void getAllUsers() throws SLVTestsException {
 		JsonDiffResult result = retrieveResult(UsersMethods.GET_ALL_USERS.getUrl());
@@ -56,6 +77,11 @@ public class UsersTest extends AbstractTest {
 		Assert.assertTrue(result.isEquals(), result.getErrorMessage());
 	}
 
+	/**
+	 * Json format test of API Service "userprofile/getGeoZoneUsers"
+	 * 
+	 * @throws SLVTestsException
+	 */
 	@Test
 	public void getUsersGeozone() throws SLVTestsException {
 		JsonDiffResult result = retrieveResult(UsersMethods.GET_USERS_GEOZONE.getUrl());
@@ -64,6 +90,11 @@ public class UsersTest extends AbstractTest {
 		Assert.assertTrue(result.isEquals(), result.getErrorMessage());
 	}
 
+	/**
+	 * Json format test of API Service "userprofile/deleteUser"
+	 * 
+	 * @throws SLVTestsException
+	 */
 	@Test
 	public void deleteUser() throws SLVTestsException {
 		JsonDiffResult result = retrieveResult(UsersMethods.DELETE_USER.getUrl());
@@ -72,6 +103,11 @@ public class UsersTest extends AbstractTest {
 		Assert.assertTrue(result.isEquals(), result.getErrorMessage());
 	}
 
+	/**
+	 * Json format test of API Service "userprofile/changePassword"
+	 * 
+	 * @throws SLVTestsException
+	 */
 	@Test
 	public void updatePassword() throws SLVTestsException {
 		JsonDiffResult result = retrieveResult(UsersMethods.UPDATE_PASSWORD.getUrl());
@@ -80,6 +116,11 @@ public class UsersTest extends AbstractTest {
 		Assert.assertTrue(result.isEquals(), result.getErrorMessage());
 	}
 
+	/**
+	 * Json format test of API Service "userprofile/updateUserProperty"
+	 * 
+	 * @throws SLVTestsException
+	 */
 	@Test
 	public void updateUserProperties() throws SLVTestsException {
 		JsonDiffResult result = retrieveResult(UsersMethods.UPDATE_USER_PROPERTIES.getUrl());
@@ -88,6 +129,11 @@ public class UsersTest extends AbstractTest {
 		Assert.assertTrue(result.isEquals(), result.getErrorMessage());
 	}
 
+	/**
+	 * Json format test of API Service "userprofile/checkPassword"
+	 * 
+	 * @throws SLVTestsException
+	 */
 	@Test
 	public void verifyPassword() throws SLVTestsException {
 		JsonDiffResult result = retrieveResult(UsersMethods.VERIFY_PASSWORD.getUrl());
@@ -96,6 +142,11 @@ public class UsersTest extends AbstractTest {
 		Assert.assertTrue(result.isEquals(), result.getErrorMessage());
 	}
 
+	/**
+	 * Json format test of API Service "publicconfig/sendResetPasswordRequestByMail"
+	 * 
+	 * @throws SLVTestsException
+	 */
 	@Test
 	public void recoverPassword() throws SLVTestsException {
 		JsonDiffResult result = retrieveResult(UsersMethods.RECOVER_PASSWORD.getUrl());
@@ -113,15 +164,4 @@ public class UsersTest extends AbstractTest {
 	protected String getOutputFile() {
 		return OUTPUT_FILE;
 	}
-
-	public static void main(String[] args) {
-		UsersTest test = new UsersTest();
-		try {
-			test.beforeTest("http://5.196.91.118:8080/celad/", "test", "Celad20!6");
-			test.verifyPassword();
-		} catch (SLVTestsException e) {
-			e.printStackTrace();
-		}
-	}
-
 }

@@ -11,9 +11,4 @@ public class Remove  extends Operation{
 	public String getFrom() {
 		return from;
 	}
-	
-
-	
-	
-
 }
