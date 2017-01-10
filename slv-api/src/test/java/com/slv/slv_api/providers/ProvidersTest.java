@@ -137,6 +137,7 @@ public class ProvidersTest extends AbstractTest {
 		deleteCreatedProviderWithMissingAttributes("createProviderMissedTime");
 	}
 
+	//----------- Begin Functional test : Create - Update - Delete -------------
 	/**
 	 * Creates a Provider and assert its existence and equality.
 	 * 
@@ -199,7 +200,80 @@ public class ProvidersTest extends AbstractTest {
 			Assert.assertTrue(result.isEquals(), result.getErrorMessage());
 		}
 	}
+
+	//----------- End Functional test : Create - Update - Delete -------------
 	
+	/**
+	 * Initialize a provider for update and delete operations test
+	 * 
+	 * @throws SLVTestsException
+	 */
+	@Test(priority = 5)
+	public void initProviderOfUpdateTests() throws SLVTestsException {
+		// Create a provider
+		String response = call(ProvidersMethods.CREATE_PROVIDER.getUrl(), getInputs().get(ProvidersMethods.CREATE_PROVIDER.getUrl()));
+		// Extract the id of the created Provider
+		Map<String, Object> map = convert(response);
+		createdProviderIdMap.put("initProviderOfUpdateTests", (Integer)map.get(Constantes.CREATE_PROVIDER_OUTPUT_ID_KEY));
+	}
+	
+	/**
+	 * Fails to update a Provider without specifying a new name.
+	 * 
+	 * @throws SLVTestsException 
+	 */
+	@Test(groups={"providers-updateProviderWithMissingAttributes"}, priority = 5, dependsOnMethods = { "initProviderOfUpdateTests" })
+	public void updateProviderMissedNewName() throws SLVTestsException {
+		if (createdProviderIdMap.get("initProviderOfUpdateTests") != null) {
+			// INIT
+			JsonNode parameters = getInputs().get(ProvidersMethods.UPDATE_PROVIDER.getUrl()).deepCopy();
+			// Remove the name from the request input
+			((ObjectNode)parameters).remove(Constantes.UPDATE_PROVIDER_INPUT_NEW_NAME_KEY);
+			((ObjectNode)parameters).put(Constantes.UPDATE_PROVIDER_INPUT_ID_KEY, createdProviderIdMap.get("initProviderOfUpdateTests"));			
+
+			// CALL
+			JsonDiffResult result = retrieveResult(ProvidersMethods.UPDATE_PROVIDER.getUrl(), parameters);
+
+			// VERIFY
+			Assert.assertTrue(result.isEquals(), result.getErrorMessage());
+		}		
+	}
+	
+	/**
+	 * Fails to update a Provider without specifying a new name.
+	 * 
+	 * @throws SLVTestsException 
+	 */
+	@Test(groups={"providers-updateProviderWithMissingAttributes"}, priority = 5, dependsOnMethods = { "initProviderOfUpdateTests" }) 
+	public void updateProviderMissedProviderId() throws SLVTestsException {
+		if (createdProviderIdMap.get("initProviderOfUpdateTests") != null) {
+			// INIT
+			JsonNode parameters = getInputs().get(ProvidersMethods.UPDATE_PROVIDER.getUrl()).deepCopy();
+			// Remove the provider id from the request input
+			((ObjectNode)parameters).remove(Constantes.UPDATE_PROVIDER_INPUT_ID_KEY);
+			
+			// CALL
+			JsonDiffResult result = retrieveResult(ProvidersMethods.UPDATE_PROVIDER.getUrl(), parameters);			
+
+			// Extract the error code from the response
+			Map<String, Object> map = convert(result.getResponse());
+			String errorCode = (String)map.get(Constantes.RESPONSE_ERROR_CODE_KEY);
+
+			// Verify that the error belongs to the name
+			Assert.assertTrue(Constantes.ITEM_NOT_FOUND_ERROR_CODE.equals(errorCode), result.getErrorMessage());			
+		}	
+	}
+	
+	/**
+	 * Initialize a provider for update and delete operations test
+	 * 
+	 * @throws SLVTestsException
+	 */
+	@Test(groups={"providers-updateProviderWithMissingAttributes"}, priority = 5, dependsOnMethods = { "updateProviderMissedNewName", "updateProviderMissedProviderId" })
+	public void clearProviderOfUpdateTests() throws SLVTestsException {	
+		deleteCreatedProviderWithMissingAttributes("initProviderOfUpdateTests");		
+	}
+
 	/**
 	 * Deletes a created provider.
 	 * 

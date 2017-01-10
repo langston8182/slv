@@ -33,6 +33,12 @@ public final class Constantes {
 	 * Provider id input key for update provider operation
 	 */
 	public static final String UPDATE_PROVIDER_INPUT_ID_KEY = "providerId";
+	
+	/**
+	 * Provider newName input key for update provider operation
+	 */
+	public static final String UPDATE_PROVIDER_INPUT_NEW_NAME_KEY = "newName";
+
 
 	/**
 	 * Provider id input key for delete provider operation
