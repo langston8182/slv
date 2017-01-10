@@ -1,7 +1,7 @@
 package com.slv.slv_api.providers;
 
 /**
- * Rest api URLs for a user profile
+ * Rest api URLs for the Providers
  * 
  * @author yromdhane
  */
@@ -42,7 +42,7 @@ public enum ProvidersMethods {
 	}
 
 	/**
-	 * {@link ProvidersMethods#url}
+	 * @return {@link ProvidersMethods#url}
 	 */
 	public String getUrl() {
 		return this.url;

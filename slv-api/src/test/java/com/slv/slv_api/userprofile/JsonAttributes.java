@@ -23,15 +23,23 @@ public enum JsonAttributes {
 	PROPERTY_BLOCKED_ACTIONS("property.blockedActions");
 	
 	/**
-	 * The key of the Json attribute
+	 * The name of the Json attribute
 	 */
-	private String key;
+	private String name;
 	
-	private JsonAttributes(final String key) {
-		this.key = key;
+	/**
+	 * Default constructor to provide a {@link JsonAttributes} enumeration.
+	 * 
+	 * @param name The attribute's name
+	 */
+	private JsonAttributes(final String name) {
+		this.name = name;
 	}
-	
-	public String getKey() {
-		return this.key;
+
+	/**
+	 * @return {@link JsonAttributes#name}
+	 */
+	public String getName() {
+		return this.name;
 	}
 }
