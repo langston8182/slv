@@ -66,14 +66,12 @@ public class ProvidersTest extends AbstractTest {
 	@Test(groups={"providers-createProviderWithMissingAttributes"}, priority = 2) 
 	public void createProviderKoMissedName() throws SLVTestsException, JsonParseException, JsonMappingException, IOException  {
 		// INIT
-		JsonNode parameters = getInputs().get(ProvidersMethods.CREATE_PROVIDER.getUrl());
+		JsonNode parameters = getInputs().get(ProvidersMethods.CREATE_PROVIDER.getUrl()).deepCopy();
 		// Remove the name from the request input
 		((ObjectNode)parameters).remove(Constantes.CREATE_PROVIDER_INPUT_NAME_KEY);
 
 		// CALL
-		JsonDiffResult result = retrieveResult(ProvidersMethods.CREATE_PROVIDER.getUrl());	
-
-		reloadInputs();
+		JsonDiffResult result = retrieveResult(ProvidersMethods.CREATE_PROVIDER.getUrl(), parameters);	
 
 		// Extract the error message from the response
 		Map<String, Object> map = convert(result.getResponse());
@@ -96,14 +94,12 @@ public class ProvidersTest extends AbstractTest {
 	@Test(groups={"providers-createProviderWithMissingAttributes"}, priority = 2) 
 	public void createProviderMissedPollutionRate() throws SLVTestsException, JsonParseException, JsonMappingException, IOException  {
 		// INIT
-		JsonNode parameters = getInputs().get(ProvidersMethods.CREATE_PROVIDER.getUrl());
+		JsonNode parameters = getInputs().get(ProvidersMethods.CREATE_PROVIDER.getUrl()).deepCopy();
 		// Remove the pollution rate from the request input
 		((ObjectNode)parameters).remove(Constantes.CREATE_PROVIDER_INPUT_POLLUTIONRATE_KEY);
 
 		// CALL
-		JsonDiffResult result = retrieveResult(ProvidersMethods.CREATE_PROVIDER.getUrl());	
-
-		reloadInputs();
+		JsonDiffResult result = retrieveResult(ProvidersMethods.CREATE_PROVIDER.getUrl(), parameters);
 
 		// Verify that the provider is created 
 		Assert.assertTrue(result.isEquals(), result.getErrorMessage());		
@@ -125,12 +121,12 @@ public class ProvidersTest extends AbstractTest {
 	@Test(groups={"providers-createProviderWithMissingAttributes"}, priority = 2) 
 	public void createProviderMissedTime() throws SLVTestsException, JsonParseException, JsonMappingException, IOException  {
 		// INIT
-		JsonNode parameters = getInputs().get(ProvidersMethods.CREATE_PROVIDER.getUrl());
+		JsonNode parameters = getInputs().get(ProvidersMethods.CREATE_PROVIDER.getUrl()).deepCopy();
 		// Remove the time from the request input
 		((ObjectNode)parameters).remove(Constantes.CREATE_PROVIDER_INPUT_TIME_KEY);
 
 		// CALL
-		JsonDiffResult result = retrieveResult(ProvidersMethods.CREATE_PROVIDER.getUrl());		
+		JsonDiffResult result = retrieveResult(ProvidersMethods.CREATE_PROVIDER.getUrl(), parameters);		
 
 		// Verify that the provider is created 
 		Assert.assertTrue(result.isEquals(), result.getErrorMessage());	
@@ -185,9 +181,9 @@ public class ProvidersTest extends AbstractTest {
 	 */
 	@Test(groups={"providers-createUpdateDeleteProvider"}, dependsOnMethods={"createProvider"}, priority = 4) 
 	public void updateProvider() throws SLVTestsException {
-		if (!createdProviderIdMap.isEmpty()) {
+		if (createdProviderIdMap.get("createProvider") != null) {
 			// INIT
-			JsonNode parameters = getInputs().get(ProvidersMethods.UPDATE_PROVIDER.getUrl());
+			JsonNode parameters = getInputs().get(ProvidersMethods.UPDATE_PROVIDER.getUrl()).deepCopy();
 			((ObjectNode)parameters).put(Constantes.UPDATE_PROVIDER_INPUT_ID_KEY, createdProviderIdMap.get("createProvider"));
 
 			// CALL
@@ -206,9 +202,9 @@ public class ProvidersTest extends AbstractTest {
 	 */
 	@Test(groups={"providers-createUpdateDeleteProvider"}, dependsOnMethods={"updateProvider"}, priority = 4) 
 	public void deleteProvider() throws SLVTestsException {
-		if (!createdProviderIdMap.isEmpty()) {
+		if (createdProviderIdMap.get("createProvider") != null) {
 			// INIT
-			JsonNode parameters = getInputs().get(ProvidersMethods.DELETE_PROVIDER.getUrl());
+			JsonNode parameters = getInputs().get(ProvidersMethods.DELETE_PROVIDER.getUrl()).deepCopy();
 			((ObjectNode)parameters).put(Constantes.DELETE_PROVIDER_INPUT_ID_KEY, createdProviderIdMap.get("createProvider"));
 
 			// CALL

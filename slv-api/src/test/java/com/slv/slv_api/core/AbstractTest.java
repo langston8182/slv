@@ -7,7 +7,6 @@ import java.util.Map;
 
 import org.apache.log4j.Logger;
 import org.testng.annotations.BeforeClass;
-import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Parameters;
 
 import com.fasterxml.jackson.core.type.TypeReference;
@@ -227,11 +226,6 @@ public abstract class AbstractTest {
 	 */
 	public RestService getRestService() {
 		return restService;
-	}
-	
-	public Map<String, JsonNode> reloadInputs() throws SLVTestsException {
-		inputs = extractJsonStreams(getInputFile());
-		return inputs;
 	}
 
 	/**
