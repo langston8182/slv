@@ -115,7 +115,9 @@ public class JsonDiffService {
 					prepareForCompare(mapper.readTree(target)),
 					prepareForCompare(mapper.readTree(toVerify)));
 		} catch (IOException ex) {
-			throw new SLVTestsException(ExceptionCode.DIFF_METHOD_EXECUTION, ex.getMessage(), ex);
+			String message = MessageHelper.getMessage(ex.getMessage());
+			logger.error(message);
+			throw new SLVTestsException(ExceptionCode.DIFF_METHOD_EXECUTION, message, ex);
 		}
 
 		boolean jsonEquals = true;
