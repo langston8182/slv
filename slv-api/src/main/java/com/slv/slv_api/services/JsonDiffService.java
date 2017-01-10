@@ -5,6 +5,8 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
+import org.apache.log4j.Logger;
+
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -14,6 +16,7 @@ import com.slv.slv_api.common.MessageHelper;
 import com.slv.slv_api.entities.Add;
 import com.slv.slv_api.entities.Remove;
 import com.slv.slv_api.exceptions.ExceptionCode;
+import com.slv.slv_api.exceptions.SLVTestsException;
 import com.slv.slv_api.exceptions.UnsupportedOperationException;
 
 /**
@@ -24,6 +27,11 @@ import com.slv.slv_api.exceptions.UnsupportedOperationException;
  */
 public class JsonDiffService {
 
+	/**
+	 * Logger log4j
+	 */
+	private Logger logger = Logger.getLogger(JsonDiffService.class);
+	
 	/**
 	 * No changes message.
 	 */
@@ -98,11 +106,17 @@ public class JsonDiffService {
 	 * @throws JsonProcessingException
 	 */
 	public JsonDiffResult diff(String toVerify, String target)
-			throws JsonProcessingException, UnsupportedOperationException, IOException {
+			throws UnsupportedOperationException, SLVTestsException {
 		ObjectMapper mapper = new ObjectMapper();
-		JsonNode patch = JsonDiff.asJson(
-				prepareForCompare(mapper.readTree(target)),
-				prepareForCompare(mapper.readTree(toVerify)));
+		
+		JsonNode patch = null;
+		try {
+			patch = JsonDiff.asJson(
+					prepareForCompare(mapper.readTree(target)),
+					prepareForCompare(mapper.readTree(toVerify)));
+		} catch (IOException ex) {
+			throw new SLVTestsException(ExceptionCode.DIFF_METHOD_EXECUTION, ex.getMessage(), ex);
+		}
 
 		boolean jsonEquals = true;
 
@@ -135,10 +149,6 @@ public class JsonDiffService {
 					removes.add(new Remove(path));
 				}
 				break;
-				
-			default:
-				throw new UnsupportedOperationException(ExceptionCode.DIFF_METHOD_EXECUTION, 
-						MessageHelper.getMessage("core.service.diff.unsupported.operation", operationType));
 			}
 		}
 

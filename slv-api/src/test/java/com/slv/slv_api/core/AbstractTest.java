@@ -129,7 +129,7 @@ public abstract class AbstractTest {
 			JsonDiffResult jsonDiffResult = JsonDiffService.getInstance().diff(realResponse, expectedResponse.toString());
 			jsonDiffResult.setResponse(realResponse);
 			return jsonDiffResult;
-		} catch(IOException e) {
+		} catch(SLVTestsException e) {
 			logger.error(MessageHelper.getMessage("core.abstract.test.diff.error"), e);
 			throw new SLVTestsException(ExceptionCode.DIFF_METHOD_CALL, MessageHelper.getMessage("core.abstract.test.diff.error"), e);
 		}
