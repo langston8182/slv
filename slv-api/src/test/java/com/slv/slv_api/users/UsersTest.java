@@ -95,6 +95,14 @@ public class UsersTest extends AbstractTest {
 		// VERIFY
 		Assert.assertTrue(result.isEquals(), result.getErrorMessage());
 	}
+	
+	@Test
+	public void recoverPassword() throws SLVTestsException {
+		JsonDiffResult result = retrieveResult(UsersMethods.RECOVER_PASSWORD.getUrl());
+
+		// VERIFY
+		Assert.assertTrue(result.isEquals(), result.getErrorMessage());
+	}
 
 	@Override
 	protected String getInputFile() {
@@ -108,8 +116,8 @@ public class UsersTest extends AbstractTest {
 
 	public static void main(String[] args) {
 		UsersTest test = new UsersTest();
-		try {
-			test.beforeTest("http://5.196.91.118:8080/celad/api/", "test", "Celad20!6");
+		try {	
+			test.beforeTest("http://5.196.91.118:8080/celad/", "test", "Celad20!6");
 			test.verifyPassword();
 		} catch (SLVTestsException e) {
 			e.printStackTrace();

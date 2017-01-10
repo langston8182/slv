@@ -1,21 +1,21 @@
 {
-	"asset/getAllProviders" : {
+	"api/asset/getAllProviders" : {
 	  	"ser": "json"
 	},
-	"assetmanagement/createProvider" : {
+	"api/assetmanagement/createProvider" : {
 	  "name": "My provider", 
 	  "pollutionRate": 0.42,
 	  "ser": "json",
 	  "time": "1484036967291"
 	},
-	"assetmanagement/updateProvider" : {
+	"api/assetmanagement/updateProvider" : {
 	  "providerId": 3826,
 	  "newName": "My new provider",
 	  "pollutionRate": 0.11,
 	  "ser": "json",
 	  "time": "1484036967291"
 	},
-	"assetmanagement/deleteProvider" : {
+	"api/assetmanagement/deleteProvider" : {
 	  "id": 3826,
 	  "ser": "json"
 	}

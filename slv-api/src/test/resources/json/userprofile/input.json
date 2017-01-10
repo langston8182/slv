@@ -1,15 +1,15 @@
 {
-	"userprofile/getGeoZoneProfils" : {
+	"api/userprofile/getGeoZoneProfils" : {
 		"geoZoneId": 1,
 	  	"recurse": "true",
 	  	"ser": "json"
 	},
-	"userprofile/createProfil" : {
+	"api/userprofile/createProfil" : {
 		"profilName": "createProfil_profilNameTest",
 		"geoZoneId": 1,
 	  	"ser": "json"
 	},
-	"userprofile/updateProfilProperties" : {
+	"api/userprofile/updateProfilProperties" : {
 		"profilName": "createProfil_profilNameTest",
 	  	"ser": "json",
 	  	"property.locale" : "fr_FR",
@@ -17,17 +17,17 @@
 	  	"property.geoZoneRootId" : "1",
 	  	"property.blockedActions" : "SLVDimmingAPI!setDimmingLevels"
 	},
-	"userprofile/deleteProfil" : {
+	"api/userprofile/deleteProfil" : {
 		"profilName": "createProfil_profilNameTest",
 	  	"ser": "json"
 	},
-	"userprofile/getCurrentProfil" : {
+	"api/userprofile/getCurrentProfil" : {
 	  	"ser": "json"
 	},
-	"asset/getProfilProperties" : {
+	"api/asset/getProfilProperties" : {
 	  	"ser": "json"
 	},
-    "userprofile/getProfilPropertyDescriptors" : {
+    "api/userprofile/getProfilPropertyDescriptors" : {
     	"ser": "json"
     }
 }

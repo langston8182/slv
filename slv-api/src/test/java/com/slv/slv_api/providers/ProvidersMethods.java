@@ -7,10 +7,10 @@ package com.slv.slv_api.providers;
  */
 public enum ProvidersMethods {
 	
-	GET_ALL_PROVIDERS("asset/getAllProviders"),
-	CREATE_PROVIDER("assetmanagement/createProvider"),
-	UPDATE_PROVIDER("assetmanagement/updateProvider"),
-	DELETE_PROVIDER("assetmanagement/deleteProvider");
+	GET_ALL_PROVIDERS("api/asset/getAllProviders"),
+	CREATE_PROVIDER("api/assetmanagement/createProvider"),
+	UPDATE_PROVIDER("api/assetmanagement/updateProvider"),
+	DELETE_PROVIDER("api/assetmanagement/deleteProvider");
 	
 	private String url;
 	

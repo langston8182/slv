@@ -1,11 +1,11 @@
 {
-	"assetmanagement/createProvider" : {
+	"api/assetmanagement/createProvider" : {
 		  "id" : null,
 		  "name" : null,
 		  "pollution" : null,
 		  "type" : null
 	},
-	"asset/getAllProviders" : [
+	"api/asset/getAllProviders" : [
 		 {
 			  "id" : null,
 			  "name" : null,
@@ -13,13 +13,13 @@
 			  "type" : null
 		 }
 	],
-	"assetmanagement/updateProvider" : {
+	"api/assetmanagement/updateProvider" : {
 		 "id" : null,
 		 "name" : null,
 		 "pollution" : null,
 		 "type" : null
 	},
-	"assetmanagement/deleteProvider" : {
+	"api/assetmanagement/deleteProvider" : {
 		 "errorCode" : null,
 		 "errorCodeLabel" : null,
 		 "message" : null,

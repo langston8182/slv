@@ -1,5 +1,5 @@
 {
-	"userprofile/createUser": {
+	"api/userprofile/createUser": {
 		"admin": true,
 		"contact": {
 			"address": null,
@@ -21,11 +21,11 @@
 			}
 		]
 	},
-	"userprofile/updateUser": {
+	"api/userprofile/updateUser": {
 	},
-	"userprofile/updateUserProperty": {
+	"api/userprofile/updateUserProperty": {
 	},
-	"userprofile/getCurrentUser": {
+	"api/userprofile/getCurrentUser": {
 		"admin": null,
 		"contact": {
 			"address": null,
@@ -47,7 +47,7 @@
 			}
 		]
 	},
-	"userprofile/getAllUsers": [
+	"api/userprofile/getAllUsers": [
 		{
 			"admin": true,
 			"contact": {
@@ -71,7 +71,7 @@
 			]
 		}
 	],
-	"userprofile/getGeoZoneUsers": [
+	"api/userprofile/getGeoZoneUsers": [
 		{
 			"admin": null,
 			"contact": null,
@@ -88,7 +88,7 @@
 			]
 		}
 	],
-	"userprofile/deleteUser": {
+	"api/userprofile/deleteUser": {
 		"errorCode": null,
 		"errorCodeLabel": null,
 		"message": null,
@@ -97,11 +97,11 @@
 		"statusOk": true,
 		"value": null
 	},
-	"userprofile/changePassword": {
+	"api/userprofile/changePassword": {
 	},
-	"publicconfig/sendResetPasswordRequestByMail": {
+	"public/api/publicconfig/sendResetPasswordRequestByMail": {
 	},
-	"userprofile/checkPassword": {
+	"api/userprofile/checkPassword": {
 		"errorCode": "0",
 		"errorCodeLabel": null,
 		"message": null,

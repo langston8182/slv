@@ -6,15 +6,16 @@ package com.slv.slv_api.users;
  *
  */
 public enum UsersMethods {
-	CREATE_USER("userprofile/createUser"),
-	UPDATE_USER("userprofile/updateUser"),
-	UPDATE_USER_PROPERTIES("userprofile/updateUserProperty"),
-	GET_CURRENT_USER("userprofile/getCurrentUser"),
-	GET_ALL_USERS("userprofile/getAllUsers"),
-	GET_USERS_GEOZONE("userprofile/getGeoZoneUsers"),
-	DELETE_USER("userprofile/deleteUser"),
-	UPDATE_PASSWORD("userprofile/changePassword"),
-	VERIFY_PASSWORD("userprofile/checkPassword");
+	CREATE_USER("api/userprofile/createUser"),
+	UPDATE_USER("api/userprofile/updateUser"),
+	UPDATE_USER_PROPERTIES("api/userprofile/updateUserProperty"),
+	GET_CURRENT_USER("api/userprofile/getCurrentUser"),
+	GET_ALL_USERS("api/userprofile/getAllUsers"),
+	GET_USERS_GEOZONE("api/userprofile/getGeoZoneUsers"),
+	DELETE_USER("api/userprofile/deleteUser"),
+	UPDATE_PASSWORD("api/userprofile/changePassword"),
+	RECOVER_PASSWORD("public/api/publicconfig/sendResetPasswordRequestByMail"),
+	VERIFY_PASSWORD("api/userprofile/checkPassword");
 	
 	private String url;
 	

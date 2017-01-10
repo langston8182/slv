@@ -1,5 +1,5 @@
 {
-	"userprofile/getGeoZoneProfils": [
+	"api/userprofile/getGeoZoneProfils": [
 		{
 			"name": null,
 			"properties": {
@@ -8,7 +8,7 @@
 			}
 		}
 	],
-	"userprofile/createProfil" : {
+	"api/userprofile/createProfil" : {
 	   "name" : null,
 	   "properties" : [
 	        {
@@ -17,8 +17,8 @@
 	    	}
 		]
 	},
-	"userprofile/updateProfilProperties" : "OK",
-	"userprofile/deleteProfil" : {
+	"api/userprofile/updateProfilProperties" : "OK",
+	"api/userprofile/deleteProfil" : {
 	   "errorCode" : "0",
 	   "errorCodeLabel" : null,
 	   "message" : null,
@@ -27,7 +27,7 @@
 	   "statusOk" : true,
 	   "value" : null
 	},
-	"userprofile/getCurrentProfil" : {
+	"api/userprofile/getCurrentProfil" : {
 		"name" : null,
 		"properties" : [
 			{
@@ -36,13 +36,13 @@
 	        }
 	    ]
 	},
-	"asset/getProfilProperties" : [
+	"api/asset/getProfilProperties" : [
 		{
         	"key" : null,
         	"value" : null
         }
     ],
-    "userprofile/getProfilPropertyDescriptors" : [
+    "api/userprofile/getProfilPropertyDescriptors" : [
 		{
 			"dataFormat" : null,
       		"enumValues" : [

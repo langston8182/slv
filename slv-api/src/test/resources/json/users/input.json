@@ -1,5 +1,5 @@
 {
-	"userprofile/createUser": {
+	"api/userprofile/createUser": {
 		"ser": "json",
 		"login": "cmarchive",
 		"password": "Abcd123<",
@@ -11,7 +11,7 @@
 		"pager": "0613131313",
 		"phone": "0513131313"
 	},
-	"userprofile/updateUser": {
+	"api/userprofile/updateUser": {
 		"ser": "json",
 		"login": "test",
 		"firstName": "test update",
@@ -22,38 +22,38 @@
 		"pager": "0679797979",
 		"phone": "0579797979"
 	},
-	"userprofile/updateUserProperty": {
+	"api/userprofile/updateUserProperty": {
 		"ser": "json",
 		"userLogin": "test",
 		"propertyName": "@twitter",
 		"propertyValue": "cmarchive"
 	},
-	"userprofile/getCurrentUser": {
+	"api/userprofile/getCurrentUser": {
 		"ser": "json"
 	},
-	"userprofile/getAllUsers": {
+	"api/userprofile/getAllUsers": {
 		"ser": "json"
 	},
-	"userprofile/getGeoZoneUsers": {
+	"api/userprofile/getGeoZoneUsers": {
 		"ser": "json",
 		"geoZoneId": 1,
 		"recurse": "true"
 	},
-	"userprofile/deleteUser": {
+	"api/userprofile/deleteUser": {
 		"ser": "json",
 		"login": "cmarchive"
 	},
-	"userprofile/changePassword": {
+	"api/userprofile/changePassword": {
 		"ser": "json",
 		"previousPassword": "Celad20!6",
 		"newPassword": "Celad20!6"
 	},
-	"publicconfig/sendResetPasswordRequestByMail": {
+	"public/api/publicconfig/sendResetPasswordRequestByMail": {
 		"ser": "json",
-		"login": "cmarchive"
+		"login": "test"
 	},
-	"userprofile/checkPassword": {
+	"api/userprofile/checkPassword": {
 		"ser": "json",
-		"password": "Abcd456<"
+		"password": "Celad20!6"
 	}
 }

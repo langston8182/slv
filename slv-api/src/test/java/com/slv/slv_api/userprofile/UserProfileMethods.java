@@ -7,13 +7,13 @@ package com.slv.slv_api.userprofile;
  */
 public enum UserProfileMethods {
 
-	GET_GEOZONE_PROFILS("userprofile/getGeoZoneProfils"),
-	CREATE_PROFIL("userprofile/createProfil"),
-	UPDATE_PROFIL("userprofile/updateProfilProperties"),
-	DELETE_PROFIL("userprofile/deleteProfil"),
-	GET_CURRENT_PROFIL("userprofile/getCurrentProfil"),
-	GET_PROFIL_PROPERTIES("asset/getProfilProperties"),
-	GET_PROFIL_PROPERTY_DESCRIPTORS("userprofile/getProfilPropertyDescriptors");
+	GET_GEOZONE_PROFILS("api/userprofile/getGeoZoneProfils"),
+	CREATE_PROFIL("api/userprofile/createProfil"),
+	UPDATE_PROFIL("api/userprofile/updateProfilProperties"),
+	DELETE_PROFIL("api/userprofile/deleteProfil"),
+	GET_CURRENT_PROFIL("api/userprofile/getCurrentProfil"),
+	GET_PROFIL_PROPERTIES("api/asset/getProfilProperties"),
+	GET_PROFIL_PROPERTY_DESCRIPTORS("api/userprofile/getProfilPropertyDescriptors");
 	
 	private String url;
 	
