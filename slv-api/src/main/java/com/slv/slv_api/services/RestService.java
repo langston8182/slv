@@ -12,9 +12,9 @@ import com.sun.jersey.api.client.filter.HTTPBasicAuthFilter;
 import com.sun.jersey.core.util.MultivaluedMapImpl;
 
 /**
- * @author cmarchive
- *
  * Provides an implementation of RestService. This class implements calls to a Rest API using GET Http verb.
+ * 
+ * @author cmarchive
  */
 public class RestService {
 
