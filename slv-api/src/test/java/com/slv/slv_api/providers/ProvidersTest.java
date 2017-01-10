@@ -17,7 +17,7 @@ import com.slv.slv_api.services.JsonDiffResult;
 import com.slv.slv_api.utils.Constantes;
 
 /**
- * Test class of the rest api URLs for a provider.
+ * Test class for the rest api URLs of a provider.
  * 
  * @author yromdhane
  *
@@ -36,7 +36,7 @@ public class ProvidersTest extends AbstractTest {
 
 	/**
 	 * Map to store the identifiers of the created providers in order to delete them at the end of the tests
-	 * The key is the method name and the value is the identifier
+	 * The key is the method name and the value is the provider identifier
 	 */
 	private Map<String, Integer> createdProviderIdMap = new HashMap<String, Integer>();
 
@@ -154,7 +154,7 @@ public class ProvidersTest extends AbstractTest {
 			call(ProvidersMethods.DELETE_PROVIDER.getUrl(), parameters);			
 		}
 	}
-	
+
 
 	/**
 	 * Creates a Provider and assert its existence and equality.
@@ -218,7 +218,7 @@ public class ProvidersTest extends AbstractTest {
 			Assert.assertTrue(result.isEquals(), result.getErrorMessage());
 		}
 	}
-	
+
 
 	@Override
 	protected String getInputFile() {
