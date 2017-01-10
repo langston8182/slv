@@ -24,7 +24,6 @@ import com.slv.slv_api.services.RestService;
  * Contains common methods and attributes.</p>
  * 
  * @author atran
- *
  */
 public abstract class AbstractTest {
 
