@@ -7,7 +7,7 @@
 	<parameter name="password" value="${slv.password}" />
 	<test name="rest">
 		<classes>
-			<class name="com.slv.slv_api.userprofile.UserProfileTest" />
+			<class name="com.slv.slv_api.users.UsersTest" />
 		</classes>
 	</test>
 

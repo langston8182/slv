@@ -31,7 +31,7 @@
 	"userprofile/getAllUsers": {
 		"ser": "json"
 	},
-	"userprofile/getGeoZoneUsers": {
+	"asset/getGeoZoneUsers": {
 		"ser": "json",
 		"geoZoneId": 1,
 		"recurse": "true"

@@ -1,6 +1,6 @@
 package com.slv.slv_api.users;
 
-import org.apache.log4j.Logger;
+import org.junit.Before;
 import org.testng.Assert;
 import org.testng.annotations.Test;
 
@@ -119,7 +119,7 @@ public class UsersTest extends AbstractTest {
 		UsersTest test = new UsersTest();
 		try {
 			test.beforeTest("http://5.196.91.118:8080/celad/api/", "celad", "Celad20!6");
-			test.createUser();
+			test.recoverPassword();
 		} catch (SLVTestsException e) {
 			e.printStackTrace();
 		}
