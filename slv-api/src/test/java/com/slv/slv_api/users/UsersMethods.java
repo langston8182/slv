@@ -2,8 +2,8 @@ package com.slv.slv_api.users;
 
 /**
  * Rest api URLs for a users
+ * 
  * @author cmarchive
- *
  */
 public enum UsersMethods {
 	CREATE_USER("api/userprofile/createUser"),

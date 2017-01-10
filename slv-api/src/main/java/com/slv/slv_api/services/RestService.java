@@ -11,25 +11,68 @@ import com.sun.jersey.api.client.WebResource;
 import com.sun.jersey.api.client.filter.HTTPBasicAuthFilter;
 import com.sun.jersey.core.util.MultivaluedMapImpl;
 
+/**
+ * @author cmarchive
+ *
+ * Provides an implementation of RestService. This class implements calls to a Rest API using GET Http verb.
+ */
 public class RestService {
 
+	/**
+	 * Json schema.
+	 */
 	private static final String JSON_SCHEMA = "application/json";
 
+	/**
+	 * Unique instance of RestService
+	 */
 	private static RestService INSTANCE = null;
+	
+	/**
+	 * The URL to connect to the Rest API.
+	 */
 	private String url;
+	
+	/**
+	 * Login to connect to the Rest API.
+	 */
 	private String login;
+	
+	/**
+	 * Password to connect to the Rest API.
+	 */
 	private String password;
 	
+	/**
+	 * Default constructor. Not accessible out of this class.
+	 * Provide only one instance of RestService as Singleton.
+	 * 
+	 * @param url The url to connect to Rest API.
+	 * @param login The login to connect to Rest API.
+	 * @param password The password to connect to Rerst API.
+	 */
 	private RestService(String url, String login, String password) {
 		this.url = url;
 		this.login = login;
 		this.password = password;
 	}
 	
+	/**
+	 * Private default constructor to avoid creating several RestService objects.
+	 */
 	private RestService() {
 		
 	}
 	
+	/**
+	 * Get the unique instance of RestService.
+	 * 
+	 * @param url The url to connect to Rest API.
+	 * @param login The login to connect to Rest API.
+	 * @param password The password to connect to Rerst API.
+	 * 
+	 * @return The unique instance of RestService.
+	 */
 	public static RestService getInstance(String url, String login, String password) {
 		if (INSTANCE == null) {
 			INSTANCE = new RestService(url, login, password);
@@ -38,10 +81,25 @@ public class RestService {
 		return INSTANCE;
 	}
 
+	/**
+	 * Call to the Rest API with GET http verb.
+	 * 
+	 * @param methoUrl The uri.
+	 * 
+	 * @return The response of the Rest API.
+	 */
 	public String get(String methoUrl) {
 		return get(methoUrl, null);
 	}
 	
+	/**
+	 * Call to the Rest API with GET http verb with parameters.
+	 * 
+	 * @param methoUrl The uri.
+	 * @param params The parameters of the request.
+	 * 
+	 * @return The response of the Rest API.
+	 */
 	public String get(String methoUrl, Map<String, Object> params) {
 		Client client = Client.create();
 		client.addFilter(new HTTPBasicAuthFilter(login, password));
@@ -65,8 +123,9 @@ public class RestService {
 
 	/**
 	 * Convert from {@link Map} to {@link MultivaluedMap}
+	 * 
 	 * @param params the {@link Map}
-	 * @return
+	 * @return the new created map.
 	 */
 	@SuppressWarnings("unchecked")
 	private MultivaluedMap<String, String> convert(Map<String, Object> params) {
