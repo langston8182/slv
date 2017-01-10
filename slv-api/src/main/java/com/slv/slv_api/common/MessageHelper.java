@@ -5,22 +5,31 @@ import java.util.ResourceBundle;
 
 /**
  * Helper class with methods to get messages from resource bundle
+ * 
  * @author atran
- *
  */
 public class MessageHelper {
 
-	private static ResourceBundle messagesBundle;
+	/**
+	 * Unique instance of ResourceBundle
+	 */
+	private static ResourceBundle INSTANCE;
 	
+	/**
+	 * Get the unique instance of ResourceBundle.
+	 * 
+	 * @return The unique instance of ResourceBundle.
+	 */
 	private static ResourceBundle getInstance() {
-		if(messagesBundle == null) {
-			messagesBundle = ResourceBundle.getBundle("messages");
+		if(INSTANCE == null) {
+			INSTANCE = ResourceBundle.getBundle("messages");
 		}
-		return messagesBundle;
+		return INSTANCE;
 	}
 	
 	/**
 	 * Returns a message from the resource bundle. Message can be parameterized.
+	 * 
 	 * @param key the key defined in the resource bundle
 	 * @param parameters the parameters (optional)
 	 * @return the message value
