@@ -217,19 +217,17 @@ public class JsonDiffServiceTest {
 		if(value != null) {
 			// If the node is an array, verify size
 			if(value.isArray()) {
-				correctSize = correctSize && hasAtMostOneElement(value.elements());
+				correctSize = correctSize && hasAtMostOneElement(value.iterator());
 				// Read the rest
 				if(correctSize) {
-					for (Iterator<JsonNode> iterator = value.elements(); iterator.hasNext();) {
-						JsonNode node = (JsonNode) iterator.next();
-						correctSize = checkArraySize(node);
+					for (JsonNode jsonNode : value) {
+						correctSize = checkArraySize(jsonNode);
 					}
 				}
 			} else if(value.isObject()) {
 				// If it's an object, recursive call on each attributes
-				for (Iterator<JsonNode> iterator = value.elements(); iterator.hasNext();) {
-					JsonNode node = (JsonNode) iterator.next();
-					correctSize = checkArraySize(node);
+				for (JsonNode jsonNode : value) {
+					correctSize = checkArraySize(jsonNode);
 				}
 			}
 		}
