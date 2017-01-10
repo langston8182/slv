@@ -79,8 +79,8 @@ public class ProvidersTest extends AbstractTest {
 		String errorMessage = (String)map.get(Constantes.RESPONSE_MESSAGE_KEY);
 
 		// Verify that the error belongs to the name
-		Assert.assertTrue(Constantes.INTERNAL_ERROR_CODE.equals(errorCode), result.getErrorMessage());
-		Assert.assertTrue(errorMessage.contains("streetlight.data.Provider.name"), result.getErrorMessage());				
+		Assert.assertTrue(Constantes.INTERNAL_ERROR_CODE.equals(errorCode), "The returned code is different from the expected one");
+		Assert.assertTrue(errorMessage.contains("streetlight.data.Provider.name"), "The returned error message is different from the expected one");				
 	}
 
 	/**
@@ -138,21 +138,6 @@ public class ProvidersTest extends AbstractTest {
 	}
 
 	/**
-	 * Deletes a created provider.
-	 * 
-	 * @param methodName
-	 * @throws SLVTestsException
-	 */
-	public void deleteCreatedProviderWithMissingAttributes(String methodName) throws SLVTestsException {
-		if (createdProviderIdMap.get(methodName) != null) {
-			JsonNode parameters = getInputs().get(ProvidersMethods.DELETE_PROVIDER.getUrl());
-			((ObjectNode)parameters).put(Constantes.DELETE_PROVIDER_INPUT_ID_KEY, createdProviderIdMap.get(methodName));			
-			call(ProvidersMethods.DELETE_PROVIDER.getUrl(), parameters);			
-		}
-	}
-
-
-	/**
 	 * Creates a Provider and assert its existence and equality.
 	 * 
 	 * @throws SLVTestsException 
@@ -165,7 +150,7 @@ public class ProvidersTest extends AbstractTest {
 		// CALL
 		JsonDiffResult result = retrieveResult(ProvidersMethods.CREATE_PROVIDER.getUrl());
 
-		// VERIFY
+		// Verify that the provider is created 
 		Assert.assertTrue(result.isEquals(), result.getErrorMessage());
 
 		// Extract the id of the created Provider
@@ -189,7 +174,7 @@ public class ProvidersTest extends AbstractTest {
 			// CALL
 			JsonDiffResult result = retrieveResult(ProvidersMethods.UPDATE_PROVIDER.getUrl(), parameters);
 
-			// VERIFY
+			// Verify that the provider is updated 
 			Assert.assertTrue(result.isEquals(), result.getErrorMessage());
 		}		
 	}
@@ -212,6 +197,21 @@ public class ProvidersTest extends AbstractTest {
 
 			// VERIFY
 			Assert.assertTrue(result.isEquals(), result.getErrorMessage());
+		}
+	}
+	
+	/**
+	 * Deletes a created provider.
+	 * 
+	 * @param methodName
+	 * 
+	 * @throws SLVTestsException
+	 */
+	public void deleteCreatedProviderWithMissingAttributes(String methodName) throws SLVTestsException {
+		if (createdProviderIdMap.get(methodName) != null) {
+			JsonNode parameters = getInputs().get(ProvidersMethods.DELETE_PROVIDER.getUrl());
+			((ObjectNode)parameters).put(Constantes.DELETE_PROVIDER_INPUT_ID_KEY, createdProviderIdMap.get(methodName));			
+			call(ProvidersMethods.DELETE_PROVIDER.getUrl(), parameters);			
 		}
 	}
 
