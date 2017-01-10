@@ -13,6 +13,10 @@ import org.testng.Assert;
 
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.slv.slv_api.exceptions.SLVTestsException;
+import com.slv.slv_api.exceptions.UnsupportedOperationException;
+
+import junit.framework.AssertionFailedError;
 
 /**
  * Unit tests for {@link JsonDiffService}
@@ -41,7 +45,12 @@ public class JsonDiffServiceTest {
 				+ "}";
 		
 		// CALL
-		JsonDiffResult result = jsonDiffService.diff(toVerify, expected);
+		JsonDiffResult result = null;
+		try {
+			result = jsonDiffService.diff(toVerify, expected);
+		} catch (SLVTestsException e) {
+			Assert.assertTrue(false);
+		}
 		
 		// VERIFY
 		Assert.assertNotNull(result);
@@ -217,19 +226,17 @@ public class JsonDiffServiceTest {
 		if(value != null) {
 			// If the node is an array, verify size
 			if(value.isArray()) {
-				correctSize = correctSize && hasAtMostOneElement(value.elements());
+				correctSize = correctSize && hasAtMostOneElement(value.iterator());
 				// Read the rest
 				if(correctSize) {
-					for (Iterator<JsonNode> iterator = value.elements(); iterator.hasNext();) {
-						JsonNode node = (JsonNode) iterator.next();
-						correctSize = checkArraySize(node);
+					for (JsonNode jsonNode : value) {
+						correctSize = checkArraySize(jsonNode);
 					}
 				}
 			} else if(value.isObject()) {
 				// If it's an object, recursive call on each attributes
-				for (Iterator<JsonNode> iterator = value.elements(); iterator.hasNext();) {
-					JsonNode node = (JsonNode) iterator.next();
-					correctSize = checkArraySize(node);
+				for (JsonNode jsonNode : value) {
+					correctSize = checkArraySize(jsonNode);
 				}
 			}
 		}
