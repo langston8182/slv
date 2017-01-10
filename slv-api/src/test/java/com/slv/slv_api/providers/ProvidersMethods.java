@@ -33,7 +33,7 @@ public enum ProvidersMethods {
 	private String url;
 
 	/**
-	 * Default constructor to provide a ProvidersMethods enumeration.
+	 * Constructor to provide a ProvidersMethods enumeration.
 	 * 
 	 * @param url The url
 	 */
