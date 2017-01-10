@@ -1,13 +1,10 @@
 package com.slv.slv_api.services;
-import java.util.Collection;
 import java.util.List;
 import java.util.Map;
-import java.util.Set;
 import java.util.Map.Entry;
 
 import javax.ws.rs.core.MultivaluedMap;
 
-import com.fasterxml.jackson.databind.JsonNode;
 import com.sun.jersey.api.client.Client;
 import com.sun.jersey.api.client.ClientResponse;
 import com.sun.jersey.api.client.WebResource;

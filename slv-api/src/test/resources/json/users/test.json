@@ -1,22 +1,17 @@
-{
-	"admin": true,
-	"contact": {
-		"address": null,
-		"id": null,
-		"mail": null,
-		"name": null,
-		"pager": null,
-		"phone": null
-	},
-	"firstName": null,
-	"lastName": null,
-	"login": null,
-	"password": null,
-	"profilName": null,
-	"properties": [
-		{
-			"key": null,
-			"value": null
-		}
-	]
-}
+[
+	{
+		"admin": null,
+		"contact": null,
+		"firstName": null,
+		"lastName": null,
+		"login": null,
+		"password": null,
+		"profilName": null,
+		"properties": [
+			{
+				"key": null,
+				"value": null
+			}
+		]
+	}
+]

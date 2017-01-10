@@ -1,21 +1,48 @@
 package com.slv.slv_api.userprofile;
 
-import java.io.IOException;
 import java.util.Iterator;
 import java.util.Map;
 
-import org.apache.log4j.Logger;
 import org.testng.Assert;
 import org.testng.annotations.Test;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.JsonNode;
+import com.slv.slv_api.common.MessageHelper;
 import com.slv.slv_api.core.AbstractTest;
 import com.slv.slv_api.exceptions.SLVTestsException;
 import com.slv.slv_api.services.JsonDiffResult;
-import com.slv.slv_api.services.JsonDiffService;
 
 public class UserProfileTest extends AbstractTest {
+
+	/**
+	 * Value "0" is returned for "errorCode" if object has been deleted
+	 */
+	private static final String DELETE_ERROR_CODE_OK_VALUE = "0";
+
+	/**
+	 * Value "OK" is returned for "status" if object has been deleted
+	 */
+	private static final String DELETE_STATUS_OK_VALUE = "OK";
+
+	/**
+	 * Property value used to define user profile blocked actions
+	 */
+	private static final String PROPERTY_VALUE_BLOCKED_ACTIONS = "blockedActions";
+
+	/**
+	 * Property value used to define user profile skin
+	 */
+	private static final String PROPERTY_VALUE_SKIN = "skin";
+
+	/**
+	 * Property value used to define user profile locale
+	 */
+	private static final String PROPERTY_VALUE_LOCALE = "locale";
+
+	/**
+	 * Contenu de la réponse du service updateProfil dans le cas passant : "OK"
+	 */
+	private static final String UPDATE_PROFIL_OK_RESPONSE = "\"OK\"";
 
 	/**
 	 * File name of UserProfile API Inputs
@@ -97,31 +124,31 @@ public class UserProfileTest extends AbstractTest {
 		Map<String, Object> inputs = convert(getInputs().get(UserProfileMethods.CREATE_PROFIL.getUrl()));
 		
 		// Profil names must be equals
-		String expectedProfilName = (String)inputs.get("profilName");
-		String realProfilName = (String)responseJsonNode.get("name");
-		Assert.assertNotNull(realProfilName);
-		Assert.assertEquals(realProfilName, expectedProfilName);
+		String expectedProfilName = (String)inputs.get(JsonAttributes.INPUT_CREATE_PROFIL_NAME.getKey());
+		String realProfilName = (String)responseJsonNode.get(JsonAttributes.OUTPUT_CREATE_PROFIL_NAME.getKey());
+		Assert.assertNotNull(realProfilName, MessageHelper.getMessage("user.profile.create.response.name.not.found"));
+		Assert.assertEquals(realProfilName, expectedProfilName, MessageHelper.getMessage("user.profile.create.response.name.not.expected", expectedProfilName, realProfilName));
 
 		// Verify existence by calling "getGeoZoneProfils"
 		response = call(UserProfileMethods.GET_GEOZONE_PROFILS.getUrl(), getInputs().get(UserProfileMethods.GET_GEOZONE_PROFILS.getUrl()));
-		Assert.assertNotNull(response);
+		Assert.assertNotNull(response, MessageHelper.getMessage("user.profile.geozoneprofils.response.null"));
 		
 		JsonNode jsonNode = convertToJsonNode(response);
-		Assert.assertTrue(jsonNode.isArray());
+		Assert.assertTrue(jsonNode.isArray(), MessageHelper.getMessage("user.profile.geozoneprofils.response.not.array", response));
 		
 		boolean profilFound = false;
 		for (Iterator<JsonNode> iterator = jsonNode.elements(); iterator.hasNext();) {
 			JsonNode node = (JsonNode) iterator.next();
 			
 			// Get the name and compare with expectedName
-			JsonNode profilName = node.get("name");
-			profilFound = expectedProfilName.equals(profilName.asText());
+			JsonNode profilName = node.get(JsonAttributes.OUTPUT_GEOZONES_PROFIL_NAME.getKey());
+			profilFound = profilName != null && expectedProfilName.equals(profilName.asText());
 			if(profilFound) {
 				break;
 			}
 		}
 		
-		Assert.assertTrue(profilFound);
+		Assert.assertTrue(profilFound, MessageHelper.getMessage("user.profile.create.profil.not.found.in.list", expectedProfilName));
 	}
 
 	/**
@@ -141,51 +168,68 @@ public class UserProfileTest extends AbstractTest {
 		String response = result.getResponse();
 		
 		// Response must be "\"OK\""
-		Assert.assertEquals(response, "\"OK\"");
+		Assert.assertEquals(response, UPDATE_PROFIL_OK_RESPONSE, MessageHelper.getMessage("user.profile.update.response.not.ok", response));
 
 		// Verify properties by calling "getGeoZoneProfils"
 		response = call(UserProfileMethods.GET_GEOZONE_PROFILS.getUrl(), getInputs().get(UserProfileMethods.GET_GEOZONE_PROFILS.getUrl()));
-		Assert.assertNotNull(response);
+		Assert.assertNotNull(response, MessageHelper.getMessage("user.profile.geozoneprofils.response.null"));
 		
 		JsonNode jsonNode = convertToJsonNode(response);
-		Assert.assertTrue(jsonNode.isArray());
+		Assert.assertTrue(jsonNode.isArray(), MessageHelper.getMessage("user.profile.geozoneprofils.response.not.array", response));
 
 		// Get the profile properties
 		Map<String, Object> inputs = convert(getInputs().get(UserProfileMethods.UPDATE_PROFIL.getUrl()));
-		String expectedProfilName = (String)inputs.get("profilName");
+		String expectedProfilName = (String)inputs.get(JsonAttributes.INPUT_UPDATE_PROFIL_NAME.getKey());
 		JsonNode properties = null;
 		for (Iterator<JsonNode> iterator = jsonNode.elements(); iterator.hasNext();) {
 			JsonNode node = (JsonNode) iterator.next();
 			
 			// Get the name and compare with expectedName
-			JsonNode profilName = node.get("name");
+			JsonNode profilName = node.get(JsonAttributes.OUTPUT_GEOZONES_PROFIL_NAME.getKey());
 			if(expectedProfilName.equals(profilName.asText())) {
-				properties = node.get("properties");
+				properties = node.get(JsonAttributes.OUTPUT_GEOZONES_PROFIL_PROPERTIES.getKey());
 				break;
 			}
 		}
 		
-		Assert.assertNotNull(properties);
-		Assert.assertTrue(properties.isArray());
+		Assert.assertNotNull(properties, MessageHelper.getMessage("user.profile.geozoneprofils.no.properties"));
+		Assert.assertTrue(properties.isArray(), MessageHelper.getMessage("user.profile.geozoneprofils.properties.not.array", response));
 		
-		// Verify that updated properties are equals to what have been sent to the service
+		// Verify that updated properties are equals to what we sent to updateProfil service
+		assertUpdatedPropertiesPresence(inputs, properties);
+	}
+
+	/**
+	 * Verify that the properties contained in the input {@link Map} are present in the property list defined by the properties parameters
+	 * @param inputs a {@link Map} which contains the values sent to the updateProfil service
+	 * @param properties a {@link JsonNode} which represents the property list 
+	 */
+	private void assertUpdatedPropertiesPresence(Map<String, Object> inputs, JsonNode properties) {
 		boolean localeCheck = false;
 		boolean skinCheck = false;
 		boolean blockedActionChecked = false;
 		
 		for (Iterator<JsonNode> iterator = properties.iterator(); iterator.hasNext();) {
 			JsonNode property = (JsonNode) iterator.next();
+			// Value of the "key" attribute
+			String key = property.get(JsonAttributes.PROPERTY_OBJECT_KEY.getKey()) != null ? property.get(JsonAttributes.PROPERTY_OBJECT_KEY.getKey()).asText() : null;
+			// Value of the "value" attribute
+			String value = property.get(JsonAttributes.PROPERTY_OBJECT_VALUE.getKey()) != null ? property.get(JsonAttributes.PROPERTY_OBJECT_VALUE.getKey()).asText() : null;
 			
-			if("locale".equals(property.get("key").asText()) && inputs.get("property.locale").equals(property.get("value").asText())) {
+			// Search for expected values
+			if(PROPERTY_VALUE_LOCALE.equals(key) 
+					&& inputs.get(JsonAttributes.PROPERTY_LOCALE.getKey()).equals(value)) {
 				localeCheck = true;
-			} else if("skin".equals(property.get("key").asText()) && inputs.get("property.skin").equals(property.get("value").asText())) {
+			} else if(PROPERTY_VALUE_SKIN.equals(key) 
+					&& inputs.get(JsonAttributes.PROPERTY_SKIN.getKey()).equals(value)) {
 				skinCheck = true;
-			} else if("blockedActions".equals(property.get("key").asText()) && inputs.get("property.blockedActions").equals(property.get("value").asText())) {
+			} else if(PROPERTY_VALUE_BLOCKED_ACTIONS.equals(key) && 
+					inputs.get(JsonAttributes.PROPERTY_BLOCKED_ACTIONS.getKey()).equals(value)) {
 				blockedActionChecked = true;
 			}
 		}
 		
-		Assert.assertTrue(localeCheck && skinCheck && blockedActionChecked);
+		Assert.assertTrue(localeCheck && skinCheck && blockedActionChecked, MessageHelper.getMessage("user.profile.update.properties.not.updated"));
 	}
 
 	/**
@@ -193,7 +237,7 @@ public class UserProfileTest extends AbstractTest {
 	 * Depends on {@link #updateUserProfile()}
 	 * @throws SLVTestsException 
 	 */
-	@Test(groups={"userProfile-createUpdateDeleteUser"}, dependsOnMethods={"updateUserProfile"}, priority = 2) 
+	@Test(groups={"userProfile-createUpdateDeleteUser"}, dependsOnMethods={"createUserProfile"}, priority = 3) 
 	public void deleteUserProfile() throws SLVTestsException {
 		// CALL
 		JsonDiffResult result = retrieveResult(UserProfileMethods.DELETE_PROFIL.getUrl());
@@ -206,12 +250,28 @@ public class UserProfileTest extends AbstractTest {
 		Map<String, Object> responseJsonNode = convert(response);
 		
 		// "errorCode" must be present and equals to "0"
-		Assert.assertTrue(responseJsonNode.containsKey("errorCode"));
-		Assert.assertEquals(responseJsonNode.get("errorCode"), "0");
+		Assert.assertTrue(responseJsonNode.containsKey(JsonAttributes.OUTPUT_DELETE_ERROR_CODE.getKey()));
+		Assert.assertEquals(responseJsonNode.get(JsonAttributes.OUTPUT_DELETE_ERROR_CODE.getKey()), DELETE_ERROR_CODE_OK_VALUE);
 
 		// "status" must be present and equals to "OK"
-		Assert.assertTrue(responseJsonNode.containsKey("status"));
-		Assert.assertEquals(responseJsonNode.get("status"), "OK");
+		Assert.assertTrue(responseJsonNode.containsKey(JsonAttributes.OUTPUT_DELETE_STATUS.getKey()));
+		Assert.assertEquals(responseJsonNode.get(JsonAttributes.OUTPUT_DELETE_STATUS.getKey()), DELETE_STATUS_OK_VALUE);
+
+		// "statusOk" must be present and equals to true
+		Assert.assertTrue(responseJsonNode.containsKey(JsonAttributes.OUTPUT_DELETE_STATUS_OK.getKey()));
+		Assert.assertEquals(responseJsonNode.get(JsonAttributes.OUTPUT_DELETE_STATUS_OK.getKey()), true);
+
+		// "statusError" must be present and equals to false
+		Assert.assertTrue(responseJsonNode.containsKey(JsonAttributes.OUTPUT_DELETE_STATUS_ERROR.getKey()));
+		Assert.assertEquals(responseJsonNode.get(JsonAttributes.OUTPUT_DELETE_STATUS_ERROR.getKey()), false);
+	}
+	
+	public static void main(String... args) throws SLVTestsException {
+		UserProfileTest runner = new UserProfileTest();
+		runner.beforeTest("http://5.196.91.118:8080/celad/api/", "celad", "Celad20!6");
+		runner.createUserProfile();
+		runner.updateUserProfile();
+		runner.deleteUserProfile();
 	}
 	
 	@Override

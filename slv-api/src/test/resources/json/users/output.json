@@ -71,6 +71,23 @@
 			]
 		}
 	],
+	"userprofile/getGeoZoneUsers": [
+		{
+			"admin": null,
+			"contact": null,
+			"firstName": null,
+			"lastName": null,
+			"login": null,
+			"password": null,
+			"profilName": null,
+			"properties": [
+				{
+					"key": null,
+					"value": null
+				}
+			]
+		}
+	],
 	"userprofile/deleteUser": {
 		"errorCode": null,
 		"errorCodeLabel": null,

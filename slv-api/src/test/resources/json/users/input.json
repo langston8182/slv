@@ -13,17 +13,20 @@
 	},
 	"userprofile/updateUser": {
 		"ser": "json",
-		"login": "cmarchive",
-		"firstName": "Cyril update",
-		"lastName": "Marchive update",
+		"login": "test",
+		"firstName": "test update",
+		"lastName": "test update",
 		"profilName": "celad",
-		"email": "cyrilupdate.marchiveupdate@celad.com",
+		"email": "testupdate@celad.com",
 		"adress": "48 route de Lavaur 31130 update",
 		"pager": "0679797979",
 		"phone": "0579797979"
 	},
 	"userprofile/updateUserProperty": {
-		"ser": "json"
+		"ser": "json",
+		"userLogin": "test",
+		"propertyName": "@twitter",
+		"propertyValue": "cmarchive"
 	},
 	"userprofile/getCurrentUser": {
 		"ser": "json"
@@ -42,8 +45,8 @@
 	},
 	"userprofile/changePassword": {
 		"ser": "json",
-		"previousPassword": "Abcd123<",
-		"newPassword": "Abcd456<"
+		"previousPassword": "Celad20!6",
+		"newPassword": "Celad20!6"
 	},
 	"publicconfig/sendResetPasswordRequestByMail": {
 		"ser": "json",
