@@ -1,13 +1,13 @@
 package com.slv.slv_api.providers;
 
 import java.io.IOException;
+import java.util.HashMap;
 import java.util.Map;
 
 import org.testng.Assert;
 import org.testng.annotations.Test;
 
 import com.fasterxml.jackson.core.JsonParseException;
-import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.JsonMappingException;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.node.ObjectNode;
@@ -29,9 +29,10 @@ public class ProvidersTest extends AbstractTest {
 	private final static String OUTPUT_FILE = "json/providers/output.json";
 
 	/**
-	 * Shared string to store the id of the created provider for functional tests
+	 * Map to store the identifiers of the created providers in order to delete them at the end of the tests
+	 * The key is the method name and the value is the identifier
 	 */
-	private Integer providerId = null;
+	private Map<String, Integer> createdProviderIdMap = new HashMap<String, Integer>();
 
 
 	/**
@@ -39,7 +40,7 @@ public class ProvidersTest extends AbstractTest {
 	 * 
 	 * @throws SLVTestsException
 	 */
-	@Test(groups={"providers-format"})
+	@Test(groups={"providers-format"}, priority = 1)
 	public void getAllProviders() throws SLVTestsException {
 		// CALL
 		JsonDiffResult result = retrieveResult(ProvidersMethods.GET_ALL_PROVIDERS.getUrl());
@@ -47,37 +48,107 @@ public class ProvidersTest extends AbstractTest {
 		// VERIFY
 		Assert.assertTrue(result.isEquals(), result.getErrorMessage());		
 	}
-	
+
 	/**
-	 * Creates a Provider and assert its existence and equality.
+	 * Fails to create a Provider without specifying a name.
 	 * 
 	 * @throws SLVTestsException 
 	 * @throws IOException 
 	 * @throws JsonMappingException 
 	 * @throws JsonParseException 
 	 */
-	@Test
-	public void createProviderKo() throws SLVTestsException, JsonParseException, JsonMappingException, IOException  {
+	@Test(groups={"providers-createProviderWithMissingAttributes"}, priority = 2) 
+	public void createProviderKoMissedName() throws SLVTestsException, JsonParseException, JsonMappingException, IOException  {
 		// INIT
 		JsonNode parameters = getInputs().get(ProvidersMethods.CREATE_PROVIDER.getUrl());
+		// Remove the name from the request input
 		((ObjectNode)parameters).remove(Constantes.CREATE_PROVIDER_INPUT_NAME_KEY);
-		
+
 		// CALL
-		JsonDiffResult result = retrieveResult(ProvidersMethods.CREATE_PROVIDER.getUrl());		
+		JsonDiffResult result = retrieveResult(ProvidersMethods.CREATE_PROVIDER.getUrl());	
 
-		// VERIFY
-		Assert.assertFalse(result.isEquals(), result.getErrorMessage());
+		reloadInputs();
 
-		// Extract the id of the created Provider
+		// Extract the error message from the response
 		Map<String, Object> map = convert(result.getResponse());
 		String errorCode = (String)map.get(Constantes.RESPONSE_ERROR_CODE_KEY);
 		String errorMessage = (String)map.get(Constantes.RESPONSE_MESSAGE_KEY);
-		
+
+		// Verify that the error belongs to the name
 		Assert.assertTrue(Constantes.INTERNAL_ERROR_CODE.equals(errorCode), result.getErrorMessage());
-		Assert.assertTrue(errorMessage.contains("streetlight.data.Provider.name"), result.getErrorMessage());
-		
-		
+		Assert.assertTrue(errorMessage.contains("streetlight.data.Provider.name"), result.getErrorMessage());				
 	}
+
+	/**
+	 * Creates a Provider without specifying a pollution rate.
+	 * 
+	 * @throws SLVTestsException 
+	 * @throws IOException 
+	 * @throws JsonMappingException 
+	 * @throws JsonParseException 
+	 */
+	@Test(groups={"providers-createProviderWithMissingAttributes"}, priority = 2) 
+	public void createProviderMissedPollutionRate() throws SLVTestsException, JsonParseException, JsonMappingException, IOException  {
+		// INIT
+		JsonNode parameters = getInputs().get(ProvidersMethods.CREATE_PROVIDER.getUrl());
+		// Remove the pollution rate from the request input
+		((ObjectNode)parameters).remove(Constantes.CREATE_PROVIDER_INPUT_POLLUTIONRATE_KEY);
+
+		// CALL
+		JsonDiffResult result = retrieveResult(ProvidersMethods.CREATE_PROVIDER.getUrl());	
+
+		reloadInputs();
+
+		// Verify that the provider is created 
+		Assert.assertTrue(result.isEquals(), result.getErrorMessage());		
+
+		// Extract the id of the created Provider
+		Map<String, Object> map = convert(result.getResponse());
+		createdProviderIdMap.put("createProviderMissedPollutionRate", (Integer)map.get(Constantes.CREATE_PROVIDER_OUTPUT_ID_KEY));
+		deleteCreatedProviderWithMissingAttributes("createProviderMissedPollutionRate");
+	}
+
+	/**
+	 * Creates a Provider without specifying a time.
+	 * 
+	 * @throws SLVTestsException 
+	 * @throws IOException 
+	 * @throws JsonMappingException 
+	 * @throws JsonParseException 
+	 */
+	@Test(groups={"providers-createProviderWithMissingAttributes"}, priority = 2) 
+	public void createProviderMissedTime() throws SLVTestsException, JsonParseException, JsonMappingException, IOException  {
+		// INIT
+		JsonNode parameters = getInputs().get(ProvidersMethods.CREATE_PROVIDER.getUrl());
+		// Remove the time from the request input
+		((ObjectNode)parameters).remove(Constantes.CREATE_PROVIDER_INPUT_TIME_KEY);
+
+		// CALL
+		JsonDiffResult result = retrieveResult(ProvidersMethods.CREATE_PROVIDER.getUrl());		
+
+		// Verify that the provider is created 
+		Assert.assertTrue(result.isEquals(), result.getErrorMessage());	
+
+		// Extract the id of the created Provider
+		Map<String, Object> map = convert(result.getResponse());
+		createdProviderIdMap.put("createProviderMissedTime", (Integer)map.get(Constantes.CREATE_PROVIDER_OUTPUT_ID_KEY));
+		deleteCreatedProviderWithMissingAttributes("createProviderMissedTime");
+	}
+
+	/**
+	 * Deletes a created provider.
+	 * 
+	 * @param methodName
+	 * @throws SLVTestsException
+	 */
+	public void deleteCreatedProviderWithMissingAttributes(String methodName) throws SLVTestsException {
+		if (createdProviderIdMap.get(methodName) != null) {
+			JsonNode parameters = getInputs().get(ProvidersMethods.DELETE_PROVIDER.getUrl());
+			((ObjectNode)parameters).put(Constantes.DELETE_PROVIDER_INPUT_ID_KEY, createdProviderIdMap.get(methodName));			
+			call(ProvidersMethods.DELETE_PROVIDER.getUrl(), parameters);			
+		}
+	}
+	
 
 	/**
 	 * Creates a Provider and assert its existence and equality.
@@ -87,7 +158,7 @@ public class ProvidersTest extends AbstractTest {
 	 * @throws JsonMappingException 
 	 * @throws JsonParseException 
 	 */
-	@Test(groups={"providers-createUpdateDeleteProvider"}) 
+	@Test(groups={"providers-createUpdateDeleteProvider"}, priority = 4) 
 	public void createProvider() throws SLVTestsException, JsonParseException, JsonMappingException, IOException  {
 		// CALL
 		JsonDiffResult result = retrieveResult(ProvidersMethods.CREATE_PROVIDER.getUrl());
@@ -97,7 +168,7 @@ public class ProvidersTest extends AbstractTest {
 
 		// Extract the id of the created Provider
 		Map<String, Object> map = convert(result.getResponse());
-		providerId = (Integer)map.get(Constantes.CREATE_PROVIDER_OUTPUT_ID_KEY);
+		createdProviderIdMap.put("createProvider", (Integer)map.get(Constantes.CREATE_PROVIDER_OUTPUT_ID_KEY));
 	}
 
 	/**
@@ -106,13 +177,13 @@ public class ProvidersTest extends AbstractTest {
 	 * 
 	 * @throws SLVTestsException 
 	 */
-	@Test(groups={"providers-createUpdateDeleteProvider"}, dependsOnMethods={"createProvider"}) 
+	@Test(groups={"providers-createUpdateDeleteProvider"}, dependsOnMethods={"createProvider"}, priority = 4) 
 	public void updateProvider() throws SLVTestsException {
-		if (providerId != null) {
+		if (!createdProviderIdMap.isEmpty()) {
 			// INIT
 			JsonNode parameters = getInputs().get(ProvidersMethods.UPDATE_PROVIDER.getUrl());
-			((ObjectNode)parameters).put(Constantes.UPDATE_PROVIDER_INPUT_ID_KEY, providerId);
-			
+			((ObjectNode)parameters).put(Constantes.UPDATE_PROVIDER_INPUT_ID_KEY, createdProviderIdMap.get("createProvider"));
+
 			// CALL
 			JsonDiffResult result = retrieveResult(ProvidersMethods.UPDATE_PROVIDER.getUrl(), parameters);
 
@@ -127,13 +198,13 @@ public class ProvidersTest extends AbstractTest {
 	 * 
 	 * @throws SLVTestsException 
 	 */
-	@Test(groups={"providers-createUpdateDeleteProvider"}, dependsOnMethods={"updateProvider"}) 
+	@Test(groups={"providers-createUpdateDeleteProvider"}, dependsOnMethods={"updateProvider"}, priority = 4) 
 	public void deleteProvider() throws SLVTestsException {
-		if (providerId != null) {
+		if (!createdProviderIdMap.isEmpty()) {
 			// INIT
 			JsonNode parameters = getInputs().get(ProvidersMethods.DELETE_PROVIDER.getUrl());
-			((ObjectNode)parameters).put(Constantes.DELETE_PROVIDER_INPUT_ID_KEY, providerId);
-			
+			((ObjectNode)parameters).put(Constantes.DELETE_PROVIDER_INPUT_ID_KEY, createdProviderIdMap.get("createProvider"));
+
 			// CALL
 			JsonDiffResult result = retrieveResult(ProvidersMethods.DELETE_PROVIDER.getUrl(), parameters);
 
@@ -141,74 +212,7 @@ public class ProvidersTest extends AbstractTest {
 			Assert.assertTrue(result.isEquals(), result.getErrorMessage());
 		}
 	}
-
-	//	@Test(enabled = true)
-	//	public void createProvider() throws JsonProcessingException, IOException {
-	//		// INIT
-	//		JsonNode parameters = getInputs().get(ProvidersMethods.CREATE_PROVIDER.getUrl());
-	//		JsonNode awaitedResponse = getOutputs().get(ProvidersMethods.CREATE_PROVIDER.getUrl());
-	//		
-	//		// CALL
-	//		String realResponse = getRestService().get(ProvidersMethods.CREATE_PROVIDER.getUrl(), convert(parameters));
-	//		JsonDiffResult result = JsonDiffService.getInstance().diff(realResponse, awaitedResponse.toString());
-	//		
-	//		// VERIFY
-	//		Assert.assertTrue(result.isEquals(), result.getErrorMessage());
-	//	}
-
-
-	//
-	//	@Test(enabled = false)
-	//	public void updateProvider() {
-	//		JsonNode parameters = getInputs().get(ProvidersMethods.UPDATE_PROVIDER.getUrl());
-	//		JsonNode awaitedResponse = getOutputs().get(ProvidersMethods.UPDATE_PROVIDER.getUrl());
-	//		System.out.println(getRestService().get(ProvidersMethods.UPDATE_PROVIDER.getUrl(), convert(parameters)));
-	//		Assert.assertTrue(true);
-	//	}
-	//
-	//	@Test(enabled = false)
-	//	public void deleteProvider() {
-	//		JsonNode parameters = getInputs().get(ProvidersMethods.DELETE_PROVIDER.getUrl());
-	//		JsonNode awaitedResponse = getOutputs().get(ProvidersMethods.DELETE_PROVIDER.getUrl());
-	//		System.out.println(getRestService().get(ProvidersMethods.DELETE_PROVIDER.getUrl(), convert(parameters)));
-	//		Assert.assertTrue(true);
-	//	}
-
-	//	@AfterTest
-	//	public void nettoyage() throws JsonProcessingException, IOException {
-	//		// INIT
-	//		JsonNode parameters = getInputs().get(ProvidersMethods.DELETE_PROVIDER.getUrl());
-	//		getOutputs().get(ProvidersMethods.DELETE_PROVIDER.getUrl());	
-	//		// CALL
-	//		getRestService().get(ProvidersMethods.DELETE_PROVIDER.getUrl(), convert(parameters));
-	//	}
-
-	//	public static void main(String... args) throws JsonProcessingException, IOException, SLVTestsException {
-	//		ProvidersTest runner = new ProvidersTest();
-	//
-	//		runner.beforeTest("http://5.196.91.118:8080/celad/api/", "celad", "Celad20!6");
-	//		JsonNode parameters = runner.getInputs().get(ProvidersMethods.GET_ALL_PROVIDERS.getUrl());
-	//		JsonNode awaitedResponse = runner.getOutputs().get(ProvidersMethods.GET_ALL_PROVIDERS.getUrl());
-	//		String realResponse = runner.getRestService().get(ProvidersMethods.GET_ALL_PROVIDERS.getUrl(), runner.convert(parameters));
-	//		
-	//		JsonDiffService comparator = JsonDiffService.getInstance();
-	//		JsonDiffResult result = comparator.diff(realResponse, awaitedResponse.toString());
-	//		
-	//		System.out.println(result.isEquals());
-	//		System.out.println(result.getErrorMessage());
-	//	}
-
-	public static void main(String... args) throws JsonProcessingException, IOException, SLVTestsException {
-		ProvidersTest runner = new ProvidersTest();
-
-		runner.beforeTest("http://5.196.91.118:8080/celad/api/", "celad", "Celad20!6");
-		// CALL
-		JsonDiffResult result = runner.retrieveResult(ProvidersMethods.CREATE_PROVIDER.getUrl());
-
-		// VERIFY
-		Assert.assertTrue(result.isEquals(), result.getErrorMessage());
-	}
-
+	
 
 	@Override
 	protected String getInputFile() {
@@ -219,7 +223,5 @@ public class ProvidersTest extends AbstractTest {
 	protected String getOutputFile() {
 		return OUTPUT_FILE;
 	}
-
-
 
 }

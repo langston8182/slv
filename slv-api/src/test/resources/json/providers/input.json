@@ -5,13 +5,15 @@
 	"assetmanagement/createProvider" : {
 	  "name": "My provider", 
 	  "pollutionRate": 0.42,
-	  "ser": "json"
+	  "ser": "json",
+	  "time": "1484036967291"
 	},
 	"assetmanagement/updateProvider" : {
 	  "providerId": 3826,
 	  "newName": "My new provider",
 	  "pollutionRate": 0.11,
-	  "ser": "json"
+	  "ser": "json",
+	  "time": "1484036967291"
 	},
 	"assetmanagement/deleteProvider" : {
 	  "id": 3826,
