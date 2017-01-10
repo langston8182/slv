@@ -157,8 +157,7 @@ public class JsonDiffService {
 		// If no adds and no removes, then there's no difference in format
 		jsonEquals = adds.isEmpty() && removes.isEmpty();
 		
-		return new JsonDiffResult(jsonEquals, generateErrorMessage(removes,
-				adds));
+		return new JsonDiffResult(jsonEquals, generateErrorMessage(removes, adds));
 	}
 
 	/**
