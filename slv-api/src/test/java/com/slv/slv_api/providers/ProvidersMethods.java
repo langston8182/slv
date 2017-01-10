@@ -1,8 +1,9 @@
 package com.slv.slv_api.providers;
 
 /**
- * Rest api URLs for a user profile
- * @author atran
+ * Rest api URLs for a provider
+ * 
+ * @author yromdhane
  *
  */
 public enum ProvidersMethods {

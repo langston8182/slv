@@ -16,6 +16,12 @@ import com.slv.slv_api.exceptions.SLVTestsException;
 import com.slv.slv_api.services.JsonDiffResult;
 import com.slv.slv_api.utils.Constantes;
 
+/**
+ * Test class of the rest api URLs for a provider.
+ * 
+ * @author yromdhane
+ *
+ */
 public class ProvidersTest extends AbstractTest {
 
 	/**
