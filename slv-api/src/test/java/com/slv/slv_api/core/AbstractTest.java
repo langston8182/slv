@@ -46,7 +46,8 @@ public abstract class AbstractTest {
 	
 	@BeforeClass
 	@Parameters({ "url", "login", "password" })
-	protected void beforeTest(String url, String login, String password) throws SLVTestsException {
+	protected void beforeClass(String url, String login, String password) throws SLVTestsException {
+		logger.info(MessageHelper.getMessage("core.abstract.test.run.class", this.getClass().getName()));
 		restService = RestService.getInstance(url, login, password);
 		inputs = extractJsonStreams(getInputFile());
 		outputs = extractJsonStreams(getOutputFile());
