@@ -6,7 +6,7 @@ import java.net.URL;
 import java.util.Map;
 
 import org.apache.log4j.Logger;
-import org.testng.annotations.BeforeTest;
+import org.testng.annotations.BeforeClass;
 import org.testng.annotations.Parameters;
 
 import com.fasterxml.jackson.core.type.TypeReference;
@@ -38,7 +38,7 @@ public abstract class AbstractTest {
 	 */
 	private Map<String, JsonNode> outputs;
 	
-	@BeforeTest
+	@BeforeClass
 	@Parameters({ "url", "login", "password" })
 	protected void beforeTest(String url, String login, String password) throws SLVTestsException {
 		restService = RestService.getInstance(url, login, password);
@@ -80,7 +80,7 @@ public abstract class AbstractTest {
 	}
 	
 	/**
-	 * get result of the test
+	 * get result of the test with default parameters (defined in input.json)
 	 * 
 	 * @param method
 	 *            The method to apply
@@ -91,8 +91,35 @@ public abstract class AbstractTest {
 		
 		// INIT
 		JsonNode parameters = getInputs().get(url);
+		
+		return callAndCompare(url, parameters);
+	}
+	
+	/**
+	 * get result of the test with custom parameters
+	 * 
+	 * @param method
+	 *            The method to apply
+	 * @throws SLVTestsException 
+	 */
+	protected JsonDiffResult retrieveResult(String url, JsonNode parameters) throws SLVTestsException {
+		logger.info("Exécution du test " + url);				
+		return callAndCompare(url, parameters);
+	}
+	
+	/**
+	 * Call a service and compare its result to a response example
+	 * 
+	 * @param url
+	 * @param parameters
+	 * 
+	 * @return {@link JsonDiffResult}
+	 * 
+	 * @throws SLVTestsException 
+	 */
+	protected JsonDiffResult callAndCompare(String url, JsonNode parameters) throws SLVTestsException {
+		// INIT
 		JsonNode expectedResponse = getOutputs().get(url);
-
 		// CALL
 		String realResponse = call(url, parameters);
 		try {
@@ -149,13 +176,27 @@ public abstract class AbstractTest {
 	protected Map<String, Object> convert(String value) throws SLVTestsException {
 		ObjectMapper mapper = new ObjectMapper();
 		try {
-			return mapper.readValue(value, new TypeReference<Map<String, Object>>() {
-			});
+			JsonNode jsonNode = mapper.readTree(value);
+			if(!jsonNode.isObject()) {
+				throw new SLVTestsException(ExceptionCode.CONVERT_STRING_TO_JSON.toString(), MessageHelper.getMessage("core.abstract.test.convert.string.to.map.not.object", value));
+			}
+			
+			return mapper.readValue(value, new TypeReference<Map<String, Object>>() {});
 		} catch (IOException e) {
 			logger.error(MessageHelper.getMessage("core.abstract.test.convert.string.to.jsonnode", value), e);
-			throw new SLVTestsException(ExceptionCode.DIFF_METHOD_CALL.toString(), MessageHelper.getMessage("core.abstract.test.diff.error"), e);
+			throw new SLVTestsException(ExceptionCode.CONVERT_STRING_TO_JSON.toString(), MessageHelper.getMessage("core.abstract.test.convert.string.to.map", value), e);
 		}
 	}
+	
+	protected JsonNode convertToJsonNode(String value) throws SLVTestsException {
+		ObjectMapper mapper = new ObjectMapper();
+		try {
+			return mapper.readTree(value);
+		} catch (IOException e) {
+			logger.error(MessageHelper.getMessage("core.abstract.test.convert.string.to.jsonnode", value), e);
+			throw new SLVTestsException(ExceptionCode.CONVERT_STRING_TO_JSON.toString(), MessageHelper.getMessage("core.abstract.test.convert.string.to.jsonnode", value), e);
+		}
+	} 
 
 	public Map<String, JsonNode> getInputs() {
 		return inputs;

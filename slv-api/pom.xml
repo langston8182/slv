@@ -38,6 +38,7 @@
 		<jsonassert.version>1.4.0</jsonassert.version>
 		<zjsonpatch.version>0.2.4</zjsonpatch.version>
 		<common.io.version>2.5</common.io.version>
+		<commons.lang3.version>3.0</commons.lang3.version>
 		<junit.version>4.12</junit.version>
 		<mockito-all.version>1.9.5</mockito-all.version>
 		<powermock.version>1.6.1</powermock.version>
@@ -71,6 +72,11 @@
 		    <groupId>commons-io</groupId>
 		    <artifactId>commons-io</artifactId>
 		    <version>${common.io.version}</version>
+		</dependency>
+		<dependency>
+		    <groupId>org.apache.commons</groupId>
+		    <artifactId>commons-lang3</artifactId>
+		    <version>${commons.lang3.version}</version>
 		</dependency>
 		<dependency>
 			<groupId>junit</groupId>
