@@ -1,6 +1,5 @@
 package com.slv.slv_api.users;
 
-import org.junit.Before;
 import org.testng.Assert;
 import org.testng.annotations.Test;
 
@@ -90,14 +89,6 @@ public class UsersTest extends AbstractTest {
 	}
 	
 	@Test
-	public void recoverPassword() throws SLVTestsException {
-		JsonDiffResult result = retrieveResult(UsersMethods.RECOVER_PASSWORD.getUrl());
-
-		// VERIFY
-		Assert.assertTrue(result.isEquals(), result.getErrorMessage());
-	}
-	
-	@Test
 	public void verifyPassword() throws SLVTestsException {
 		JsonDiffResult result = retrieveResult(UsersMethods.VERIFY_PASSWORD.getUrl());
 
@@ -118,8 +109,8 @@ public class UsersTest extends AbstractTest {
 	public static void main(String[] args) {
 		UsersTest test = new UsersTest();
 		try {
-			test.beforeTest("http://5.196.91.118:8080/celad/api/", "celad", "Celad20!6");
-			test.recoverPassword();
+			test.beforeTest("http://5.196.91.118:8080/celad/api/", "test", "Celad20!6");
+			test.verifyPassword();
 		} catch (SLVTestsException e) {
 			e.printStackTrace();
 		}

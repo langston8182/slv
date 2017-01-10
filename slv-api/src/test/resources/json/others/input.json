@@ -1,0 +1,6 @@
+{
+	"publicconfig/sendResetPasswordRequestByMail": {
+		"ser": "json",
+		"login": "cmarchive"
+	}
+}
