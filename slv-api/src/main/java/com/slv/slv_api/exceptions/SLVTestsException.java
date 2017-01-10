@@ -15,28 +15,28 @@ public class SLVTestsException extends Exception {
 	/**
 	 * Exception code
 	 */
-	private String code;
+	private ExceptionCode code;
 	
 	/**
 	 * Exception message
 	 */
 	private String message;
 	
-	public SLVTestsException(final String code, final String message) {
+	public SLVTestsException(final ExceptionCode code, final String message) {
 		super(message);
 		this.code = code;
 	}
 	
-	public SLVTestsException(final String code, final String message, Throwable cause) {
+	public SLVTestsException(final ExceptionCode code, final String message, Throwable cause) {
 		super(message, cause);
 		this.code = code;
 	}
 
-	public String getCode() {
+	public ExceptionCode getCode() {
 		return code;
 	}
 
-	public void setCode(String code) {
+	public void setCode(ExceptionCode code) {
 		this.code = code;
 	}
 

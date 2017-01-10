@@ -10,45 +10,87 @@ import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.JsonNodeType;
 import com.flipkart.zjsonpatch.JsonDiff;
+import com.slv.slv_api.common.MessageHelper;
 import com.slv.slv_api.entities.Add;
 import com.slv.slv_api.entities.Remove;
+import com.slv.slv_api.exceptions.ExceptionCode;
+import com.slv.slv_api.exceptions.UnsupportedOperationException;
 
 /**
  * Used to compare two JSON {@link String}. Interface to make a comparison of
  * two items according to their data format.
  * 
  * @author cmarchive
- * 
- * @return
  */
 public class JsonDiffService {
 
-	private static final String MOVE = "move";
-	private static final String ADD = "add";
-	private static final String REMOVE = "remove";
-	private static final String ADD_MESSAGE = "The key %s has been added.\n";
-	private static final String REMOVE_MESSAGE = "The key %s has been removed.\n";
+	/**
+	 * No changes message.
+	 */
+	private static final String NO_CHANGES = "no changes";
+	
+	/**
+	 * Operation move.
+	 */
+	private static final String OP_MOVE = "move";
+	
+	/**
+	 * Operation add.
+	 */
+	private static final String OP_ADD = "add";
+	
+	/**
+	 * Operation remove.
+	 */
+	private static final String OP_REMOVE = "remove";
+	
+	/**
+	 * Node op.
+	 */
+	private static final String NODE_OP = "op";
+	
+	/**
+	 * Node path.
+	 */
+	private static final String NODE_PATH = "path";
+	
+	/**
+	 * Node from.
+	 */
+	private static final String NODE_FROM = "from";
 
+	/**
+	 * Empty tab suffix.
+	 */
 	private static final String EMPTY_TAB_SUFFIX = "/0";
 
 	/**
-	 * Instance of {@link JsonDiffService}
+	 * Unique instance of JsonDiffService
 	 */
-	private static JsonDiffService service = null;
+	private static JsonDiffService INSTANCE = null;
 
 	/**
-	 * @return instance of {@link JsonDiffService} as a Singleton
+	 * Get the unique instance of JsonDiffService.
+	 * 
+	 * @return The unique instance of JsonDiffService.
 	 */
 	public static JsonDiffService getInstance() {
-		if (service == null) {
-			service = new JsonDiffService();
+		if (INSTANCE == null) {
+			INSTANCE = new JsonDiffService();
 		}
-		return service;
+		return INSTANCE;
+	}
+
+	/**
+	 * Private default constructor to avoid creating several JsonDiffService objects.
+	 */
+	private JsonDiffService() {
+
 	}
 
 	/**
 	 * Method that verifies if two {@link String} representing two Json streams
-	 * are equals in terms of attributes
+	 * are equals in terms of attributes.
 	 * 
 	 * @return {@link JsonDiffResult} an object that indicates the result of the
 	 *         comparison and an error message when needed
@@ -56,63 +98,77 @@ public class JsonDiffService {
 	 * @throws JsonProcessingException
 	 */
 	public JsonDiffResult diff(String toVerify, String target)
-			throws JsonProcessingException, IOException {
+			throws JsonProcessingException, UnsupportedOperationException, IOException {
 		ObjectMapper mapper = new ObjectMapper();
 		JsonNode patch = JsonDiff.asJson(
 				prepareForCompare(mapper.readTree(target)),
 				prepareForCompare(mapper.readTree(toVerify)));
 
-		Iterator<JsonNode> opIterator = patch.elements();
-
 		boolean jsonEquals = true;
 
 		// If there's no difference, return true
-		if (!opIterator.hasNext())
-			return new JsonDiffResult(jsonEquals, "no changes");
+		if (patch.size() == 0) {
+			return new JsonDiffResult(jsonEquals, NO_CHANGES);
+		}
 
 		// Otherwise, compute add and remove list
 		List<Add> adds = new ArrayList<>();
 		List<Remove> removes = new ArrayList<>();
-		while (opIterator.hasNext()) {
-			JsonNode opNode = opIterator.next();
-			String operationType = opNode.get("op").asText();
-			String path = opNode.get("path").asText();
+
+		for (JsonNode opNode : patch) {
+			String operationType = opNode.get(NODE_OP).asText();
+			String path = opNode.get(NODE_PATH).asText();
+
 			switch (operationType) {
-			case MOVE:
-				removes.add(new Remove(opNode.get("from").asText()));
+			case OP_MOVE:
+				removes.add(new Remove(opNode.get(NODE_FROM).asText()));
 				adds.add(new Add(path));
 				break;
-			case ADD:
+				
+			case OP_ADD:
 				adds.add(new Add(path));
 				break;
-			case REMOVE:
+				
+			case OP_REMOVE:
 				// Don't remove empty tabs
 				if (!path.endsWith(EMPTY_TAB_SUFFIX)) {
 					removes.add(new Remove(path));
 				}
 				break;
+				
+			default:
+				throw new UnsupportedOperationException(ExceptionCode.DIFF_METHOD_EXECUTION, 
+						MessageHelper.getMessage("core.service.diff.unsupported.operation", operationType));
 			}
 		}
 
 		// If no adds and no removes, then there's no difference in format
 		jsonEquals = adds.isEmpty() && removes.isEmpty();
+		
 		return new JsonDiffResult(jsonEquals, generateErrorMessage(removes,
 				adds));
 	}
 
 	/**
-	 * Method that generates error Message
+	 * Method that generates error Message.
+	 * 
+	 * @param removes List of elements removed.
+	 * @param adds List of elements added
+	 * 
+	 * @return The error message.
 	 */
 	private String generateErrorMessage(List<Remove> removes, List<Add> adds) {
 		StringBuilder errorMessage = new StringBuilder();
-		for (Remove remove : removes)
-			errorMessage
-					.append(String.format(REMOVE_MESSAGE, remove.getFrom()));
-		for (Add add : adds)
-			errorMessage.append(String.format(ADD_MESSAGE, add.getPath()));
+		for (Remove remove : removes) {
+			String message = MessageHelper.getMessage("core.service.diff.message.remove", remove.getFrom());
+			errorMessage.append(message);
+		}
+		for (Add add : adds) {
+			String message = MessageHelper.getMessage("core.service.diff.message.add", add.getPath());
+			errorMessage.append(message);
+		}
 
 		return errorMessage.toString();
-
 	}
 
 	/**
@@ -124,7 +180,9 @@ public class JsonDiffService {
 	 * 
 	 * @param value
 	 *            the {@link JsonNode} to prepare
+	 *            
 	 * @return the {@link JsonNode} modified if needed
+	 * 
 	 * @throws IOException
 	 * @throws JsonProcessingException
 	 */
@@ -135,12 +193,13 @@ public class JsonDiffService {
 		}
 
 		return value;
-
 	}
 
 	/**
-	 * Read the {@link JsonNode} and for each {@link JsonNodeType#ARRAY}, keeps only one value
+	 * Read the {@link JsonNode} and for each {@link JsonNodeType#ARRAY}, keeps only one value.
+	 * 
 	 * @param value the {@link JsonNode} to read
+	 * 
 	 * @return the {@link JsonNode} modified
 	 */
 	private JsonNode convertArrayToOneElement(JsonNode value) {

@@ -2,8 +2,8 @@ package com.slv.slv_api.services;
 
 /**
  * Result of {@link JsonDiffService}. Contains information on the comparison between two Json {@link String}.
+ * 
  * @author atran
- *
  */
 public class JsonDiffResult {
 

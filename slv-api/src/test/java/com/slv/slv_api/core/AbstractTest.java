@@ -67,14 +67,14 @@ public abstract class AbstractTest {
 			URL fileURL = this.getClass().getClassLoader().getResource(inputFile);
 			if(fileURL == null) {
 				logger.error(MessageHelper.getMessage("core.abstract.test.json.files.load.not.exists"));
-				throw new SLVTestsException(ExceptionCode.READ_JSON_FILES.toString(), MessageHelper.getMessage("core.abstract.test.json.files.load.error"));
+				throw new SLVTestsException(ExceptionCode.READ_JSON_FILES, MessageHelper.getMessage("core.abstract.test.json.files.load.error"));
 			}
 			return mapper.readValue(new File(fileURL.getPath()),
 					new TypeReference<Map<String, JsonNode>>() {
 					});
 		} catch (IOException e) {
 			logger.error(MessageHelper.getMessage("core.abstract.test.json.files.load.error"), e);
-			throw new SLVTestsException(ExceptionCode.READ_JSON_FILES.toString(), MessageHelper.getMessage("core.abstract.test.json.files.load.error"),
+			throw new SLVTestsException(ExceptionCode.READ_JSON_FILES, MessageHelper.getMessage("core.abstract.test.json.files.load.error"),
 					e);
 		}
 	}
@@ -128,7 +128,7 @@ public abstract class AbstractTest {
 			return jsonDiffResult;
 		} catch(IOException e) {
 			logger.error(MessageHelper.getMessage("core.abstract.test.diff.error"), e);
-			throw new SLVTestsException(ExceptionCode.DIFF_METHOD_CALL.toString(), MessageHelper.getMessage("core.abstract.test.diff.error"), e);
+			throw new SLVTestsException(ExceptionCode.DIFF_METHOD_CALL, MessageHelper.getMessage("core.abstract.test.diff.error"), e);
 		}
 	}
 	
@@ -178,13 +178,13 @@ public abstract class AbstractTest {
 		try {
 			JsonNode jsonNode = mapper.readTree(value);
 			if(!jsonNode.isObject()) {
-				throw new SLVTestsException(ExceptionCode.CONVERT_STRING_TO_JSON.toString(), MessageHelper.getMessage("core.abstract.test.convert.string.to.map.not.object", value));
+				throw new SLVTestsException(ExceptionCode.CONVERT_STRING_TO_JSON, MessageHelper.getMessage("core.abstract.test.convert.string.to.map.not.object", value));
 			}
 			
 			return mapper.readValue(value, new TypeReference<Map<String, Object>>() {});
 		} catch (IOException e) {
 			logger.error(MessageHelper.getMessage("core.abstract.test.convert.string.to.jsonnode", value), e);
-			throw new SLVTestsException(ExceptionCode.CONVERT_STRING_TO_JSON.toString(), MessageHelper.getMessage("core.abstract.test.convert.string.to.map", value), e);
+			throw new SLVTestsException(ExceptionCode.CONVERT_STRING_TO_JSON, MessageHelper.getMessage("core.abstract.test.convert.string.to.map", value), e);
 		}
 	}
 	
@@ -194,7 +194,7 @@ public abstract class AbstractTest {
 			return mapper.readTree(value);
 		} catch (IOException e) {
 			logger.error(MessageHelper.getMessage("core.abstract.test.convert.string.to.jsonnode", value), e);
-			throw new SLVTestsException(ExceptionCode.CONVERT_STRING_TO_JSON.toString(), MessageHelper.getMessage("core.abstract.test.convert.string.to.jsonnode", value), e);
+			throw new SLVTestsException(ExceptionCode.CONVERT_STRING_TO_JSON, MessageHelper.getMessage("core.abstract.test.convert.string.to.jsonnode", value), e);
 		}
 	} 
 

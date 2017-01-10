@@ -13,6 +13,9 @@ import org.testng.Assert;
 
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.slv.slv_api.exceptions.UnsupportedOperationException;
+
+import junit.framework.AssertionFailedError;
 
 /**
  * Unit tests for {@link JsonDiffService}
@@ -41,7 +44,12 @@ public class JsonDiffServiceTest {
 				+ "}";
 		
 		// CALL
-		JsonDiffResult result = jsonDiffService.diff(toVerify, expected);
+		JsonDiffResult result = null;
+		try {
+			result = jsonDiffService.diff(toVerify, expected);
+		} catch (UnsupportedOperationException e) {
+			Assert.assertTrue(false);
+		}
 		
 		// VERIFY
 		Assert.assertNotNull(result);
