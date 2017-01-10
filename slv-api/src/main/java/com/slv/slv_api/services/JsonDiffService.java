@@ -115,7 +115,9 @@ public class JsonDiffService {
 					prepareForCompare(mapper.readTree(target)),
 					prepareForCompare(mapper.readTree(toVerify)));
 		} catch (IOException ex) {
-			throw new SLVTestsException(ExceptionCode.DIFF_METHOD_EXECUTION, ex.getMessage(), ex);
+			String message = MessageHelper.getMessage(ex.getMessage());
+			logger.error(message);
+			throw new SLVTestsException(ExceptionCode.DIFF_METHOD_EXECUTION, message, ex);
 		}
 
 		boolean jsonEquals = true;
@@ -155,8 +157,7 @@ public class JsonDiffService {
 		// If no adds and no removes, then there's no difference in format
 		jsonEquals = adds.isEmpty() && removes.isEmpty();
 		
-		return new JsonDiffResult(jsonEquals, generateErrorMessage(removes,
-				adds));
+		return new JsonDiffResult(jsonEquals, generateErrorMessage(removes, adds));
 	}
 
 	/**
