@@ -1,73 +1,79 @@
 package com.slv.slvapi.utils;
 
-
 /**
- * Constants class
+ * Constants class.
  * 
  * @author yromdhane
  *
  */
 public final class TestConstants {
 
-	/**
-	 * Provider id output key for create provider operation
-	 */
-	public static final String CREATE_PROVIDER_OUTPUT_ID_KEY = "id";
+  /**
+   * Provider id output key for create provider operation.
+   */
+  public static final String CREATE_PROVIDER_OUTPUT_ID_KEY = "id";
 
-	/**
-	 * Provider name input key for create provider operation
-	 */
-	public static final String CREATE_PROVIDER_INPUT_NAME_KEY = "name";
+  /**
+   * Provider name input key for create provider operation.
+   */
+  public static final String CREATE_PROVIDER_INPUT_NAME_KEY = "name";
 
-	/**
-	 * Pollution rate input key for create provider operation
-	 */
-	public static final String CREATE_PROVIDER_INPUT_POLLUTIONRATE_KEY = "pollutionRate";
+  /**
+   * Pollution rate input key for create provider operation.
+   */
+  public static final String CREATE_PROVIDER_INPUT_POLLUTIONRATE_KEY = "pollutionRate";
 
-	/**
-	 * Time input key for create provider operation
-	 */
-	public static final String CREATE_PROVIDER_INPUT_TIME_KEY = "time";
+  /**
+   * Time input key for create provider operation.
+   */
+  public static final String CREATE_PROVIDER_INPUT_TIME_KEY = "time";
 
-	/**
-	 * Provider id input key for update provider operation
-	 */
-	public static final String UPDATE_PROVIDER_INPUT_ID_KEY = "providerId";
-	
-	/**
-	 * Provider newName input key for update provider operation
-	 */
-	public static final String UPDATE_PROVIDER_INPUT_NEW_NAME_KEY = "newName";
+  /**
+   * Provider id input key for update provider operation.
+   */
+  public static final String UPDATE_PROVIDER_INPUT_ID_KEY = "providerId";
 
+  /**
+   * Provider newName input key for update provider operation.
+   */
+  public static final String UPDATE_PROVIDER_INPUT_NEW_NAME_KEY = "newName";
 
-	/**
-	 * Provider id input key for delete provider operation
-	 */
-	public static final String DELETE_PROVIDER_INPUT_ID_KEY = "id";
+  /**
+   * Provider id input key for delete provider operation.
+   */
+  public static final String DELETE_PROVIDER_INPUT_ID_KEY = "id";
 
-	/**
-	 * Error response code key
-	 */
-	public static final String RESPONSE_ERROR_CODE_KEY = "errorCode";
+  /**
+   * Error response code key.
+   */
+  public static final String RESPONSE_ERROR_CODE_KEY = "errorCode";
 
-	/**
-	 * Error response message key
-	 */
-	public static final String RESPONSE_MESSAGE_KEY = "message";
+  /**
+   * Error response message key.
+   */
+  public static final String RESPONSE_MESSAGE_KEY = "message";
 
-	/**
-	 * Server internal error code
-	 */
-	public static final String INTERNAL_ERROR_CODE = "500";
+  /**
+   * Server internal error code.
+   */
+  public static final String INTERNAL_ERROR_CODE = "500";
 
-	/**
-	 * Item not found error code
-	 */
-	public static final String ITEM_NOT_FOUND_ERROR_CODE = "613";
+  /**
+   * Item not found error code.
+   */
+  public static final String ITEM_NOT_FOUND_ERROR_CODE = "613";
 
+<<<<<<< HEAD:slv-api/src/test/java/com/slv/slvapi/utils/Constantes.java
+  /**
+   * Private constructor to prevent instantiation of this class.
+   */
+  private Constantes() {
+  }
+=======
 	/**
 	 * Private constructor to prevent instantiation of this class
 	 */
 	private TestConstants() {}
+>>>>>>> edaa25461c59f7539aa41c334617e06789aefc95:slv-api/src/test/java/com/slv/slvapi/utils/TestConstants.java
 
 }
