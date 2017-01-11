@@ -7,18 +7,21 @@ package com.slv.slv_api.exceptions;
  */
 public class UnsupportedOperationException extends SLVTestsException {
 
-	/**
-	 * serial version UID
-	 */
-	private static final long serialVersionUID = 4792606186838808168L;
-	
-	/**
-	 * Constructs a new exception with the specified detail message and the error code.
-	 * 
-	 * @param code The error code
-	 * @param message The detail message.
-	 */
-	public UnsupportedOperationException(ExceptionCode code, String message) {
-		super(code, message);
-	}
+  /**
+   * serial version UID.
+   */
+  private static final long serialVersionUID = 4792606186838808168L;
+
+  /**
+   * Constructs a new exception with the specified detail message and the error
+   * code.
+   * 
+   * @param code
+   *          The error code
+   * @param message
+   *          The detail message.
+   */
+  public UnsupportedOperationException(ExceptionCode code, String message) {
+    super(code, message);
+  }
 }
