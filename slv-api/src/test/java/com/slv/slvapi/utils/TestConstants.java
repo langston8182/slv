@@ -7,7 +7,7 @@ package com.slv.slvapi.utils;
  * @author yromdhane
  *
  */
-public final class Constantes {
+public final class TestConstants {
 
 	/**
 	 * Provider id output key for create provider operation
@@ -68,6 +68,6 @@ public final class Constantes {
 	/**
 	 * Private constructor to prevent instantiation of this class
 	 */
-	private Constantes() {}
+	private TestConstants() {}
 
 }

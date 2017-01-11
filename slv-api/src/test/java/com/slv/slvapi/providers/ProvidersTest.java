@@ -1,5 +1,12 @@
 package com.slv.slvapi.providers;
 
+import java.io.IOException;
+import java.util.HashMap;
+import java.util.Map;
+
+import org.testng.Assert;
+import org.testng.annotations.Test;
+
 import com.fasterxml.jackson.core.JsonParseException;
 import com.fasterxml.jackson.databind.JsonMappingException;
 import com.fasterxml.jackson.databind.JsonNode;
@@ -8,14 +15,7 @@ import com.slv.slvapi.common.MessageHelper;
 import com.slv.slvapi.core.AbstractTest;
 import com.slv.slvapi.exceptions.SlvTestsException;
 import com.slv.slvapi.services.JsonDiffResult;
-import com.slv.slvapi.utils.Constantes;
-import java.io.IOException;
-
-import java.util.HashMap;
-import java.util.Map;
-
-import org.testng.Assert;
-import org.testng.annotations.Test;
+import com.slv.slvapi.utils.TestConstants;
 
 /**
  * Test class for the rest api URLs of a provider.
@@ -77,7 +77,7 @@ public class ProvidersTest extends AbstractTest {
     // Extract the id of the created Provider
     Map<String, Object> map = convert(result.getResponse());
     createdProviderIdMap.put(ProviderTestMethod.createProvider.getName(),
-        (Integer) map.get(Constantes.CREATE_PROVIDER_OUTPUT_ID_KEY));
+        (Integer) map.get(TestConstants.CREATE_PROVIDER_OUTPUT_ID_KEY));
   }
 
   /**
@@ -91,7 +91,7 @@ public class ProvidersTest extends AbstractTest {
   public void updateProvider() throws SlvTestsException {
     // INIT
     JsonNode parameters = getInputs().get(ProvidersMethods.UPDATE_PROVIDER.getUrl()).deepCopy();
-    ((ObjectNode) parameters).put(Constantes.UPDATE_PROVIDER_INPUT_ID_KEY,
+    ((ObjectNode) parameters).put(TestConstants.UPDATE_PROVIDER_INPUT_ID_KEY,
         createdProviderIdMap.get(ProviderTestMethod.createProvider.getName()));
 
     // CALL
@@ -112,7 +112,7 @@ public class ProvidersTest extends AbstractTest {
   public void deleteProvider() throws SlvTestsException {
     // INIT
     JsonNode parameters = getInputs().get(ProvidersMethods.DELETE_PROVIDER.getUrl()).deepCopy();
-    ((ObjectNode) parameters).put(Constantes.DELETE_PROVIDER_INPUT_ID_KEY,
+    ((ObjectNode) parameters).put(TestConstants.DELETE_PROVIDER_INPUT_ID_KEY,
         createdProviderIdMap.get(ProviderTestMethod.createProvider.getName()));
 
     // CALL
@@ -139,18 +139,22 @@ public class ProvidersTest extends AbstractTest {
     // INIT
     JsonNode parameters = getInputs().get(ProvidersMethods.CREATE_PROVIDER.getUrl()).deepCopy();
     // Remove the name from the request input
-    ((ObjectNode) parameters).remove(Constantes.CREATE_PROVIDER_INPUT_NAME_KEY);
+    ((ObjectNode) parameters).remove(TestConstants.CREATE_PROVIDER_INPUT_NAME_KEY);
 
     // CALL
     String response = call(ProvidersMethods.CREATE_PROVIDER.getUrl(), parameters);
+    
+    // Verify that the response represents an error
+ 	Assert.assertTrue(isErrorResponse(response), MessageHelper.getMessage("not.an.error.response"));
+
 
     // Extract the error message from the response
     Map<String, Object> map = convert(response);
-    String errorCode = (String) map.get(Constantes.RESPONSE_ERROR_CODE_KEY);
-    String errorMessage = (String) map.get(Constantes.RESPONSE_MESSAGE_KEY);
+    String errorCode = (String) map.get(TestConstants.RESPONSE_ERROR_CODE_KEY);
+    String errorMessage = (String) map.get(TestConstants.RESPONSE_MESSAGE_KEY);
 
     // Verify that the error belongs to the name
-    Assert.assertTrue(Constantes.INTERNAL_ERROR_CODE.equals(errorCode),
+    Assert.assertTrue(TestConstants.INTERNAL_ERROR_CODE.equals(errorCode),
         MessageHelper.getMessage("providers.error.code.not.recognized"));
     Assert.assertTrue(errorMessage.contains("streetlight.data.Provider.name"),
         MessageHelper.getMessage("providers.error.message.not.recognized"));
@@ -171,7 +175,7 @@ public class ProvidersTest extends AbstractTest {
     // INIT
     JsonNode parameters = getInputs().get(ProvidersMethods.CREATE_PROVIDER.getUrl()).deepCopy();
     // Remove the pollution rate from the request input
-    ((ObjectNode) parameters).remove(Constantes.CREATE_PROVIDER_INPUT_POLLUTIONRATE_KEY);
+    ((ObjectNode) parameters).remove(TestConstants.CREATE_PROVIDER_INPUT_POLLUTIONRATE_KEY);
 
     // CALL
     JsonDiffResult result = retrieveResult(ProvidersMethods.CREATE_PROVIDER.getUrl(), parameters);
@@ -182,7 +186,7 @@ public class ProvidersTest extends AbstractTest {
     // Extract the id of the created Provider
     Map<String, Object> map = convert(result.getResponse());
     createdProviderIdMap.put(ProviderTestMethod.createProviderMissedPollutionRate.getName(),
-        (Integer) map.get(Constantes.CREATE_PROVIDER_OUTPUT_ID_KEY));
+        (Integer) map.get(TestConstants.CREATE_PROVIDER_OUTPUT_ID_KEY));
     deleteCreatedProviderWithMissingAttributes(
         ProviderTestMethod.createProviderMissedPollutionRate.getName());
   }
@@ -202,7 +206,7 @@ public class ProvidersTest extends AbstractTest {
     // INIT
     JsonNode parameters = getInputs().get(ProvidersMethods.CREATE_PROVIDER.getUrl()).deepCopy();
     // Remove the time from the request input
-    ((ObjectNode) parameters).remove(Constantes.CREATE_PROVIDER_INPUT_TIME_KEY);
+    ((ObjectNode) parameters).remove(TestConstants.CREATE_PROVIDER_INPUT_TIME_KEY);
 
     // CALL
     JsonDiffResult result = retrieveResult(ProvidersMethods.CREATE_PROVIDER.getUrl(), parameters);
@@ -213,7 +217,7 @@ public class ProvidersTest extends AbstractTest {
     // Extract the id of the created Provider
     Map<String, Object> map = convert(result.getResponse());
     createdProviderIdMap.put(ProviderTestMethod.createProviderMissedTime.getName(),
-        (Integer) map.get(Constantes.CREATE_PROVIDER_OUTPUT_ID_KEY));
+        (Integer) map.get(TestConstants.CREATE_PROVIDER_OUTPUT_ID_KEY));
     deleteCreatedProviderWithMissingAttributes(
         ProviderTestMethod.createProviderMissedTime.getName());
   }
@@ -232,7 +236,7 @@ public class ProvidersTest extends AbstractTest {
     // Extract the id of the created Provider
     Map<String, Object> map = convert(response);
     createdProviderIdMap.put(ProviderTestMethod.initProviderOfUpdateTests.getName(),
-        (Integer) map.get(Constantes.CREATE_PROVIDER_OUTPUT_ID_KEY));
+        (Integer) map.get(TestConstants.CREATE_PROVIDER_OUTPUT_ID_KEY));
   }
 
   /**
@@ -246,8 +250,8 @@ public class ProvidersTest extends AbstractTest {
     // INIT
     JsonNode parameters = getInputs().get(ProvidersMethods.UPDATE_PROVIDER.getUrl()).deepCopy();
     // Remove the name from the request input
-    ((ObjectNode) parameters).remove(Constantes.UPDATE_PROVIDER_INPUT_NEW_NAME_KEY);
-    ((ObjectNode) parameters).put(Constantes.UPDATE_PROVIDER_INPUT_ID_KEY,
+    ((ObjectNode) parameters).remove(TestConstants.UPDATE_PROVIDER_INPUT_NEW_NAME_KEY);
+    ((ObjectNode) parameters).put(TestConstants.UPDATE_PROVIDER_INPUT_ID_KEY,
         createdProviderIdMap.get(ProviderTestMethod.initProviderOfUpdateTests.getName()));
 
     // CALL
@@ -268,17 +272,17 @@ public class ProvidersTest extends AbstractTest {
     // INIT
     JsonNode parameters = getInputs().get(ProvidersMethods.UPDATE_PROVIDER.getUrl()).deepCopy();
     // Remove the provider id from the request input
-    ((ObjectNode) parameters).remove(Constantes.UPDATE_PROVIDER_INPUT_ID_KEY);
+    ((ObjectNode) parameters).remove(TestConstants.UPDATE_PROVIDER_INPUT_ID_KEY);
 
     // CALL
     String response = call(ProvidersMethods.UPDATE_PROVIDER.getUrl(), parameters);
 
     // Extract the error code from the response
     Map<String, Object> map = convert(response);
-    String errorCode = (String) map.get(Constantes.RESPONSE_ERROR_CODE_KEY);
+    String errorCode = (String) map.get(TestConstants.RESPONSE_ERROR_CODE_KEY);
 
     // Verify that the error belongs to the name
-    Assert.assertTrue(Constantes.ITEM_NOT_FOUND_ERROR_CODE.equals(errorCode),
+    Assert.assertTrue(TestConstants.ITEM_NOT_FOUND_ERROR_CODE.equals(errorCode),
         MessageHelper.getMessage("providers.error.code.not.recognized"));
   }
 
@@ -304,7 +308,7 @@ public class ProvidersTest extends AbstractTest {
       String methodName) throws SlvTestsException {
     if (createdProviderIdMap.get(methodName) != null) {
       JsonNode parameters = getInputs().get(ProvidersMethods.DELETE_PROVIDER.getUrl());
-      ((ObjectNode) parameters).put(Constantes
+      ((ObjectNode) parameters).put(TestConstants
           .DELETE_PROVIDER_INPUT_ID_KEY, createdProviderIdMap.get(methodName));
       call(ProvidersMethods.DELETE_PROVIDER.getUrl(), parameters);
     }
