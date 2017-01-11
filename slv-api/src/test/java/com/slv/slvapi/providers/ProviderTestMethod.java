@@ -11,7 +11,12 @@ import com.slv.slvapi.userprofile.JsonAttributes;
  */
 public enum ProviderTestMethod {
 	
-	getAllProviders("getAllProviders"),
+  /**
+   * 
+   */
+	GET_ALL_PROVIDERS("getAllProviders"),
+	
+	
 	createProvider("createProvider"),
 	updateProvider("updateProvider"),
 	deleteProvider("deleteProvider"),
