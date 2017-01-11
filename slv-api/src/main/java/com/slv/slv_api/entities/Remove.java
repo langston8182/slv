@@ -8,13 +8,12 @@ package com.slv.slv_api.entities;
 public class Remove  extends Operation{
 	
 	/**
-	 * The from
+	 *  The path contain name of the removed
 	 */
 	String from ;
 	
 	/**
-	 * Provides a Remove object
-	 * 
+	 * Provides Remove object.
 	 * @param from The from given.
 	 */
 	public Remove(String from){

@@ -11,6 +11,7 @@ import com.fasterxml.jackson.core.JsonParseException;
 import com.fasterxml.jackson.databind.JsonMappingException;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.node.ObjectNode;
+import com.slv.slv_api.common.MessageHelper;
 import com.slv.slv_api.core.AbstractTest;
 import com.slv.slv_api.exceptions.SLVTestsException;
 import com.slv.slv_api.services.JsonDiffResult;
@@ -55,6 +56,68 @@ public class ProvidersTest extends AbstractTest {
 		Assert.assertTrue(result.isEquals(), result.getErrorMessage());		
 	}
 
+	//----------- Begin Functional test : Create - Update - Delete -------------
+	/**
+	 * Creates a Provider and assert its existence and equality.
+	 * 
+	 * @throws SLVTestsException 
+	 * @throws IOException 
+	 * @throws JsonMappingException 
+	 * @throws JsonParseException 
+	 */
+	@Test(groups={"providers-createUpdateDeleteProvider"}, priority = 2) 
+	public void createProvider() throws SLVTestsException, JsonParseException, JsonMappingException, IOException  {
+		// CALL
+		JsonDiffResult result = retrieveResult(ProvidersMethods.CREATE_PROVIDER.getUrl());
+
+		// Verify that the provider is created 
+		Assert.assertTrue(result.isEquals(), result.getErrorMessage());
+
+		// Extract the id of the created Provider
+		Map<String, Object> map = convert(result.getResponse());
+		createdProviderIdMap.put(ProviderTestMethod.createProvider.getName(), (Integer)map.get(Constantes.CREATE_PROVIDER_OUTPUT_ID_KEY));
+	}
+
+	/**
+	 * Updates a Provider and assert that the modification has been done.<br/> 
+	 * Depends on {@link #createProvider()}
+	 * 
+	 * @throws SLVTestsException 
+	 */
+	@Test(groups={"providers-createUpdateDeleteProvider"}, dependsOnMethods={"createProvider"}, priority = 2) 
+	public void updateProvider() throws SLVTestsException {
+		// INIT
+		JsonNode parameters = getInputs().get(ProvidersMethods.UPDATE_PROVIDER.getUrl()).deepCopy();
+		((ObjectNode)parameters).put(Constantes.UPDATE_PROVIDER_INPUT_ID_KEY, createdProviderIdMap.get(ProviderTestMethod.createProvider.getName()));
+
+		// CALL
+		JsonDiffResult result = retrieveResult(ProvidersMethods.UPDATE_PROVIDER.getUrl(), parameters);
+
+		// Verify that the provider is updated 
+		Assert.assertTrue(result.isEquals(), result.getErrorMessage());	
+	}
+
+	/**
+	 * Deletes a Provider and assert that it does not exist anymore.<br/> 
+	 * Depends on {@link #updateProvider()}
+	 * 
+	 * @throws SLVTestsException 
+	 */
+	@Test(groups={"providers-createUpdateDeleteProvider"}, dependsOnMethods={"updateProvider"}, priority = 2) 
+	public void deleteProvider() throws SLVTestsException {
+		// INIT
+		JsonNode parameters = getInputs().get(ProvidersMethods.DELETE_PROVIDER.getUrl()).deepCopy();
+		((ObjectNode)parameters).put(Constantes.DELETE_PROVIDER_INPUT_ID_KEY, createdProviderIdMap.get(ProviderTestMethod.createProvider.getName()));
+
+		// CALL
+		JsonDiffResult result = retrieveResult(ProvidersMethods.DELETE_PROVIDER.getUrl(), parameters);
+
+		// VERIFY
+		Assert.assertTrue(result.isEquals(), result.getErrorMessage());
+	}
+
+	//----------- End Functional test : Create - Update - Delete -------------
+
 	/**
 	 * Fails to create a Provider without specifying a name.
 	 * 
@@ -63,7 +126,7 @@ public class ProvidersTest extends AbstractTest {
 	 * @throws JsonMappingException 
 	 * @throws JsonParseException 
 	 */
-	@Test(groups={"providers-createProviderWithMissingAttributes"}, priority = 2) 
+	@Test(groups={"providers-createProviderWithMissingAttributes"}, dependsOnMethods={"deleteProvider"}, priority = 3) 
 	public void createProviderKoMissedName() throws SLVTestsException, JsonParseException, JsonMappingException, IOException  {
 		// INIT
 		JsonNode parameters = getInputs().get(ProvidersMethods.CREATE_PROVIDER.getUrl()).deepCopy();
@@ -71,16 +134,16 @@ public class ProvidersTest extends AbstractTest {
 		((ObjectNode)parameters).remove(Constantes.CREATE_PROVIDER_INPUT_NAME_KEY);
 
 		// CALL
-		JsonDiffResult result = retrieveResult(ProvidersMethods.CREATE_PROVIDER.getUrl(), parameters);	
+		String response = call(ProvidersMethods.CREATE_PROVIDER.getUrl(), parameters);	
 
 		// Extract the error message from the response
-		Map<String, Object> map = convert(result.getResponse());
+		Map<String, Object> map = convert(response);
 		String errorCode = (String)map.get(Constantes.RESPONSE_ERROR_CODE_KEY);
 		String errorMessage = (String)map.get(Constantes.RESPONSE_MESSAGE_KEY);
 
 		// Verify that the error belongs to the name
-		Assert.assertTrue(Constantes.INTERNAL_ERROR_CODE.equals(errorCode), "The returned code is different from the expected one");
-		Assert.assertTrue(errorMessage.contains("streetlight.data.Provider.name"), "The returned error message is different from the expected one");				
+		Assert.assertTrue(Constantes.INTERNAL_ERROR_CODE.equals(errorCode), MessageHelper.getMessage("providers.error.code.not.recognized"));
+		Assert.assertTrue(errorMessage.contains("streetlight.data.Provider.name"), MessageHelper.getMessage("providers.error.message.not.recognized"));	
 	}
 
 	/**
@@ -91,7 +154,7 @@ public class ProvidersTest extends AbstractTest {
 	 * @throws JsonMappingException 
 	 * @throws JsonParseException 
 	 */
-	@Test(groups={"providers-createProviderWithMissingAttributes"}, priority = 2) 
+	@Test(groups={"providers-createProviderWithMissingAttributes"}, dependsOnMethods={"deleteProvider"}, priority = 3) 
 	public void createProviderMissedPollutionRate() throws SLVTestsException, JsonParseException, JsonMappingException, IOException  {
 		// INIT
 		JsonNode parameters = getInputs().get(ProvidersMethods.CREATE_PROVIDER.getUrl()).deepCopy();
@@ -106,8 +169,8 @@ public class ProvidersTest extends AbstractTest {
 
 		// Extract the id of the created Provider
 		Map<String, Object> map = convert(result.getResponse());
-		createdProviderIdMap.put("createProviderMissedPollutionRate", (Integer)map.get(Constantes.CREATE_PROVIDER_OUTPUT_ID_KEY));
-		deleteCreatedProviderWithMissingAttributes("createProviderMissedPollutionRate");
+		createdProviderIdMap.put(ProviderTestMethod.createProviderMissedPollutionRate.getName(), (Integer)map.get(Constantes.CREATE_PROVIDER_OUTPUT_ID_KEY));
+		deleteCreatedProviderWithMissingAttributes(ProviderTestMethod.createProviderMissedPollutionRate.getName());
 	}
 
 	/**
@@ -118,7 +181,7 @@ public class ProvidersTest extends AbstractTest {
 	 * @throws JsonMappingException 
 	 * @throws JsonParseException 
 	 */
-	@Test(groups={"providers-createProviderWithMissingAttributes"}, priority = 2) 
+	@Test(groups={"providers-createProviderWithMissingAttributes"}, dependsOnMethods={"deleteProvider"}, priority = 3) 
 	public void createProviderMissedTime() throws SLVTestsException, JsonParseException, JsonMappingException, IOException  {
 		// INIT
 		JsonNode parameters = getInputs().get(ProvidersMethods.CREATE_PROVIDER.getUrl()).deepCopy();
@@ -133,143 +196,74 @@ public class ProvidersTest extends AbstractTest {
 
 		// Extract the id of the created Provider
 		Map<String, Object> map = convert(result.getResponse());
-		createdProviderIdMap.put("createProviderMissedTime", (Integer)map.get(Constantes.CREATE_PROVIDER_OUTPUT_ID_KEY));
-		deleteCreatedProviderWithMissingAttributes("createProviderMissedTime");
+		createdProviderIdMap.put(ProviderTestMethod.createProviderMissedTime.getName(), (Integer)map.get(Constantes.CREATE_PROVIDER_OUTPUT_ID_KEY));
+		deleteCreatedProviderWithMissingAttributes(ProviderTestMethod.createProviderMissedTime.getName());
 	}
 
-	//----------- Begin Functional test : Create - Update - Delete -------------
-	/**
-	 * Creates a Provider and assert its existence and equality.
-	 * 
-	 * @throws SLVTestsException 
-	 * @throws IOException 
-	 * @throws JsonMappingException 
-	 * @throws JsonParseException 
-	 */
-	@Test(groups={"providers-createUpdateDeleteProvider"}, priority = 4) 
-	public void createProvider() throws SLVTestsException, JsonParseException, JsonMappingException, IOException  {
-		// CALL
-		JsonDiffResult result = retrieveResult(ProvidersMethods.CREATE_PROVIDER.getUrl());
 
-		// Verify that the provider is created 
-		Assert.assertTrue(result.isEquals(), result.getErrorMessage());
-
-		// Extract the id of the created Provider
-		Map<String, Object> map = convert(result.getResponse());
-		createdProviderIdMap.put("createProvider", (Integer)map.get(Constantes.CREATE_PROVIDER_OUTPUT_ID_KEY));
-	}
-
-	/**
-	 * Updates a Provider and assert that the modification has been done.<br/> 
-	 * Depends on {@link #createProvider()}
-	 * 
-	 * @throws SLVTestsException 
-	 */
-	@Test(groups={"providers-createUpdateDeleteProvider"}, dependsOnMethods={"createProvider"}, priority = 4) 
-	public void updateProvider() throws SLVTestsException {
-		if (createdProviderIdMap.get("createProvider") != null) {
-			// INIT
-			JsonNode parameters = getInputs().get(ProvidersMethods.UPDATE_PROVIDER.getUrl()).deepCopy();
-			((ObjectNode)parameters).put(Constantes.UPDATE_PROVIDER_INPUT_ID_KEY, createdProviderIdMap.get("createProvider"));
-
-			// CALL
-			JsonDiffResult result = retrieveResult(ProvidersMethods.UPDATE_PROVIDER.getUrl(), parameters);
-
-			// Verify that the provider is updated 
-			Assert.assertTrue(result.isEquals(), result.getErrorMessage());
-		}		
-	}
-
-	/**
-	 * Deletes a Provider and assert that it does not exist anymore.<br/> 
-	 * Depends on {@link #updateProvider()}
-	 * 
-	 * @throws SLVTestsException 
-	 */
-	@Test(groups={"providers-createUpdateDeleteProvider"}, dependsOnMethods={"updateProvider"}, priority = 4) 
-	public void deleteProvider() throws SLVTestsException {
-		if (createdProviderIdMap.get("createProvider") != null) {
-			// INIT
-			JsonNode parameters = getInputs().get(ProvidersMethods.DELETE_PROVIDER.getUrl()).deepCopy();
-			((ObjectNode)parameters).put(Constantes.DELETE_PROVIDER_INPUT_ID_KEY, createdProviderIdMap.get("createProvider"));
-
-			// CALL
-			JsonDiffResult result = retrieveResult(ProvidersMethods.DELETE_PROVIDER.getUrl(), parameters);
-
-			// VERIFY
-			Assert.assertTrue(result.isEquals(), result.getErrorMessage());
-		}
-	}
-
-	//----------- End Functional test : Create - Update - Delete -------------
-	
 	/**
 	 * Initialize a provider for update and delete operations test
 	 * 
 	 * @throws SLVTestsException
 	 */
-	@Test(priority = 5)
+	@Test(groups={"providers-updateProviderWithMissingAttributes"}, dependsOnGroups = { "providers-createProviderWithMissingAttributes" }, priority = 3)
 	public void initProviderOfUpdateTests() throws SLVTestsException {
 		// Create a provider
 		String response = call(ProvidersMethods.CREATE_PROVIDER.getUrl(), getInputs().get(ProvidersMethods.CREATE_PROVIDER.getUrl()));
 		// Extract the id of the created Provider
 		Map<String, Object> map = convert(response);
-		createdProviderIdMap.put("initProviderOfUpdateTests", (Integer)map.get(Constantes.CREATE_PROVIDER_OUTPUT_ID_KEY));
+		createdProviderIdMap.put(ProviderTestMethod.initProviderOfUpdateTests.getName(), (Integer)map.get(Constantes.CREATE_PROVIDER_OUTPUT_ID_KEY));
 	}
-	
+
 	/**
 	 * Fails to update a Provider without specifying a new name.
 	 * 
 	 * @throws SLVTestsException 
 	 */
-	@Test(groups={"providers-updateProviderWithMissingAttributes"}, priority = 5, dependsOnMethods = { "initProviderOfUpdateTests" })
+	@Test(groups={"providers-updateProviderWithMissingAttributes"}, dependsOnMethods = { "initProviderOfUpdateTests" }, priority = 3)
 	public void updateProviderMissedNewName() throws SLVTestsException {
-		if (createdProviderIdMap.get("initProviderOfUpdateTests") != null) {
-			// INIT
-			JsonNode parameters = getInputs().get(ProvidersMethods.UPDATE_PROVIDER.getUrl()).deepCopy();
-			// Remove the name from the request input
-			((ObjectNode)parameters).remove(Constantes.UPDATE_PROVIDER_INPUT_NEW_NAME_KEY);
-			((ObjectNode)parameters).put(Constantes.UPDATE_PROVIDER_INPUT_ID_KEY, createdProviderIdMap.get("initProviderOfUpdateTests"));			
+		// INIT
+		JsonNode parameters = getInputs().get(ProvidersMethods.UPDATE_PROVIDER.getUrl()).deepCopy();
+		// Remove the name from the request input
+		((ObjectNode)parameters).remove(Constantes.UPDATE_PROVIDER_INPUT_NEW_NAME_KEY);
+		((ObjectNode)parameters).put(Constantes.UPDATE_PROVIDER_INPUT_ID_KEY, createdProviderIdMap.get(ProviderTestMethod.initProviderOfUpdateTests.getName()));			
 
-			// CALL
-			JsonDiffResult result = retrieveResult(ProvidersMethods.UPDATE_PROVIDER.getUrl(), parameters);
+		// CALL
+		JsonDiffResult result = retrieveResult(ProvidersMethods.UPDATE_PROVIDER.getUrl(), parameters);
 
-			// VERIFY
-			Assert.assertTrue(result.isEquals(), result.getErrorMessage());
-		}		
+		// VERIFY
+		Assert.assertTrue(result.isEquals(), result.getErrorMessage());	
 	}
-	
+
 	/**
 	 * Fails to update a Provider without specifying a new name.
 	 * 
 	 * @throws SLVTestsException 
 	 */
-	@Test(groups={"providers-updateProviderWithMissingAttributes"}, priority = 5, dependsOnMethods = { "initProviderOfUpdateTests" }) 
+	@Test(groups={"providers-updateProviderWithMissingAttributes"}, dependsOnMethods = { "initProviderOfUpdateTests" }, priority = 3) 
 	public void updateProviderMissedProviderId() throws SLVTestsException {
-		if (createdProviderIdMap.get("initProviderOfUpdateTests") != null) {
-			// INIT
-			JsonNode parameters = getInputs().get(ProvidersMethods.UPDATE_PROVIDER.getUrl()).deepCopy();
-			// Remove the provider id from the request input
-			((ObjectNode)parameters).remove(Constantes.UPDATE_PROVIDER_INPUT_ID_KEY);
-			
-			// CALL
-			JsonDiffResult result = retrieveResult(ProvidersMethods.UPDATE_PROVIDER.getUrl(), parameters);			
+		// INIT
+		JsonNode parameters = getInputs().get(ProvidersMethods.UPDATE_PROVIDER.getUrl()).deepCopy();
+		// Remove the provider id from the request input
+		((ObjectNode)parameters).remove(Constantes.UPDATE_PROVIDER_INPUT_ID_KEY);
 
-			// Extract the error code from the response
-			Map<String, Object> map = convert(result.getResponse());
-			String errorCode = (String)map.get(Constantes.RESPONSE_ERROR_CODE_KEY);
+		// CALL
+		String response = call(ProvidersMethods.UPDATE_PROVIDER.getUrl(), parameters);			
 
-			// Verify that the error belongs to the name
-			Assert.assertTrue(Constantes.ITEM_NOT_FOUND_ERROR_CODE.equals(errorCode), result.getErrorMessage());			
-		}	
+		// Extract the error code from the response
+		Map<String, Object> map = convert(response);
+		String errorCode = (String)map.get(Constantes.RESPONSE_ERROR_CODE_KEY);
+
+		// Verify that the error belongs to the name
+		Assert.assertTrue(Constantes.ITEM_NOT_FOUND_ERROR_CODE.equals(errorCode), MessageHelper.getMessage("providers.error.code.not.recognized"));				
 	}
-	
+
 	/**
 	 * Initialize a provider for update and delete operations test
 	 * 
 	 * @throws SLVTestsException
 	 */
-	@Test(groups={"providers-updateProviderWithMissingAttributes"}, priority = 5, dependsOnMethods = { "updateProviderMissedNewName", "updateProviderMissedProviderId" })
+	@Test(groups={"providers-updateProviderWithMissingAttributes"}, dependsOnMethods = { "updateProviderMissedNewName", "updateProviderMissedProviderId" }, priority = 3)
 	public void clearProviderOfUpdateTests() throws SLVTestsException {	
 		deleteCreatedProviderWithMissingAttributes("initProviderOfUpdateTests");		
 	}
