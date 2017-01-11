@@ -109,12 +109,14 @@ public class JsonDiffService {
    * @throws UnsupportedOperationException
    *           Unsupported operation.
    */
-  public JsonDiffResult diff(String toVerify, String target) throws UnsupportedOperationException, SlvTestsException {
+  public JsonDiffResult diff(String toVerify, String target) 
+      throws UnsupportedOperationException, SlvTestsException {
     ObjectMapper mapper = new ObjectMapper();
 
     JsonNode patch = null;
     try {
-      patch = JsonDiff.asJson(prepareForCompare(mapper.readTree(target)), prepareForCompare(mapper.readTree(toVerify)));
+      patch = JsonDiff.asJson(prepareForCompare(
+          mapper.readTree(target)), prepareForCompare(mapper.readTree(toVerify)));
     } catch (IOException ex) {
       String message = MessageHelper.getMessage(ex.getMessage());
       logger.error(message);
@@ -137,23 +139,23 @@ public class JsonDiffService {
       String path = opNode.get(NODE_PATH).asText();
 
       switch (operationType) {
-      case OP_MOVE:
-        removes.add(new Remove(opNode.get(NODE_FROM).asText()));
-        adds.add(new Add(path));
-        break;
-
-      case OP_ADD:
-        adds.add(new Add(path));
-        break;
-
-      case OP_REMOVE:
-        // Don't remove empty tabs
-        if (!path.endsWith(EMPTY_TAB_SUFFIX)) {
-          removes.add(new Remove(path));
-        }
-        break;
-
-      default:
+        case OP_MOVE:
+          removes.add(new Remove(opNode.get(NODE_FROM).asText()));
+          adds.add(new Add(path));
+          break;
+  
+        case OP_ADD:
+          adds.add(new Add(path));
+          break;
+  
+        case OP_REMOVE:
+          // Don't remove empty tabs
+          if (!path.endsWith(EMPTY_TAB_SUFFIX)) {
+            removes.add(new Remove(path));
+          }
+          break;
+  
+        default:
       }
     }
 
@@ -170,7 +172,7 @@ public class JsonDiffService {
    * 
    * @return <code>true</code> if the response is an error, false otherwise
    * 
-   * @throws SlvTestsException
+   * @throws SlvTestsException When a SlvTerstsException is thrown.
    */
   public boolean isErrorResponse(String toVerify) throws SlvTestsException {
     if (StringUtils.isEmpty(toVerify)) {
@@ -180,7 +182,8 @@ public class JsonDiffService {
     try {
       JsonNode actualObj = mapper.readTree(toVerify);
       if (actualObj.has(Constants.RESPONSE_STATUS_KEY)
-          && Constants.RESPONSE_STATUS_ERROR_VALUE.equals(actualObj.get(Constants.RESPONSE_STATUS_KEY).asText())
+          && Constants.RESPONSE_STATUS_ERROR_VALUE.equals(
+              actualObj.get(Constants.RESPONSE_STATUS_KEY).asText())
           && actualObj.has(Constants.RESPONSE_STATUS_ERROR_KEY)
           && actualObj.get(Constants.RESPONSE_STATUS_ERROR_KEY).asBoolean()) {
         return true;
@@ -210,7 +213,8 @@ public class JsonDiffService {
   private String generateErrorMessage(List<Remove> removes, List<Add> adds) {
     StringBuilder errorMessage = new StringBuilder();
     for (Remove remove : removes) {
-      String message = MessageHelper.getMessage("core.service.diff.message.remove", remove.getFrom());
+      String message = 
+          MessageHelper.getMessage("core.service.diff.message.remove", remove.getFrom());
       errorMessage.append(message);
     }
     for (Add add : adds) {
