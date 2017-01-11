@@ -6,7 +6,7 @@ package com.slv.slvapi.utils;
  * @author yromdhane
  *
  */
-public final class Constantes {
+public final class TestConstants {
 
   /**
    * Provider id output key for create provider operation.
@@ -63,10 +63,17 @@ public final class Constantes {
    */
   public static final String ITEM_NOT_FOUND_ERROR_CODE = "613";
 
+<<<<<<< HEAD:slv-api/src/test/java/com/slv/slvapi/utils/Constantes.java
   /**
    * Private constructor to prevent instantiation of this class.
    */
   private Constantes() {
   }
+=======
+	/**
+	 * Private constructor to prevent instantiation of this class
+	 */
+	private TestConstants() {}
+>>>>>>> edaa25461c59f7539aa41c334617e06789aefc95:slv-api/src/test/java/com/slv/slvapi/utils/TestConstants.java
 
 }
