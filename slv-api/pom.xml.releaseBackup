@@ -1,0 +1,170 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+	<modelVersion>4.0.0</modelVersion>
+
+	<groupId>com.slv</groupId>
+	<artifactId>slv-api</artifactId>
+
+	<version>0.0.6-SNAPSHOT</version>
+	<packaging>jar</packaging>
+
+	<name>slv-api</name>
+	<url>http://maven.apache.org</url>
+
+	<scm>
+		<!-- <connection>scm:git:ssh://slvgit@172.20.2.38:/home/slvgit/GIT/</connection> 
+			<developerConnection>scm:git:ssh://slvgit@172.20.2.38:/home/slvgit/GIT/</developerConnection> -->
+		<connection>scm:git:https://github.com/langston8182/slv.git</connection>
+		<url>scm:git:https://github.com/langston8182/slv.git</url>
+  </scm>
+
+	<distributionManagement>
+		<repository>
+			<id>SLV_TAG</id>
+			<name>Internal git repository for releases</name>
+			<url>sftp://slvgit@172.20.2.38:/home/slvgit/tag/</url>
+		</repository>
+		<!-- <repository> <id>internal.repo</id> <name>Temporary staging repository</name> 
+			<url>file://${project.build.directory}/mvn-repo</url> </repository> -->
+	</distributionManagement>
+
+	<properties>
+		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+		<jersey-client.version>1.19.3</jersey-client.version>
+		<testng.version>6.8.8</testng.version>
+		<jsonassert.version>1.4.0</jsonassert.version>
+		<zjsonpatch.version>0.2.4</zjsonpatch.version>
+		<common.io.version>2.5</common.io.version>
+		<commons.lang3.version>3.0</commons.lang3.version>
+		<junit.version>4.12</junit.version>
+		<mockito-all.version>1.9.5</mockito-all.version>
+		<powermock.version>1.6.1</powermock.version>
+		<log4j.version>1.2.17</log4j.version>
+		<maven.compiler.plugin.version>3.6.0</maven.compiler.plugin.version>
+		<maven.surefire.plugin.version>2.14.1</maven.surefire.plugin.version>
+		<maven.scm.plugin.version>1.9.5</maven.scm.plugin.version>
+		<maven.release.plugin.version>2.5.3</maven.release.plugin.version>
+		<maven.extension.wagon-ssh>2.10</maven.extension.wagon-ssh>
+		<maven.assembly.plugin.version>3.0.0</maven.assembly.plugin.version>
+		<testOutputDirectory>${project.build.directory}/test-classes</testOutputDirectory>
+	</properties>
+
+	<dependencies>
+		<dependency>
+			<groupId>com.sun.jersey</groupId>
+			<artifactId>jersey-client</artifactId>
+			<version>${jersey-client.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>org.testng</groupId>
+			<artifactId>testng</artifactId>
+			<version>${testng.version}</version>
+		</dependency>
+		<!-- Comparaison de flux JSON (diff) -->
+		<dependency>
+			<groupId>com.flipkart.zjsonpatch</groupId>
+			<artifactId>zjsonpatch</artifactId>
+			<version>${zjsonpatch.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>commons-io</groupId>
+			<artifactId>commons-io</artifactId>
+			<version>${common.io.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>org.apache.commons</groupId>
+			<artifactId>commons-lang3</artifactId>
+			<version>${commons.lang3.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>junit</groupId>
+			<artifactId>junit</artifactId>
+			<version>${junit.version}</version>
+			<scope>test</scope>
+		</dependency>
+		<dependency>
+			<groupId>org.mockito</groupId>
+			<artifactId>mockito-all</artifactId>
+			<version>${mockito-all.version}</version>
+			<scope>test</scope>
+		</dependency>
+		<dependency>
+			<groupId>org.powermock</groupId>
+			<artifactId>powermock-module-junit4</artifactId>
+			<version>${powermock.version}</version>
+			<scope>test</scope>
+		</dependency>
+		<dependency>
+			<groupId>org.powermock</groupId>
+			<artifactId>powermock-api-mockito</artifactId>
+			<version>${powermock.version}</version>
+			<scope>test</scope>
+		</dependency>
+		<dependency>
+			<groupId>log4j</groupId>
+			<artifactId>log4j</artifactId>
+			<version>${log4j.version}</version>
+		</dependency>
+	</dependencies>
+
+	<build>
+		<testResources>
+			<testResource>
+				<directory>src/test/resources</directory>
+				<filtering>true</filtering>
+			</testResource>
+		</testResources>
+		<filters>
+			<filter>src/test/resources/conf/local.conf</filter>
+		</filters>
+		<plugins>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-compiler-plugin</artifactId>
+				<version>${maven.compiler.plugin.version}</version>
+				<configuration>
+					<source>1.7</source>
+					<target>1.7</target>
+				</configuration>
+			</plugin>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-surefire-plugin</artifactId>
+				<version>${maven.surefire.plugin.version}</version>
+				<configuration>
+					<suiteXmlFiles>
+						<suiteXmlFile>${testOutputDirectory}/testng.xml</suiteXmlFile>
+					</suiteXmlFiles>
+				</configuration>
+			</plugin>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-scm-plugin</artifactId>
+				<version>${maven.scm.plugin.version}</version>
+				<configuration>
+					<connectionType>connection</connectionType>
+					<basedir>C:\Users\cmarchive\Documents\SLV\GIT\GIT\slv-api</basedir>
+					<exportDirectory>${project.build.directory}/export</exportDirectory>
+				</configuration>
+			</plugin>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-release-plugin</artifactId>
+				<version>${maven.release.plugin.version}</version>
+				<configuration>
+					<checkModificationExcludes>
+						<checkModificationExclude>slv-api/pom.xml</checkModificationExclude>
+					</checkModificationExcludes>
+					<!-- <tagBase> file:///C:/Users/cmarchive/Documents/SLV/GIT/tag/ </tagBase> -->
+				</configuration>
+			</plugin>
+		</plugins>
+
+		<extensions>
+			<extension>
+				<groupId>org.apache.maven.wagon</groupId>
+				<artifactId>wagon-ssh</artifactId>
+				<version>${maven.extension.wagon-ssh}</version>
+			</extension>
+		</extensions>
+	</build>
+</project>

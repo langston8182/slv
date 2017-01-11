@@ -14,14 +14,11 @@ import org.testng.Assert;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.slv.slv_api.exceptions.SLVTestsException;
-import com.slv.slv_api.exceptions.UnsupportedOperationException;
-
-import junit.framework.AssertionFailedError;
 
 /**
  * Unit tests for {@link JsonDiffService}
+ * 
  * @author atran
- *
  */
 @RunWith(PowerMockRunner.class)
 @PrepareForTest(JsonDiffService.class)
@@ -244,8 +241,10 @@ public class JsonDiffServiceTest {
 	}
 	
 	/**
-	 * Indicates if this {@link Iterator} has at most one element
+	 * Indicates if this {@link Iterator} has at most one element.
+	 * 
 	 * @param iterator the {@link Iterator} to check
+	 * 
 	 * @return <code>true</code> if there is only one element, <code>false</code> otherwise
 	 */
 	private boolean hasAtMostOneElement(Iterator<?> iterator) {

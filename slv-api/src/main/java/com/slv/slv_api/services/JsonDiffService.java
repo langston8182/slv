@@ -102,8 +102,8 @@ public class JsonDiffService {
 	 * 
 	 * @return {@link JsonDiffResult} an object that indicates the result of the
 	 *         comparison and an error message when needed
-	 * @throws IOException
-	 * @throws JsonProcessingException
+	 * @throws SLVTestsException
+	 * @throws UnsupportedOperationException
 	 */
 	public JsonDiffResult diff(String toVerify, String target)
 			throws UnsupportedOperationException, SLVTestsException {
@@ -194,8 +194,8 @@ public class JsonDiffService {
 	 *            
 	 * @return the {@link JsonNode} modified if needed
 	 * 
-	 * @throws IOException
 	 * @throws JsonProcessingException
+	 * @throws IOException
 	 */
 	public JsonNode prepareForCompare(JsonNode value)
 			throws JsonProcessingException, IOException {

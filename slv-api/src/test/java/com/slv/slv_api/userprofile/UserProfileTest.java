@@ -245,7 +245,4 @@ public class UserProfileTest extends AbstractTest {
 	protected String getOutputFile() {
 		return OUTPUT_FILE;
 	}
-	
-	
-
 }
