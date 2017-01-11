@@ -11,8 +11,10 @@ import org.powermock.modules.junit4.PowerMockRunner;
 import org.powermock.reflect.Whitebox;
 import org.testng.Assert;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.slv.slvapi.common.MessageHelper;
 import com.slv.slvapi.exceptions.SlvTestsException;
 
 /**
@@ -211,6 +213,46 @@ public class JsonDiffServiceTest {
 		boolean allArraySizeEqualsOne = true;
 		allArraySizeEqualsOne = checkArraySize(preparedJson);
 		Assert.assertTrue(allArraySizeEqualsOne);
+	}
+	
+   /**
+    * Response contains an error indicator.
+    * 
+    * @throws JsonProcessingException, IOException, SlvTestsException
+    */
+	@Test
+	public void isErrorResponseYes() throws JsonProcessingException, IOException, SlvTestsException {
+		// INIT
+		String jsonErrorResponse = "{"
+				+ "			\"errorCode\": \"613\","
+				+ "			\"errorCodeLabel\": \"Item not found\","
+				+ "			\"message\": \"Provider #null not found!\","
+				+ "			\"status\": \"ERROR\","
+				+ "			\"statusError\": true,"
+				+ "			\"statusOk\": false,"
+				+ "			\"value\": null"
+				+ "		}";
+		Assert.assertTrue(JsonDiffService.getInstance().isErrorResponse(jsonErrorResponse), MessageHelper.getMessage("not.an.error.response"));
+	}
+	
+   /**
+    * Response doesn't contain an error indicator.
+    * 
+    * @throws JsonProcessingException, IOException, SlvTestsException
+    */
+	@Test
+	public void isErrorResponseNo() throws JsonProcessingException, IOException, SlvTestsException {
+		// INIT
+		String jsonOkResponse = "{"
+				+ "			\"errorCode\": \"0\","
+				+ "			\"errorCodeLabel\": null,"
+				+ "			\"message\": null,"
+				+ "			\"status\": \"OK\","
+				+ "			\"statusError\": false,"
+				+ "			\"statusOk\": true,"
+				+ "			\"value\": null"
+				+ "		}";
+		Assert.assertFalse(JsonDiffService.getInstance().isErrorResponse(jsonOkResponse), MessageHelper.getMessage("not.an.ok.response"));
 	}
 	
 	/**
