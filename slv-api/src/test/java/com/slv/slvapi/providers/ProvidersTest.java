@@ -1,12 +1,5 @@
 package com.slv.slvapi.providers;
 
-import java.io.IOException;
-import java.util.HashMap;
-import java.util.Map;
-
-import org.testng.Assert;
-import org.testng.annotations.Test;
-
 import com.fasterxml.jackson.core.JsonParseException;
 import com.fasterxml.jackson.databind.JsonMappingException;
 import com.fasterxml.jackson.databind.JsonNode;
@@ -16,6 +9,12 @@ import com.slv.slvapi.core.AbstractTest;
 import com.slv.slvapi.exceptions.SlvTestsException;
 import com.slv.slvapi.services.JsonDiffResult;
 import com.slv.slvapi.utils.TestConstants;
+import java.io.IOException;
+import java.util.HashMap;
+import java.util.Map;
+
+import org.testng.Assert;
+import org.testng.annotations.Test;
 
 /**
  * Test class for the rest api URLs of a provider.
@@ -45,7 +44,8 @@ public class ProvidersTest extends AbstractTest {
   /**
    * Json format test of API Service "asset/getAllProviders"
    * 
-   * @throws SlvTestsException When a SlvTestsException is thrown.
+   * @throws SlvTestsException
+   *           When a SlvTestsException is thrown.
    */
   @Test(groups = { "providers-format" }, priority = 1)
   public void getAllProviders() throws SlvTestsException {
@@ -60,13 +60,17 @@ public class ProvidersTest extends AbstractTest {
   /**
    * Creates a Provider and assert its existence and equality.
    * 
-   * @throws SlvTestsException When a SlvTestException is thrown.
-   * @throws IOException When an IOException is thrown.
-   * @throws JsonMappingException When a JsonMappingException is thrown.
-   * @throws JsonParseException When a JsonParserException is thrown.
+   * @throws SlvTestsException
+   *           When a SlvTestException is thrown.
+   * @throws IOException
+   *           When an IOException is thrown.
+   * @throws JsonMappingException
+   *           When a JsonMappingException is thrown.
+   * @throws JsonParseException
+   *           When a JsonParserException is thrown.
    */
   @Test(groups = { "providers-createUpdateDeleteProvider" }, priority = 2)
-  public void createProvider() throws SlvTestsException,
+  public void createProvider() throws SlvTestsException, 
       JsonParseException, JsonMappingException, IOException {
     // CALL
     JsonDiffResult result = retrieveResult(ProvidersMethods.CREATE_PROVIDER.getUrl());
@@ -84,7 +88,8 @@ public class ProvidersTest extends AbstractTest {
    * Updates a Provider and assert that the modification has been done.<br/>
    * Depends on {@link #createProvider()}
    * 
-   * @throws SlvTestsException When a SlvTestsException is thrown.
+   * @throws SlvTestsException
+   *           When a SlvTestsException is thrown.
    */
   @Test(groups = { "providers-createUpdateDeleteProvider" }, 
       dependsOnMethods = { "createProvider" }, priority = 2)
@@ -105,9 +110,10 @@ public class ProvidersTest extends AbstractTest {
    * Deletes a Provider and assert that it does not exist anymore.<br/>
    * Depends on {@link #updateProvider()}
    * 
-   * @throws SlvTestsException When a SlvTestsException is thrown.
+   * @throws SlvTestsException
+   *           When a SlvTestsException is thrown.
    */
-  @Test(groups = { "providers-createUpdateDeleteProvider" },
+  @Test(groups = { "providers-createUpdateDeleteProvider" }, 
       dependsOnMethods = { "updateProvider" }, priority = 2)
   public void deleteProvider() throws SlvTestsException {
     // INIT
@@ -127,10 +133,14 @@ public class ProvidersTest extends AbstractTest {
   /**
    * Fails to create a Provider without specifying a name.
    * 
-   * @throws SlvTestsException When a SlvTestsException is thrown.
-   * @throws IOException When a IOException is thrown.
-   * @throws JsonMappingException When a JsonMappingException is thrown.
-   * @throws JsonParseException When a JsonParserException is thrown.
+   * @throws SlvTestsException
+   *           When a SlvTestsException is thrown.
+   * @throws IOException
+   *           When a IOException is thrown.
+   * @throws JsonMappingException
+   *           When a JsonMappingException is thrown.
+   * @throws JsonParseException
+   *           When a JsonParserException is thrown.
    */
   @Test(groups = { "providers-createProviderWithMissingAttributes" }, dependsOnMethods = {
       "deleteProvider" }, priority = 3)
@@ -143,10 +153,9 @@ public class ProvidersTest extends AbstractTest {
 
     // CALL
     String response = call(ProvidersMethods.CREATE_PROVIDER.getUrl(), parameters);
-    
-    // Verify that the response represents an error
- 	Assert.assertTrue(isErrorResponse(response), MessageHelper.getMessage("not.an.error.response"));
 
+    // Verify that the response represents an error
+    Assert.assertTrue(isErrorResponse(response), MessageHelper.getMessage("not.an.error.response"));
 
     // Extract the error message from the response
     Map<String, Object> map = convert(response);
@@ -163,10 +172,14 @@ public class ProvidersTest extends AbstractTest {
   /**
    * Creates a Provider without specifying a pollution rate.
    * 
-   * @throws SlvTestsException When a SlvTestsException is thrown.
-   * @throws IOException When a IOException is thrown.
-   * @throws JsonMappingException When a JsonMappingException is thrown.
-   * @throws JsonParseException When a JsonParserException is thrown.
+   * @throws SlvTestsException
+   *           When a SlvTestsException is thrown.
+   * @throws IOException
+   *           When a IOException is thrown.
+   * @throws JsonMappingException
+   *           When a JsonMappingException is thrown.
+   * @throws JsonParseException
+   *           When a JsonParserException is thrown.
    */
   @Test(groups = { "providers-createProviderWithMissingAttributes" }, dependsOnMethods = {
       "deleteProvider" }, priority = 3)
@@ -194,10 +207,14 @@ public class ProvidersTest extends AbstractTest {
   /**
    * Creates a Provider without specifying a time.
    * 
-   * @throws SlvTestsException When a SlvTestsException is thrown.
-   * @throws IOException When a IOException is thrown.
-   * @throws JsonMappingException When a JsonMappingException is thrown.
-   * @throws JsonParseException When a JsonParserException is thrown.
+   * @throws SlvTestsException
+   *           When a SlvTestsException is thrown.
+   * @throws IOException
+   *           When a IOException is thrown.
+   * @throws JsonMappingException
+   *           When a JsonMappingException is thrown.
+   * @throws JsonParseException
+   *           When a JsonParserException is thrown.
    */
   @Test(groups = { "providers-createProviderWithMissingAttributes" }, dependsOnMethods = {
       "deleteProvider" }, priority = 3)
@@ -225,7 +242,8 @@ public class ProvidersTest extends AbstractTest {
   /**
    * Initialize a provider for update and delete operations test.
    * 
-   * @throws SlvTestsException When a SlvTestsException is thrown.
+   * @throws SlvTestsException
+   *           When a SlvTestsException is thrown.
    */
   @Test(groups = { "providers-updateProviderWithMissingAttributes" }, dependsOnGroups = {
       "providers-createProviderWithMissingAttributes" }, priority = 3)
@@ -242,7 +260,8 @@ public class ProvidersTest extends AbstractTest {
   /**
    * Fails to update a Provider without specifying a new name.
    * 
-   * @throws SlvTestsException When a SlvTestsException is thrown.
+   * @throws SlvTestsException
+   *           When a SlvTestsException is thrown.
    */
   @Test(groups = { "providers-updateProviderWithMissingAttributes" }, dependsOnMethods = {
       "initProviderOfUpdateTests" }, priority = 3)
@@ -264,7 +283,8 @@ public class ProvidersTest extends AbstractTest {
   /**
    * Fails to update a Provider without specifying a new name.
    * 
-   * @throws SlvTestsException When a SlvTestsException is thrown.
+   * @throws SlvTestsException
+   *           When a SlvTestsException is thrown.
    */
   @Test(groups = { "providers-updateProviderWithMissingAttributes" }, dependsOnMethods = {
       "initProviderOfUpdateTests" }, priority = 3)
@@ -289,7 +309,8 @@ public class ProvidersTest extends AbstractTest {
   /**
    * Initialize a provider for update and delete operations test.
    * 
-   * @throws SlvTestsException When a SlvTestsException is thrown.
+   * @throws SlvTestsException
+   *           When a SlvTestsException is thrown.
    */
   @Test(groups = { "providers-updateProviderWithMissingAttributes" }, dependsOnMethods = {
       "updateProviderMissedNewName", "updateProviderMissedProviderId" }, priority = 3)
@@ -302,14 +323,15 @@ public class ProvidersTest extends AbstractTest {
    * 
    * @param methodName
    * 
-   * @throws SlvTestsException When a SlvTestsException is thrown.
+   * @throws SlvTestsException
+   *           When a SlvTestsException is thrown.
    */
-  public void deleteCreatedProviderWithMissingAttributes(
-      String methodName) throws SlvTestsException {
+  public void deleteCreatedProviderWithMissingAttributes(String methodName)
+      throws SlvTestsException {
     if (createdProviderIdMap.get(methodName) != null) {
       JsonNode parameters = getInputs().get(ProvidersMethods.DELETE_PROVIDER.getUrl());
-      ((ObjectNode) parameters).put(TestConstants
-          .DELETE_PROVIDER_INPUT_ID_KEY, createdProviderIdMap.get(methodName));
+      ((ObjectNode) parameters).put(
+          TestConstants.DELETE_PROVIDER_INPUT_ID_KEY, createdProviderIdMap.get(methodName));
       call(ProvidersMethods.DELETE_PROVIDER.getUrl(), parameters);
     }
   }
