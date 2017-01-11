@@ -11,22 +11,60 @@ import com.slv.slvapi.userprofile.JsonAttributes;
  */
 public enum ProviderTestMethod {
 	
-  /**
-   * 
-   */
+	/**
+	 * getAllProviders test method
+	 */
 	GET_ALL_PROVIDERS("getAllProviders"),
 	
+	/**
+	 * createProvider test method
+	 */
+	CREATE_PROVIDER("createProvider"),
 	
-	createProvider("createProvider"),
-	updateProvider("updateProvider"),
-	deleteProvider("deleteProvider"),
-	createProviderKoMissedName("createProviderKoMissedName"),
-	createProviderMissedPollutionRate("createProviderMissedPollutionRate"),
-	createProviderMissedTime("createProviderMissedTime"),
-	initProviderOfUpdateTests("initProviderOfUpdateTests"),
-	updateProviderMissedNewName("initProviderOfUpdateTests"),
-	updateProviderMissedProviderId("initProviderOfUpdateTests"),
-	clearProviderOfUpdateTests("initProviderOfUpdateTests")
+	/**
+	 * updateProvider test method
+	 */
+	UPDATE_PROVIDER("updateProvider"),
+	
+	/**
+	 * deleteProvider test method
+	 */
+	DELETE_PROVIDER("deleteProvider"),
+	
+	/**
+	 * createProviderKoMissedName test method
+	 */
+	CREATE_PROVIDER_KO_MISSED_NAME("createProviderKoMissedName"),
+	
+	/**
+	 * createProviderMissedPollutionRate test method
+	 */
+	CREATE_PROVIDER_MISSED_POLLUTION_RATE("createProviderMissedPollutionRate"),
+	
+	/**
+	 * createProviderMissedTime test method
+	 */
+	CREATE_PROVIDER_MISSED_TIME("createProviderMissedTime"),
+	
+	/**
+	 * initProviderOfUpdateTests test method
+	 */
+	INIT_PROVIDER_OF_UPDATE_TESTS("initProviderOfUpdateTests"),
+	
+	/**
+	 * initProviderOfUpdateTests test method
+	 */
+	UPDATE_PROVIDER_MISSED_NEW_NAME("initProviderOfUpdateTests"),
+	
+	/**
+	 * initProviderOfUpdateTests test method
+	 */
+	UPDATE_PROVIDER_MISSED_PROVIDER_ID("initProviderOfUpdateTests"),
+	
+	/**
+	 * initProviderOfUpdateTests test method
+	 */
+	CLEAR_PROVIDER_OF_UPDATE_TESTS("initProviderOfUpdateTests")
 	;
 	
 	

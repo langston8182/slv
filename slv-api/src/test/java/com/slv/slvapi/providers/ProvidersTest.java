@@ -76,7 +76,7 @@ public class ProvidersTest extends AbstractTest {
 
     // Extract the id of the created Provider
     Map<String, Object> map = convert(result.getResponse());
-    createdProviderIdMap.put(ProviderTestMethod.createProvider.getName(),
+    createdProviderIdMap.put(ProviderTestMethod.CREATE_PROVIDER.getName(),
         (Integer) map.get(TestConstants.CREATE_PROVIDER_OUTPUT_ID_KEY));
   }
 
@@ -92,7 +92,7 @@ public class ProvidersTest extends AbstractTest {
     // INIT
     JsonNode parameters = getInputs().get(ProvidersMethods.UPDATE_PROVIDER.getUrl()).deepCopy();
     ((ObjectNode) parameters).put(TestConstants.UPDATE_PROVIDER_INPUT_ID_KEY,
-        createdProviderIdMap.get(ProviderTestMethod.createProvider.getName()));
+        createdProviderIdMap.get(ProviderTestMethod.CREATE_PROVIDER.getName()));
 
     // CALL
     JsonDiffResult result = retrieveResult(ProvidersMethods.UPDATE_PROVIDER.getUrl(), parameters);
@@ -113,7 +113,7 @@ public class ProvidersTest extends AbstractTest {
     // INIT
     JsonNode parameters = getInputs().get(ProvidersMethods.DELETE_PROVIDER.getUrl()).deepCopy();
     ((ObjectNode) parameters).put(TestConstants.DELETE_PROVIDER_INPUT_ID_KEY,
-        createdProviderIdMap.get(ProviderTestMethod.createProvider.getName()));
+        createdProviderIdMap.get(ProviderTestMethod.CREATE_PROVIDER.getName()));
 
     // CALL
     JsonDiffResult result = retrieveResult(ProvidersMethods.DELETE_PROVIDER.getUrl(), parameters);
@@ -185,10 +185,10 @@ public class ProvidersTest extends AbstractTest {
 
     // Extract the id of the created Provider
     Map<String, Object> map = convert(result.getResponse());
-    createdProviderIdMap.put(ProviderTestMethod.createProviderMissedPollutionRate.getName(),
+    createdProviderIdMap.put(ProviderTestMethod.CREATE_PROVIDER_MISSED_POLLUTION_RATE.getName(),
         (Integer) map.get(TestConstants.CREATE_PROVIDER_OUTPUT_ID_KEY));
     deleteCreatedProviderWithMissingAttributes(
-        ProviderTestMethod.createProviderMissedPollutionRate.getName());
+        ProviderTestMethod.CREATE_PROVIDER_MISSED_POLLUTION_RATE.getName());
   }
 
   /**
@@ -216,10 +216,10 @@ public class ProvidersTest extends AbstractTest {
 
     // Extract the id of the created Provider
     Map<String, Object> map = convert(result.getResponse());
-    createdProviderIdMap.put(ProviderTestMethod.createProviderMissedTime.getName(),
+    createdProviderIdMap.put(ProviderTestMethod.CREATE_PROVIDER_MISSED_TIME.getName(),
         (Integer) map.get(TestConstants.CREATE_PROVIDER_OUTPUT_ID_KEY));
     deleteCreatedProviderWithMissingAttributes(
-        ProviderTestMethod.createProviderMissedTime.getName());
+        ProviderTestMethod.CREATE_PROVIDER_MISSED_TIME.getName());
   }
 
   /**
@@ -235,7 +235,7 @@ public class ProvidersTest extends AbstractTest {
         getInputs().get(ProvidersMethods.CREATE_PROVIDER.getUrl()));
     // Extract the id of the created Provider
     Map<String, Object> map = convert(response);
-    createdProviderIdMap.put(ProviderTestMethod.initProviderOfUpdateTests.getName(),
+    createdProviderIdMap.put(ProviderTestMethod.INIT_PROVIDER_OF_UPDATE_TESTS.getName(),
         (Integer) map.get(TestConstants.CREATE_PROVIDER_OUTPUT_ID_KEY));
   }
 
@@ -252,7 +252,7 @@ public class ProvidersTest extends AbstractTest {
     // Remove the name from the request input
     ((ObjectNode) parameters).remove(TestConstants.UPDATE_PROVIDER_INPUT_NEW_NAME_KEY);
     ((ObjectNode) parameters).put(TestConstants.UPDATE_PROVIDER_INPUT_ID_KEY,
-        createdProviderIdMap.get(ProviderTestMethod.initProviderOfUpdateTests.getName()));
+        createdProviderIdMap.get(ProviderTestMethod.INIT_PROVIDER_OF_UPDATE_TESTS.getName()));
 
     // CALL
     JsonDiffResult result = retrieveResult(ProvidersMethods.UPDATE_PROVIDER.getUrl(), parameters);
