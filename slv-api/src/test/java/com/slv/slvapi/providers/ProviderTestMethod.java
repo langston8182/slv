@@ -4,7 +4,7 @@ import com.slv.slvapi.userprofile.JsonAttributes;
 
 /**
  * Tests methods names of provider module to hold created providers 
- * identifiers in a map in order to delete them
+ * identifiers in a map in order to delete them.
  * 
  * @author yromdhane
  *
